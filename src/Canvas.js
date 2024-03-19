@@ -1,9 +1,11 @@
 import logo from './logo.svg';
-
+import axios from "axios";
 import React, { Component } from 'react';
 import { GraphCanvas,darkTheme } from 'reagraph';
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import padri from './perang_padri.jpg';
+import Daftar from './Daftar'
+const baseURL = "http://localhost:8000/graph/uri/"
 
 function Canvas() {
   function random(min, max) {
@@ -62,17 +64,29 @@ function Canvas() {
   function opsi(label){
     return dataNodes[label].keys().map((key)=>(<button>key</button>))
   }
-  const dataNodes= {"Perang Padri":{"Pihak Satu":["Rajo Alam","Mayor Jenderal Conchius","Kolonel Stuers"],
-                                    "Pihak Dua":['Tuanku Imam Bonjol','Tuanku Rao','Tuanku Nan Receh']
-                                    },
-                    "Rajo Alam":{"Pihak":"Kaum Adat"},
-                    "Mayor Jenderal Conchius":{"Pihak":"Belanda"}
-                  }
+  function getData(label){
+    console.log(label)
+    
+        axios.get(baseURL+label).then((response) => 
+        {
+          dataNodes[label] = response.data
+          Object.keys(response.data).map((key)=>{
+            console.log(key)
+            status[key] = true
+            })
+            console.log(status)
+            console.log(dataNodes)
+      })
+      setData(dataNodes);
+      setStatus(status);
 
+  }
+  
+  
   const simpleNodes = [
     {
-        id: 'Perang Padri',
-        label: 'Perang Padri',
+        id: 'PerangPadri',
+        label: 'PerangPadri',
         icon:padri
       }
     ];
@@ -80,51 +94,13 @@ function Canvas() {
     const simpleEdges = [
       
     ];
-
-    const cycle = [
-      {
-        id:'1',
-        label:'1',
-      },
-      {
-        id:'2',
-        label:'2',
-      },
-      {
-        id:'3',
-        label:'3'
-      }
-    ]
-    const cycleEdge = [
-      {
-        id:'e-1',
-        source:'1',
-        target:'2'
-      },
-      {
-        id:'e-2',
-        source:'2',
-        target:'3'
-      }
-    ]
-
+    
+    const [dataNodes,setData] = useState({})
     const [nodes, setNodes] = useState(simpleNodes);
   const [edges, setEdges] = useState(simpleEdges);
   const [del,setDel] = useState(false)
-  const[status,setStatus] = useState({"Perang Padri":true,
-                                      "Rajo Alam":true,
-                                      "Mayor Jenderal Conchius":true,
-                                      "Kolonel Stuers":true,
-                                      "Kaum Adat":true,
-                                      "Belanda":true,
-                                      "Tuanku Imam Bonjol":true,
-                                      "Tuanku Rao":true,
-                                      "Tuanku Nan Receh":true,
-                                      "Pihak Satu":true,
-                                      "Pihak Dua":true,
-                                      "Pihak":true})
-  // const [collapsed, setCollapsed] = useState<string[]>([]);
-  console.log(Object.keys(dataNodes["Perang Padri"]).map((key)=>(<button>key</button>)))
+  const[status,setStatus] = useState({})
+  // getData("PerangPadri")
   return (
     <>
       
@@ -144,6 +120,10 @@ function Canvas() {
                     nodes={nodes}
                     edges={edges}
                     draggable={true}
+                    onNodeContextMenu={(data,props)=>{
+                      getData(data.id)
+                      
+                    }}
                     contextMenu={({
                       data,
                       onClose
@@ -157,8 +137,12 @@ function Canvas() {
                     }}>
                             <h1>{data.label}</h1>
                             <img src={padri}></img>
-                            {Object.keys(dataNodes[data.label]).map((key)=>(<button onClick = {status[key] ? () => {add(data,key)}:()=>{remove(data,key)}} key={key}>{status[key]?`${key} show`:`${key} hide`}</button>))}
-                            
+                            { Object.keys(dataNodes[data.label] ?? []).map((key)=>(<button onClick = {status[key] ? () => {add(data,key)}:()=>{remove(data,key)}} key={key}>{status[key]?`${key} show`:`${key} hide`}</button>))}
+                            {/* <Daftar label={data.label}
+                                    add={add}
+                                    remove={remove}
+                                    status={status}
+                                    data={data}/>                            */}
                             <button onClick={onClose}>Close Menu</button>
                           </div>} 
                     onNodeDoubleClick={del?hapus:()=>{}}
