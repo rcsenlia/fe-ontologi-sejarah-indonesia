@@ -1,22 +1,34 @@
 import { Outlet, Link } from "react-router-dom";
-
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 const Layout = () => {
     return(
         <>
-        <ul class="flex bg-red-800">
-            <li class="mr-6">
-                <a class="text-blue-500 hover:text-blue-800" href="#">Active</a>
-            </li>
-            <li class="mr-6">
-                <a class="text-blue-500 hover:text-blue-800" href="#">Link</a>
-            </li>
-            <li class="mr-6">
-                <a class="text-blue-500 hover:text-blue-800" href="#">Link</a>
-            </li>
-            <li class="mr-6">
-                
-            </li>
-        </ul>
+        <Navbar expand="lg" className="bg-body-tertiary">
+      <Container>
+        <Navbar.Brand href="#home">Sejarah Indonesia</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link href="/canvas/a">Canvas</Nav.Link>
+            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">
+                Separated link
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
         <Outlet />
         </>
     )

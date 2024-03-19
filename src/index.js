@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import Canvas from './Canvas';
 import Layout from './Layout';
-import Detail from './Detail';
+import Detail from './components/Detail';
+import Map from './components/Map'
 import reportWebVitals from './reportWebVitals';
 import './style.css'; 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -12,8 +13,9 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Canvas />} />
-          <Route path="detail" element={<Detail />} />
+          <Route path='canvas/:nama_peristiwa' element={<Canvas />} />
+          <Route path="detail/:nama_peristiwa" element={<Detail />} />
+          <Route path="map" element={<Map />} />
           {/* <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage />} /> */}
         </Route>
