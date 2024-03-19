@@ -18,10 +18,10 @@ const Map = () => {
     const [selectedOption, setSelectedOption] = useState('geojson');
     const [datas, setDatas] = useState([]);
     const [minYear, setMinYear] = useState(1600);
-    const [maxYear, setMaxYear] = useState(1966);
+    const [maxYear, setMaxYear] = useState(1998);
 
     useEffect(() => {
-        let url = `http://127.0.0.1:8000/map/`;
+        let url = 'http://127.0.0.1:8000/map/';
         fetch(url, {
             method: "GET",
             headers: { "Content-Type": "application/json" }
@@ -112,12 +112,13 @@ const Map = () => {
                 ) : (
                     filteredDatas.map((data, index) => (
                         <Marker
+                        key={data.iri}
                         position={[data.latitude, data.longitude]}
                         icon={thickDotDivIcon}
                         >
                             <Popup>
                                 <h3>{data.name}</h3>
-                                <Link to={`/detail/${data.name}`}
+                                <Link to={`/detail/${data.iri}`}
                                 className='btn btn-info'>
                                     Lihat detail
                                 </Link>
@@ -129,7 +130,7 @@ const Map = () => {
 
             <MultiRangeSlider 
             min={1600}
-            max={1966}
+            max={1998}
             step={1}
             minValue={minYear}
             maxValue={maxYear}
