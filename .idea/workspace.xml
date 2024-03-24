@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="443b8def-9b0f-45d4-8e44-0a7d9141d313" name="Changes" comment="add 20 march progress">
+    <list default="true" id="443b8def-9b0f-45d4-8e44-0a7d9141d313" name="Changes" comment="adding button on timeline">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/MapTimelineClick.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MapTimelineClick.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Timeline.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Timeline.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -89,7 +88,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add 20 march progress" />
-    <option name="LAST_COMMIT_MESSAGE" value="add 20 march progress" />
+    <MESSAGE value="debugging timeline" />
+    <MESSAGE value="adding button on timeline" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding button on timeline" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

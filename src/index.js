@@ -10,6 +10,7 @@ import './style.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TimelineEvent from "./components/Timeline";
 import MapTimelineClick from "./components/MapTimelineClick";
+import {ToastContainer} from "react-toastify";
 export default function App() {
   return (
     <BrowserRouter>
@@ -24,6 +25,9 @@ export default function App() {
           <Route path="*" element={<NoPage />} /> */}
         </Route>
       </Routes>
+      <ToastContainer
+          position="top-center"
+      />
     </BrowserRouter>
   );
 }
