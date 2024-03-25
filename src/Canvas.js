@@ -126,13 +126,17 @@ function Canvas() {
   function getInitialData(label){
     console.log(label)
     let temp = []
+    let temp2 = {}
     axios.get(baseURL+"event").catch(function (error){
       console.log(error)
     }).then((response)=>{
-      setEvent(response.data)
-      temp = response.data
+      setEvent(response.data[0])
+      setIri(response.data[1])
+      temp = response.data[0]
+      temp2 = response.data[1]
+      label = temp2[label]
       if (!temp.includes(label)) {
-        label = temp[0]
+        label = temp2[temp[0]]
         navigate("/canvas/"+label)
       }
       getData(label)
@@ -160,14 +164,16 @@ function Canvas() {
   const[status,setStatus] = useState({})
   const[event,setEvent] = useState([])
   const [suggestion,setSuggestion] = useState([])
+  const[iri,setIri] = useState({})
+  const[label,setLabel] = useState({})
   useEffect(() => {
     getInitialData(nama_peristiwa)
     
   }, []);
   const handleChange = event => {
-    console.log(event.target.value);
-    navigate("/canvas/"+event.target.value)
-    getInitialData(event.target.value)
+    console.log(iri[event.target.value]);
+    navigate("/canvas/"+iri[event.target.value])
+    getInitialData(iri[event.target.value])
   };
   const handleSearch = trigger => {
     console.log(trigger.target.value)
