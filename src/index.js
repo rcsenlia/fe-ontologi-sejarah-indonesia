@@ -15,7 +15,7 @@ export default function App() {
         <Route path="/" element={<Layout />}>
         <Route path='canvas/' element={<Canvas />} />
           <Route path='canvas/:nama_peristiwa' element={<Canvas />} />
-          <Route path="detail/:nama_peristiwa" element={<Detail />} />
+          <Route path="detail/:iri_peristiwa" element={<Detail />} />
           <Route path="map" element={<Map />} />
           {/* <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage />} /> */}
