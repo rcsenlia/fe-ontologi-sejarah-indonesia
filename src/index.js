@@ -13,7 +13,8 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Canvas />} />
+        <Route path='canvas/' element={<Canvas />} />
+          <Route path='canvas/:nama_peristiwa' element={<Canvas />} />
           <Route path="detail/:nama_peristiwa" element={<Detail />} />
           <Route path="map" element={<Map />} />
           {/* <Route path="contact" element={<Contact />} />
