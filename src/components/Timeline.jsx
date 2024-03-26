@@ -46,7 +46,7 @@ const TimelineEvent = () => {
 
     const mapTimeline = async (rawData) => {
         return {
-            events: rawData.map(({name, dateStart, dateEnd, latitude, longitude, actor}) => ({
+            events: rawData.map(({name, summary, wikiurl, dateStart, dateEnd, actor, image}) => ({
                 start_date: {
                     year: dateStart.split("-")[0],
                     month: dateStart.split("-")[1],
@@ -58,27 +58,22 @@ const TimelineEvent = () => {
                     day: dateEnd.split("-")[2],
                 },
                 text: {
-                    headline: name,
-                    text: `Description for ${name}`,
+                    headline: `<a style="color: #282c34" href="${wikiurl}">${name}</a>`,
+                    text: '<small>(klik judul untuk membuka laman wikipedia)</small> <br>' + summary,
                 },
                 media : {
-                    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/640px-Google_2015_logo.svg.png',
-                    caption: 'Klik untuk lihat Lokasi',
+                    url: `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`,
+                    caption: '<small>(klik untuk lihat lokasi peta saat ini)</small>',
                     link: `/map/${actor}`
-                }
-            })),
-            title: {
-                text: {
-                    headline: 'Your Timeline Title',
-                    text: 'Timeline Description',
                 },
-            },
+
+            }))
         }
     }
 
     return (
         <div>
-            <div className="mt-3 border p-4 rounded-md" style={{ width:'100%', maxWidth:'500px', margin:'0 auto', padding:'15px', boxSizing:'border-box', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+            <div className="mt-3 mb-3 border p-4 rounded-md" style={{ width:'100%', maxWidth:'500px', margin:'0 auto', padding:'12px', boxSizing:'border-box', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div className="border p-2 rounded-md" style={{ borderColor: '#000',position: 'relative', display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="25" fill="currentColor"

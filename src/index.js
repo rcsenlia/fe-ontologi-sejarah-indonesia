@@ -25,9 +25,7 @@ export default function App() {
           <Route path="*" element={<NoPage />} /> */}
         </Route>
       </Routes>
-      <ToastContainer
-          position="top-center"
-      />
+      <ToastContainer/>
     </BrowserRouter>
   );
 }
