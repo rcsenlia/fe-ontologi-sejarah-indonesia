@@ -1,22 +1,21 @@
-import logo from './logo.svg';
+
 import axios from "axios";
 import React, { Component } from 'react';
 import { GraphCanvas,darkTheme } from 'reagraph';
-import { useState,useEffect } from "react";
+import { useState,useEffect,useRef } from "react";
 import padri from './perang_padri.jpg';
-import Daftar from './Daftar'
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useParams } from "react-router-dom";
-import { Link } from 'react-router-dom';
-import { redirect } from "react-router-dom";
+
 import { useNavigate } from "react-router-dom";
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
-import { FormText } from 'react-bootstrap';
+import { ButtonGroup, FormText,CloseButton } from 'react-bootstrap';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 const baseURL = "http://localhost:8000/graph/"
@@ -25,7 +24,7 @@ const popover =(suggestion,handleChange)=> (
   <Popover id="popover-basic">
     
     <Popover.Body>
-    <ListGroup style={{overflowY:"auto",maxHeight:"100px"}}>
+    <ListGroup style={{overflowY:"auto",maxHeight:"150px"}}>
       
       {suggestion.map((key)=>(
                <ListGroup.Item action value={key} onClick={handleChange} >{key}</ListGroup.Item> 
@@ -38,7 +37,7 @@ const popover =(suggestion,handleChange)=> (
 function Canvas() {
   const navigate = useNavigate();
   const { nama_peristiwa } = useParams();
-  
+  const ref = useRef(null);
   function random(min, max) {
     // 👇️ get number between min (inclusive) and max (inclusive)
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -178,7 +177,7 @@ function Canvas() {
   const handleSearch = trigger => {
     console.log(trigger.target.value)
     console.log(event.filter((element)=>element.toLowerCase().startsWith(trigger.target.value)))
-    setSuggestion(event.filter((element)=>element.toLowerCase().startsWith(trigger.target.value)))
+    setSuggestion(event.filter((element)=>element.toLowerCase().startsWith(trigger.target.value)).sort())
   }
   const getImage = label => {
     if(typeof dataNodes.label === "undefined" )
@@ -190,36 +189,37 @@ function Canvas() {
 
       <Row>
         <Col>
-            <Button variant="danger" onClick={() => {
+        <ButtonGroup>
+        <Button variant="danger" onClick={() => {
                 setDel(!del)  
             }} active>
                 {del?"cancel":"hapus"}
             </Button>
+        {/* <Button active variant="dark"onClick={() => ref.current?.panDown()}>Pan Down</Button>
+        <Button active variant="dark"onClick={() => ref.current?.panUp()}>Pan Up</Button>
+        <Button active variant="dark"onClick={() => ref.current?.panLeft()}>Pan Left</Button>
+        <Button active variant="dark"onClick={() => ref.current?.panRight()}>Pan Right</Button> */}
+        
+        </ButtonGroup>
+        
         </Col>
         
         <Col>
-          <Form>
-          {/* <Form.Select aria-label="Default select example"  onChange={handleChange}>
-          <option value={nama_peristiwa}>{nama_peristiwa}</option>
-            
-            {event.map((key)=>(
-              (key !== nama_peristiwa) ? <option value={key} >{key}</option> :<></>
-             ))}
-        </Form.Select> */}
-        <OverlayTrigger trigger="click" placement="bottom-start" overlay={popover(suggestion,handleChange)}>
-          <Form.Control type="text" placeholder="Normal text" onChange={handleSearch} />
-        </OverlayTrigger>
-          </Form>
+        <Form fluid="true">
           
+        <OverlayTrigger trigger="focus" placement="bottom-start" overlay={popover(suggestion,handleChange)}>
+          <Form.Control type="text" placeholder="cari nama" onChange={handleSearch} />
+        </OverlayTrigger>
+          </Form>  
         </Col>
       </Row>
       <Row>
         
       
-        {/* <Col> */}
+        
         <div  style={{ position: "fixed", width: '100%', height: '100%'}}>
         
-        <GraphCanvas
+        <GraphCanvas ref={ref}
                     theme={darkTheme}
                     labelType={'all'}
                     nodes={nodes}
@@ -229,60 +229,36 @@ function Canvas() {
                       data,
                       onClose
                     }) => <Card style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src={typeof dataNodes[data.label] ==="undefined" ? padri:dataNodes[data.label]['image']} />
+                      
+                      
+                    <Card.Img style={{width :"300px",height:"200px"}} variant="top" src={typeof dataNodes[data.label] ==="undefined" ? padri:dataNodes[data.label]['image']} />
                     
                     <Card.Body >
                       <Card.Title>{data.id}</Card.Title>
                       
                       <ListGroup variant="flush" style={{overflowY:"auto",height:"100px"}}>
-                      { Object.keys(dataNodes[data.label] ?? []).map((key)=>(<ListGroup.Item onClick = {status[key] ? () => {add(data,key)}:()=>{remove(data,key)}} action>{
+                      { Object.keys(dataNodes[data.label] ?? []).map((key)=>(key === "image"?<></>:<ListGroup.Item onClick = {status[key] ? () => {add(data,key)}:()=>{remove(data,key)}} action>{
                         status[key]?`${key} (show)`:`${key} (hide)`
                         }</ListGroup.Item>))}
                         
                       </ListGroup>
                       <Button variant="primary" active>detail</Button>
-                      <Button variant='danger' onClick={onClose} active>Close Menu</Button>
+                      <Button variant="danger" active onClick={onClose}>Tutup</Button>
                     </Card.Body>
                   </Card>} 
                     onNodeDoubleClick={del?hapus:()=>{}}
+                    
                     />
                   
               </div>
-            {/* </Col> */}
+            
         
         </Row>
         <Row>
         </Row>
         </Container>
   );
-  // const collapsed = ['1']
-  // return (
-      
-  //          <GraphCanvas
-  //                   collapsedNodeIds={collapsed}
-  //                   labelType={'all'}
-  //                   nodes={cycle}
-  //                   edges={cycleEdge}
-  //                   draggable={true}
-  //                   contextMenu={({
-  //                     data,
-  //                     onClose
-  //                   }) => <div style={{
-  //                     background: 'white',
-  //                     width: 150,
-  //                     border: 'solid 1px blue',
-  //                     borderRadius: 2,
-  //                     padding: 5,
-  //                     textAlign: 'center'
-  //                   }}>
-  //                           <h1>{data.label}</h1>
-  //                           <img src={padri}></img>
-  //                           {/* {Object.keys(dataNodes[data.label]).map((key)=>(<button onClick = {status[key] ? () => {add(data,key)}:()=>{remove(data,key)}} key={key}>{key}</button>))} */}
-                            
-  //                           <button onClick={onClose}>Close Menu</button>
-  //                         </div>} 
-  //                   />
-  // )
+  
 }
 
 export default Canvas;
