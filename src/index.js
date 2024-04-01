@@ -6,17 +6,17 @@ import Layout from './Layout';
 import Detail from './components/Detail';
 import Map from './components/Map'
 import reportWebVitals from './reportWebVitals';
-import './style.css'; 
+import './style.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TimelineEvent from "./components/Timeline";
 import MapTimelineClick from "./components/MapTimelineClick";
-import {ToastContainer} from "react-toastify";
+import { ToastContainer } from "react-toastify";
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-        <Route path='canvas/' element={<Canvas />} />
+          <Route path='canvas/' element={<Canvas />} />
           <Route path='canvas/:nama_peristiwa' element={<Canvas />} />
           <Route path="detail/:iri_peristiwa" element={<Detail />} />
           <Route path="map" element={<Map />} />
@@ -26,7 +26,7 @@ export default function App() {
           <Route path="*" element={<NoPage />} /> */}
         </Route>
       </Routes>
-      <ToastContainer/>
+      <ToastContainer />
     </BrowserRouter>
   );
 }
