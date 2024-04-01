@@ -46,7 +46,7 @@ const TimelineEvent = () => {
 
     const mapTimeline = async (rawData) => {
         return {
-            events: rawData.map(({name, summary, wikiurl, dateStart, dateEnd, actor, image}) => ({
+            events: rawData.map(({name, summary, wikiurl, dateStart, dateEnd, event, image}) => ({
                 start_date: {
                     year: dateStart.split("-")[0],
                     month: dateStart.split("-")[1],
@@ -58,14 +58,14 @@ const TimelineEvent = () => {
                     day: dateEnd.split("-")[2],
                 },
                 text: {
-                    headline: `<a style="color: #282c34" href="/detail/${actor}">${name}</a>`,
-                    text: `<div><small><a style="color: #282c34" href="${wikiurl}">laman wikipedia</a></small> - <small><a style="color: #282c34" href="/canvas/${actor}">laman graph</a></small> <br> </div>`
+                    headline: `<a style="color: #282c34" href="/detail/${event}">${name}</a>`,
+                    text: `<div><small><a style="color: #282c34" href="${wikiurl}">laman wikipedia</a></small> - <small><a style="color: #282c34" href="/canvas/${event}">laman graph</a></small> <br> </div>`
                         + summary,
                 },
                 media : {
                     url: `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`,
                     // caption: '<small>(klik untuk lihat lokasi peta saat ini)</small>',
-                    link: `/map/${actor}`
+                    link: `/map/${event}`
                 },
 
             }))
