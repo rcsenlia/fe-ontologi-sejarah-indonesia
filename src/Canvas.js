@@ -207,7 +207,7 @@ function Canvas() {
         <Col>
         <Form fluid="true">
           
-        <OverlayTrigger trigger="focus" placement="bottom-start" overlay={popover(suggestion,handleChange)}>
+        <OverlayTrigger trigger="focus" delay="500" placement="bottom-start" overlay={popover(suggestion,handleChange)}>
           <Form.Control type="text" placeholder="cari nama" onChange={handleSearch} />
         </OverlayTrigger>
           </Form>  
@@ -219,7 +219,8 @@ function Canvas() {
         
         <div  style={{ position: "fixed", width: '100%', height: '100%'}}>
         
-        <GraphCanvas ref={ref}
+        <GraphCanvas 
+                    ref={ref}
                     theme={darkTheme}
                     labelType={'all'}
                     nodes={nodes}
@@ -242,7 +243,7 @@ function Canvas() {
                         }</ListGroup.Item>))}
                         
                       </ListGroup>
-                      <Button variant="primary" active>detail</Button>
+                      <Button variant="primary" href={`/detail/${iri[data.id]}`} active>detail</Button>
                       <Button variant="danger" active onClick={onClose}>Tutup</Button>
                     </Card.Body>
                   </Card>} 
