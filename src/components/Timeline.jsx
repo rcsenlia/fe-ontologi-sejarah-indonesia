@@ -46,7 +46,7 @@ const TimelineEvent = () => {
 
     const mapTimeline = async (rawData) => {
         return {
-            events: rawData.map(({name, summary, wikiurl, dateStart, dateEnd, actor, image}) => ({
+            events: rawData.map(({name, summary, wikiurl, dateStart, dateEnd, event, image}) => ({
                 start_date: {
                     year: dateStart.split("-")[0],
                     month: dateStart.split("-")[1],
@@ -58,13 +58,14 @@ const TimelineEvent = () => {
                     day: dateEnd.split("-")[2],
                 },
                 text: {
-                    headline: `<a style="color: #282c34" href="${wikiurl}">${name}</a>`,
-                    text: '<small>(klik judul untuk membuka laman wikipedia)</small> <br>' + summary,
+                    headline: `<a style="color: #282c34" href="/detail/${event}">${name}</a>`,
+                    text: `<div><small><a style="color: #282c34" href="${wikiurl}">laman wikipedia</a></small> - <small><a style="color: #282c34" href="/canvas/${event}">laman graph</a></small> <br> </div>`
+                        + summary,
                 },
                 media : {
                     url: `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`,
-                    caption: '<small>(klik untuk lihat lokasi peta saat ini)</small>',
-                    link: `/map/${actor}`
+                    // caption: '<small>(klik untuk lihat lokasi peta saat ini)</small>',
+                    link: `/map/${event}`
                 },
 
             }))
@@ -73,7 +74,7 @@ const TimelineEvent = () => {
 
     return (
         <div>
-            <div className="mt-3 mb-3 border p-4 rounded-md" style={{ width:'100%', maxWidth:'500px', margin:'0 auto', padding:'12px', boxSizing:'border-box', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+            <div className="mt-3 mb-3 p-4" style={{ width:'100%', maxWidth:'500px', margin:'auto auto', padding:'12px'}}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div className="border p-2 rounded-md" style={{ borderColor: '#000',position: 'relative', display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="25" fill="currentColor"
