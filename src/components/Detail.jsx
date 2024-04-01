@@ -1,108 +1,113 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Card } from "react-bootstrap";
+import { Container, Card, Row, Col, Form, OverlayTrigger, Popover, ListGroup } from "react-bootstrap";
 import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet';
-import { useParams } from "react-router-dom";
 import 'leaflet/dist/leaflet.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import SearchBar from './SearchBar';
+import DetailCard from './DetailCard';
 
-function ChangeMapView({ bounds }) {
-    const map = useMap();
-    useEffect(() => {
-        if (bounds) {
-            map.fitBounds(bounds);
-        }
-    }, [bounds]);
+const ChangeMapView = ({ bounds }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (bounds) {
+      map.fitBounds(bounds);
+    }
+  }, [bounds]);
 
-    return null;
+  return null;
 }
 
-function Detail() {
-    const { iri_peristiwa } = useParams();
-    const [response, setResponse] = useState(null);
+const Detail = () => {
+  const navigate = useNavigate();
+  const { iri_peristiwa } = useParams();
+  const [datas, setDatas] = useState([]);
+  const [response, setResponse] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const placeHolder = "Ketikkan nama peristiwa, tokoh, atau tempat sejarah...";
 
-    useEffect(() => {
-        let url = 'http://127.0.0.1:8000/map/detail/' + iri_peristiwa;
-        // console.log(url)
-        fetch(url, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" }
-        })
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => { setResponse(data) })
-            .catch((error) => console.error(error));
-    }, []);
+  const handleClick = (val) => {
+    console.log(val)
+    setSearchTerm("");
+    setSuggestions([]);
+    navigate("/detail/" + val);
+  };
 
-    const maxBounds = [
-        [-90, -180],
-        [90, 180],
-    ];
+  const handleChange = (trigger) => {
+    setSearchTerm(trigger.target.value);
+    setSuggestions(Object.values(datas)
+      .map(data => ({ value: data.iri, label: data.name }))
+      .filter(data => data.value.toLowerCase().includes(trigger.target.value.toLowerCase()))
+      .sort((a, b) => a.label > b.label ? 1 : -1));
+  }
 
-    return (
-        <Container fluid>
-            {response?.location != null &&
-                <MapContainer
-                    style={{ height: "40vh" }}
-                    maxBounds={maxBounds}
-                    minZoom={3}
-                    className='rounded my-3'
-                >
-                    <TileLayer
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                    <GeoJSON
-                        data={response?.location}
-                    />
-                    <ChangeMapView bounds={response?.bounds} />
-                </MapContainer>}
+  useEffect(() => {
+    let url = 'http://127.0.0.1:8000/map/all';
+    fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => { setDatas(data) })
+      .catch((error) => console.error(error))
+  }, [])
 
-            <div className='p-5 text-center'>
-                <h1 style={{ textAlign: "center" }}>Detail {response?.detail.name[1]}</h1>
-            </div>
+  useEffect(() => {
+    let url = 'http://127.0.0.1:8000/map/detail/' + iri_peristiwa;
+    // console.log(url)
+    fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => { setResponse(data) })
+      .catch((error) => console.error(error))
+  }, [iri_peristiwa]);
 
-            {response?.detail ? (
-                <Card className="my-3">
-                    <Card.Header as="h5">Detail Informasi</Card.Header>
-                    <Card.Body>
-                        {Object.entries(response?.detail).map(([key, value]) => {
-                            if (Array.isArray(value) && value.length === 2 && Array.isArray(value[1])) {
-                                return (
-                                    <div key={key} className="mb-3">
-                                        <strong>{value[0]}:</strong>
-                                        {value[1].map((item, index) => (
-                                            <>
-                                                <Link key={index} to={`/detail/${item[0]}`} className="text-primary"> {item[1]}</Link>
-                                                {index < value[1].length - 1 && <>, </>}
-                                            </>
-                                        ))}
-                                    </div>
-                                );
-                            }
-                            else if (Array.isArray(value) && value.length === 2 && value[1] != null) {
-                                return (
-                                    <div key={key} className="mb-3">
-                                        <strong>{value[0]}:</strong> {value[1]}
-                                    </div>
-                                );
-                            }
-                            else {
-                                return (
-                                    <div key={key} className="mb-3">
-                                        <strong>{key}:</strong> Data tidak tersedia
-                                    </div>
-                                );
-                            }
-                        })}
-                    </Card.Body>
-                </Card>
-            ) : (
-                <div>Loading details...</div>
-            )}
-        </Container>
-    )
+  const maxBounds = [
+    [-90, -180],
+    [90, 180],
+  ];
+
+  return (
+    <Container fluid>
+      <div className='my-4 w-1/2 mx-auto h-12'>
+        <SearchBar searchTerm={searchTerm} suggestions={suggestions} handleChange={handleChange} handleClick={handleClick} placeHolder={placeHolder} />
+      </div>
+
+      {!response?.detail &&
+        <h1 style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold" }}> Loading detail... </h1>}
+
+      {response?.detail && !response?.detail?.name &&
+        <h1 style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold" }}> Tidak ada data </h1>}
+
+      {response?.detail?.name && (<>
+        <DetailCard response={response} />
+
+        {response?.location != null &&
+        <MapContainer
+          style={{ height: "40vh" }}
+          maxBounds={maxBounds}
+          minZoom={3}
+          className='rounded my-3'
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+          <GeoJSON
+            data={response?.location}
+          />
+          <ChangeMapView bounds={response?.bounds} />
+        </MapContainer>}
+      </>)}
+    </Container>
+  )
 }
 
 export default Detail;
