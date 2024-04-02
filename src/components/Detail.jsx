@@ -1,22 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Card, Row, Col, Form, OverlayTrigger, Popover, ListGroup } from "react-bootstrap";
-import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet';
+import { Container } from "react-bootstrap";
 import 'leaflet/dist/leaflet.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import DetailCard from './DetailCard';
-
-const ChangeMapView = ({ bounds }) => {
-  const map = useMap();
-  useEffect(() => {
-    if (bounds) {
-      map.fitBounds(bounds);
-    }
-  }, [bounds]);
-
-  return null;
-}
 
 const Detail = () => {
   const navigate = useNavigate();
@@ -28,7 +16,6 @@ const Detail = () => {
   const placeHolder = "Ketikkan nama peristiwa, tokoh, atau tempat sejarah...";
 
   const handleClick = (val) => {
-    console.log(val)
     setSearchTerm("");
     setSuggestions([]);
     navigate("/detail/" + val);
@@ -69,11 +56,6 @@ const Detail = () => {
       .catch((error) => console.error(error))
   }, [iri_peristiwa]);
 
-  const maxBounds = [
-    [-90, -180],
-    [90, 180],
-  ];
-
   return (
     <Container fluid>
       <div className='my-4 w-1/2 mx-auto h-12'>
@@ -86,26 +68,7 @@ const Detail = () => {
       {response?.detail && !response?.detail?.name &&
         <h1 style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold" }}> Tidak ada data </h1>}
 
-      {response?.detail?.name && (<>
-        <DetailCard response={response} />
-
-        {response?.location != null &&
-        <MapContainer
-          style={{ height: "40vh" }}
-          maxBounds={maxBounds}
-          minZoom={3}
-          className='rounded my-3'
-        >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
-          <GeoJSON
-            data={response?.location}
-          />
-          <ChangeMapView bounds={response?.bounds} />
-        </MapContainer>}
-      </>)}
+      {response?.detail?.name && (<DetailCard response={response} />)}
     </Container>
   )
 }
