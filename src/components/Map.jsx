@@ -82,7 +82,14 @@ const Map = () => {
 
       <div className="flex my-3 gap-4">
         <div className='w-1/2 grow'>
-        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} suggestions={suggestions} handleChange={handleChange} handleClick={handleClick} placeHolder={placeHolder} />
+          <SearchBar
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            suggestions={suggestions}
+            setSuggestions={setSuggestions}
+            handleChange={handleChange}
+            handleClick={handleClick}
+            placeHolder={placeHolder} />
         </div>
         <div className='w-1/2 grow'>
           <MultiRangeSlider
