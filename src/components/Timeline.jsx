@@ -6,54 +6,70 @@ import '@knight-lab/timelinejs/dist/css/timeline.css';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import SearchBar from "./SearchBar";
+import MultiRangeSlider from "multi-range-slider-react";
 
 const TimelineEvent = () => {
-    const [nameFilter, setNameFilter] = useState('');
-    const [appliedNameFilter, setAppliedNameFilter] = useState('');
+    const [minYear, setMinYear] = useState(1400);
+    const [maxYear, setMaxYear] = useState(2024);
+    const [datas, setDatas] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const placeHolder = "Ketikkan nama peristiwa sejarah...";
 
+    const handleClick = (val) => {
+        setSearchTerm(val)
+        setSuggestions([])
+    };
+
+    const handleChange = (trigger) => {
+        setSearchTerm(trigger.target.value)
+        setSuggestions(Object.values(datas)
+            .map(data => ({ value: data.event, label: data.name }))
+            .filter(data => data.value.toLowerCase().includes(trigger.target.value.toLowerCase()))
+            .sort((a, b) => a.label > b.label ? 1 : -1));
+    }
+
     useEffect(() => {
         const fetchTimeline = async () => {
             try {
-                const params = {};
-                params['filter[name]'] = appliedNameFilter;
-                const responseEvent = await axios.get('http://127.0.0.1:8000/timeline/event/', { params });
-                // const responsePerson = await axios.get('http://127.0.0.1:8000/timeline/person/', { params });
-
-                //responsePerson.data.length !== 0
+                const responseEvent = await axios.get('http://127.0.0.1:8000/timeline/event/');
                 if (responseEvent.data.length !== 0 ) {
+                    setDatas(responseEvent.data)
                     await loadTimelineScript();
-                    const tlEvent = mapTimelineEvent(responseEvent.data)
-                    // const tlPerson = mapTimelinePerson(responsePerson.data)
-
-                    // let tlData = {
-                    //     events: [tlEvent, tlPerson].flatMap(obj => obj.events)
-                    // };
+                    const filteredDatas = datas.filter(filterData);
+                    const tlEvent = mapTimelineEvent(filteredDatas);
                     new Timeline('timeline-embed', tlEvent)
                 }
                 else {
-                    toast.warn(`${appliedNameFilter} tidak ditemukan`)
+                    toast.warn(`Peristiwa tidak ditemukan`)
                 }
-
-
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
         fetchTimeline();
-    }, [appliedNameFilter]);
+    }, []);
 
-    const handleFilter = () => {
-        setAppliedNameFilter(nameFilter);
-    };
+    useEffect(() => {
+        const filteredDatas = datas.filter(filterData);
+        const tlEvent = mapTimelineEvent(filteredDatas);
+        new Timeline('timeline-embed', tlEvent)
+    })
 
-    const handleClear = () => {
-        setNameFilter('');
-        setAppliedNameFilter('');
-    };
+    const filterData = (dt) => {
+        console.log(dt)
+        const isYearInRange = (dt.yearStart >= minYear && dt.yearStart <= maxYear) ||
+            (dt.yearEnd >= minYear && dt.yearEnd <= maxYear)
+
+        if (searchTerm) {
+            const doesNameContainSearch = dt.name.toLowerCase().includes(searchTerm.toLowerCase());
+            return isYearInRange && doesNameContainSearch
+        }
+
+        return isYearInRange
+    }
 
     const mapTimelineEvent = (rawData) => {
         return {
@@ -85,75 +101,32 @@ const TimelineEvent = () => {
                         url: url,
                         link: url
                     },
-                    // group: "Timeline Sejarah"
                 };
             })
         };
     }
 
-    // const mapTimelinePerson = (rawData) => {
-    //     return {
-    //         events: rawData.map(({name, summary, wikiurl, birthDate, deathDate, person, image}) => {
-    //             const url = image.slice(0,4) === 'http' ? image : `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`;
-    //
-    //             return {
-    //                 start_date: {
-    //                     year: birthDate.split("-")[0],
-    //                     month: birthDate.split("-")[1],
-    //                     day: birthDate.split("-")[2],
-    //                 },
-    //                 end_date: {
-    //                     year: deathDate.split("-")[0],
-    //                     month: deathDate.split("-")[1],
-    //                     day: deathDate.split("-")[2],
-    //                 },
-    //                 text: {
-    //                     headline: `<a style="color: #282c34" href="/detail/${person}">${name}</a>`,
-    //                     text: `<div><small><a style="color: #282c34" href="${wikiurl}">laman wikipedia</a></small> - <small><a style="color: #282c34" href="/canvas/${person}">laman graph</a></small> <br> </div>`
-    //                         + summary,
-    //                 },
-    //                 media : {
-    //                     url: url,
-    //                     link: url
-    //                 },
-    //                 group: "Tokoh Sejarah"
-    //             };
-    //         })
-    //     };
-    // }
-
     return (
         <div>
-            <div className="mt-3 mb-3 p-4" style={{ width:'100%', maxWidth:'500px', margin:'auto auto', padding:'12px'}}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div className="border p-2 rounded-md" style={{ borderColor: '#000',position: 'relative', display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="25" fill="currentColor"
-                             className="bi bi-search" viewBox="0 0 16 16">
-                            <path
-                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                        </svg>
-                        <span style={{ margin: '0 5px' }}></span>
-                        <input
-                            type="text"
-                            value={nameFilter}
-                            onChange={(e) => setNameFilter(e.target.value)}
-                            placeholder={placeHolder}
-                            style={{ width: '100%' }}
-                        />
+            <div className="mt-3 mb-3 p-4" style={{ width:'100%', maxWidth:'80vw', margin:'auto auto', padding:'12px'}}>
+                <div className="flex my-3 gap-4">
+                    <div className='w-1/2 grow'>
+                        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} suggestions={suggestions} handleChange={handleChange} handleClick={handleClick} placeHolder={placeHolder} />
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <button
-                            style={{ marginLeft: '10px', padding: '7px', background: '#1360E7', color: 'white', borderRadius: '5px', cursor: 'pointer' }}
-                            onClick={handleFilter}
-                        >
-                            Cari
-                        </button>
-                        <button
-                            style={{ marginLeft: '10px', padding: '7px', background: '#01CC09', color: 'white', borderRadius: '5px', cursor: 'pointer'}}
-                            onClick={handleClear}
-                        >
-                            Hapus
-                        </button>
+                    <div className='w-1/2 grow'>
+                        <MultiRangeSlider
+                            min={1400}
+                            max={2024}
+                            step={1}
+                            minValue={minYear}
+                            maxValue={maxYear}
+                            onInput={(e) => {
+                                setMinYear(e.minValue);
+                                setMaxYear(e.maxValue);
+                            }}
+                            barInnerColor='blue'
+                            ruler={false}
+                        />
                     </div>
                 </div>
             </div>

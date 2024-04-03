@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="443b8def-9b0f-45d4-8e44-0a7d9141d313" name="Changes" comment="add person into timeline">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Layout.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Timeline.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Timeline.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
