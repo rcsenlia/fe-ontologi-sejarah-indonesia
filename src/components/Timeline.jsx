@@ -9,17 +9,26 @@ import 'react-toastify/dist/ReactToastify.css';
 const TimelineEvent = () => {
     const [nameFilter, setNameFilter] = useState('');
     const [appliedNameFilter, setAppliedNameFilter] = useState('');
+    const [suggestions, setSuggestions] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const placeHolder = "Ketikkan nama peristiwa atau tokoh sejarah...";
 
     useEffect(() => {
         const fetchTimeline = async () => {
             try {
                 const params = {};
                 params['filter[name]'] = appliedNameFilter;
-                const response = await axios.get('http://127.0.0.1:8000/timeline/', { params });
+                const responseEvent = await axios.get('http://127.0.0.1:8000/timeline/event/', { params });
+                const responsePerson = await axios.get('http://127.0.0.1:8000/timeline/person/', { params });
 
-                if (response.data.length !== 0) {
+                if (responseEvent.data.length !== 0 || responsePerson.data.length !== 0) {
                     await loadTimelineScript();
-                    const tlData = await mapTimeline(response.data)
+                    const tlEvent = mapTimelineEvent(responseEvent.data)
+                    const tlPerson = mapTimelinePerson(responsePerson.data)
+
+                    let tlData = {
+                        events: [tlEvent, tlPerson].flatMap(obj => obj.events)
+                    };
                     new Timeline('timeline-embed', tlData)
                 }
                 else {
@@ -44,32 +53,67 @@ const TimelineEvent = () => {
         setAppliedNameFilter('');
     };
 
-    const mapTimeline = async (rawData) => {
+    const mapTimelineEvent = (rawData) => {
         return {
-            events: rawData.map(({name, summary, wikiurl, dateStart, dateEnd, event, image}) => ({
-                start_date: {
-                    year: dateStart.split("-")[0],
-                    month: dateStart.split("-")[1],
-                    day: dateStart.split("-")[2],
-                },
-                end_date: {
-                    year: dateEnd.split("-")[0],
-                    month: dateEnd.split("-")[1],
-                    day: dateEnd.split("-")[2],
-                },
-                text: {
-                    headline: `<a style="color: #282c34" href="/detail/${event}">${name}</a>`,
-                    text: `<div><small><a style="color: #282c34" href="${wikiurl}">laman wikipedia</a></small> - <small><a style="color: #282c34" href="/canvas/${event}">laman graph</a></small> <br> </div>`
-                        + summary,
-                },
-                media : {
-                    url: `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`,
-                    // caption: '<small>(klik untuk lihat lokasi peta saat ini)</small>',
-                    link: `/map/${event}`
-                },
+            events: rawData.map(({name, summary, wikiurl, dateStart, dateEnd, event, image}) => {
+                // handles if the image are retrieved from wikipedia or outside wikipedia
+                const url = image.slice(0,4) === 'http' ? image : `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`;
 
-            }))
-        }
+                return {
+                    start_date: {
+                        year: dateStart.split("-")[0],
+                        month: dateStart.split("-")[1],
+                        day: dateStart.split("-")[2],
+                    },
+                    end_date: {
+                        year: dateEnd.split("-")[0],
+                        month: dateEnd.split("-")[1],
+                        day: dateEnd.split("-")[2],
+                    },
+                    text: {
+                        headline: `<a style="color: #282c34" href="/detail/${event}">${name}</a>`,
+                        text: `<div><small><a style="color: #282c34" href="${wikiurl}">laman wikipedia</a></small> - <small><a style="color: #282c34" href="/canvas/${event}">laman graph</a></small> <br> </div>`
+                            + summary,
+                    },
+                    media : {
+                        url: url,
+                        link: url
+                    },
+                    group: "Peristiwa Sejarah"
+                };
+            })
+        };
+    }
+
+    const mapTimelinePerson = (rawData) => {
+        return {
+            events: rawData.map(({name, summary, wikiurl, birthDate, deathDate, person, image}) => {
+                const url = image.slice(0,4) === 'http' ? image : `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`;
+
+                return {
+                    start_date: {
+                        year: birthDate.split("-")[0],
+                        month: birthDate.split("-")[1],
+                        day: birthDate.split("-")[2],
+                    },
+                    end_date: {
+                        year: deathDate.split("-")[0],
+                        month: deathDate.split("-")[1],
+                        day: deathDate.split("-")[2],
+                    },
+                    text: {
+                        headline: `<a style="color: #282c34" href="/detail/${person}">${name}</a>`,
+                        text: `<div><small><a style="color: #282c34" href="${wikiurl}">laman wikipedia</a></small> - <small><a style="color: #282c34" href="/canvas/${person}">laman graph</a></small> <br> </div>`
+                            + summary,
+                    },
+                    media : {
+                        url: url,
+                        link: url
+                    },
+                    group: "Tokoh Sejarah"
+                };
+            })
+        };
     }
 
     return (
@@ -87,7 +131,7 @@ const TimelineEvent = () => {
                             type="text"
                             value={nameFilter}
                             onChange={(e) => setNameFilter(e.target.value)}
-                            placeholder="Cari Peristiwa atau Aktor"
+                            placeholder={placeHolder}
                             style={{ width: '100%' }}
                         />
                     </div>
