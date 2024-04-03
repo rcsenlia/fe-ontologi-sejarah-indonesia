@@ -17,7 +17,7 @@ const Layout = () => {
   const handleClick = (val) => {
     setSearchTerm("");
     setSuggestions([]);
-    navigate("/detail/" + val);
+    navigate("/detail/" + val.value);
   };
 
   const handleChange = (trigger) => {
