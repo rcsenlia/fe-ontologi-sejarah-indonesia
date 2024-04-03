@@ -25,7 +25,7 @@ const Layout = () => {
     setSearchIRI("")
     setSuggestions(Object.values(datas)
       .map(data => ({ value: data.iri, label: data.name }))
-      .filter(data => data.value.toLowerCase().includes(trigger.target.value.toLowerCase()))
+      .filter(data => data.label.toLowerCase().includes(trigger.target.value.toLowerCase()))
       .sort((a, b) => a.label > b.label ? 1 : -1));
   }
 

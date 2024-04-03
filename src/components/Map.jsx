@@ -29,11 +29,20 @@ const Map = () => {
 
   const handleChange = (trigger) => {
     setSearchTerm(trigger.target.value)
+    const labelsMap = {};
     setSuggestions(Object.values(datas)
       .map(data => ({ value: data.iri, label: data.name }))
-      .filter(data => data.label.toLowerCase().includes(trigger.target.value.toLowerCase()))
+      .filter(data => {
+        const labelLower = data.label.toLowerCase();
+        if (labelLower.includes(trigger.target.value.toLowerCase()) && !labelsMap[labelLower]) {
+          labelsMap[labelLower] = true;
+          return true;
+        }
+        return false;
+      })
       .sort((a, b) => a.label > b.label ? 1 : -1));
   }
+  
 
   useEffect(() => {
     let url = 'http://127.0.0.1:8000/map/';
