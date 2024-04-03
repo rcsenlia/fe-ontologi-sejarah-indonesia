@@ -18,11 +18,12 @@ const Map = () => {
   const [maxYear, setMaxYear] = useState(1998);
   const [suggestions, setSuggestions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchIRI, setSearchIRI] = useState("");
   const [activeMarker, setActiveMarker] = useState(null);
   const placeHolder = "Ketikkan nama peristiwa sejarah...";
 
   const handleClick = (val) => {
-    setSearchTerm(val)
+    setSearchTerm(val.label)
     setSuggestions([])
   };
 
@@ -30,7 +31,7 @@ const Map = () => {
     setSearchTerm(trigger.target.value)
     setSuggestions(Object.values(datas)
       .map(data => ({ value: data.iri, label: data.name }))
-      .filter(data => data.value.toLowerCase().includes(trigger.target.value.toLowerCase()))
+      .filter(data => data.label.toLowerCase().includes(trigger.target.value.toLowerCase()))
       .sort((a, b) => a.label > b.label ? 1 : -1));
   }
 
@@ -85,10 +86,13 @@ const Map = () => {
           <SearchBar
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
+            searchIRI={searchIRI}
+            setSearchIRI={setSearchIRI}
             suggestions={suggestions}
             setSuggestions={setSuggestions}
             handleChange={handleChange}
             handleClick={handleClick}
+            handleEnter={() => { }}
             placeHolder={placeHolder} />
         </div>
         <div className='w-1/2 grow'>
@@ -116,6 +120,11 @@ const Map = () => {
         maxBounds={maxBounds}
         minZoom={3}
         className='rounded'
+        whenReady={(map) => {
+          map.target.on('popupclose', () => {
+            setActiveMarker(null);
+          });
+        }}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
