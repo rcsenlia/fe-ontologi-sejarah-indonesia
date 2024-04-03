@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="443b8def-9b0f-45d4-8e44-0a7d9141d313" name="Changes" comment="Add timeline into landing page">
+    <list default="true" id="443b8def-9b0f-45d4-8e44-0a7d9141d313" name="Changes" comment="Merge Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Map.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Map.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Timeline.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Timeline.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -99,7 +98,9 @@
     <MESSAGE value="add person into timeline" />
     <MESSAGE value="Mer" />
     <MESSAGE value="Add timeline into landing page" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add timeline into landing page" />
+    <MESSAGE value="Changes" />
+    <MESSAGE value="Merge Changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge Changes" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

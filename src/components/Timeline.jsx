@@ -10,17 +10,20 @@ import SearchBar from "./SearchBar";
 import MultiRangeSlider from "multi-range-slider-react";
 
 const TimelineEvent = () => {
-    const [minYear, setMinYear] = useState(1400);
+    const [minYear, setMinYear] = useState(1200);
     const [maxYear, setMaxYear] = useState(2024);
     const [datas, setDatas] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [searchIRI, setSearchIRI] = useState("");
-
     const placeHolder = "Ketikkan nama peristiwa sejarah...";
 
+    const options = {
+        initial_zoom: 2,
+    }
+
     const handleClick = (val) => {
-        setSearchTerm(val)
+        setSearchTerm(val.label)
         setSuggestions([])
     };
 
@@ -39,9 +42,8 @@ const TimelineEvent = () => {
                 const responseEvent = await axios.get('http://127.0.0.1:8000/timeline/event/');
                 if (responseEvent.data.length !== 0 ) {
                     setDatas(responseEvent.data)
-                }
-                else {
-                    toast.warn(`Peristiwa tidak ditemukan`)
+                    const tlEvent = mapTimelineEvent(responseEvent.data);
+                    new Timeline('timeline-embed', tlEvent, options)
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -52,16 +54,21 @@ const TimelineEvent = () => {
     }, []);
 
     useEffect(() => {
-        console.log(datas)
         const filteredDatas = datas.filter(filterData);
-        const tlEvent = mapTimelineEvent(filteredDatas);
-        new Timeline('timeline-embed', tlEvent)
-    })
+
+        if (filteredDatas.length !== 0) {
+            const tlEvent = mapTimelineEvent(filteredDatas);
+            new Timeline('timeline-embed', tlEvent, options)
+        }
+        else if (searchTerm !== '') {
+            toast.warn(`${searchTerm} tidak ditemukan`)
+        }
+
+    }, [minYear, maxYear, searchTerm, datas])
 
     const filterData = (dt) => {
-        // console.log(dt)
-        const isYearInRange = (dt.yearStart >= minYear && dt.yearStart <= maxYear) ||
-            (dt.yearEnd >= minYear && dt.yearEnd <= maxYear)
+        const isYearInRange = (dt.dateStart.split("-")[0] >= minYear && dt.dateStart.split("-")[0] <= maxYear) ||
+            (dt.dateEnd.split("-")[0] >= minYear && dt.dateEnd.split("-")[0] <= maxYear)
 
         if (searchTerm) {
             const doesNameContainSearch = dt.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -125,7 +132,7 @@ const TimelineEvent = () => {
                     </div>
                     <div className='w-1/2 grow'>
                         <MultiRangeSlider
-                            min={1400}
+                            min={1200}
                             max={2024}
                             step={1}
                             minValue={minYear}
