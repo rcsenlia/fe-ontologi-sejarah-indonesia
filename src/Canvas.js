@@ -11,7 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 import { useParams } from "react-router-dom";
-import SearchBar from './components/SearchBar';
+import CanvasSearchBar from './components/CanvasSearchBar';
 import { useNavigate } from "react-router-dom";
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -91,8 +91,9 @@ function Canvas() {
     setEdges(edges.filter(n => !(n.id.split("|?")[0] === source.label && n.id.split("|?")[2] === key)));
 
   }
-  function hapus(node, props) {
-
+  function hapus() {
+    console.log(node)
+    setShow(false)
     setEdges(edges.filter(n => !(n.target === node.id || n.source === node.id)));
     setNodes(nodes.filter(n => n.id !== node.id))
   }
@@ -171,7 +172,16 @@ function Canvas() {
   useEffect(() => {
     setLoad(false)
     console.log("root",root,nodes)
-    
+    const temp = Object.values(datas).map(data => (data.iri)).sort()
+    console.log("temp",temp)
+    if(temp.length===0 | Object.keys(iri).length === 0){
+      return
+    }
+    if(!temp.includes(root)){
+      navigate("/canvas/"+temp[0])
+      setRoot(temp[0])
+      return
+    }
     if(iri[root] !== undefined){
       setNodes([{
         'id':iri[root],
@@ -181,7 +191,7 @@ function Canvas() {
       
     }
     
-    },[root,iri])
+    },[root,iri,datas])
   
   const handleClick = event => {
     setSearchTerm("");
@@ -217,17 +227,13 @@ function Canvas() {
               {Object.keys(dataNodes[node.label] ?? []).map((key) => (key === "image" ? <></> : <ListGroup.Item onClick={status[key] ? () => { add(node, key) } : () => { remove(node, key) }} action>{
                 status[key] ? `${key} (show)` : `${key} (hide)`
               }</ListGroup.Item>))}
-            <ListGroup.Item>a</ListGroup.Item>
-            <ListGroup.Item>a</ListGroup.Item>
-            <ListGroup.Item>a</ListGroup.Item>
-            <ListGroup.Item>a</ListGroup.Item>
-            <ListGroup.Item>a</ListGroup.Item>
-            <ListGroup.Item>a</ListGroup.Item>
-            <ListGroup.Item>a</ListGroup.Item>
             </ListGroup>
           </Row>
             <Row>
+              <ButtonGroup>
             <Button variant="primary" href={`/detail/${iri[node.id]}`} active>detail</Button>
+            <Button variant='danger' onClick={hapus} active>hapus</Button>
+            </ButtonGroup>
             </Row>
         </Offcanvas.Body>
       </Offcanvas>
@@ -241,18 +247,11 @@ function Canvas() {
         
         
         <div className='my-4 w-1/2 mx-auto h-12'>
-          <SearchBar searchTerm={searchTerm} suggestions={suggestions} handleChange={handleChange} handleClick={handleClick} placeHolder={placeHolder} />
+          <CanvasSearchBar searchTerm={searchTerm} suggestions={suggestions} handleChange={handleChange} handleClick={handleClick} placeHolder={placeHolder} />
         </div>        
         
         
-        <ButtonGroup>
-            <Button variant="danger" onClick={() => {
-              setDel(!del)
-            }} active>
-              {del ? "cancel" : "hapus"}
-            </Button>
-
-          </ButtonGroup>
+        
           </Stack>
       </Row>
       <Row>
@@ -268,28 +267,6 @@ function Canvas() {
             nodes={nodes}
             edges={edges}
             draggable={true}
-            contextMenu={({
-              data,
-              onClose
-            }) => <Card style={{ width: '18rem' }}>
-
-
-                <Card.Img style={{ width: "300px", height: "200px" }} variant="top" src={typeof dataNodes[data.label] === "undefined" ? padri : dataNodes[data.label]['image']} />
-
-                <Card.Body >
-                  <Card.Title>{data.id}</Card.Title>
-
-                  <ListGroup variant="flush" style={{ overflowY: "auto", height: "100px" }}>
-                    {Object.keys(dataNodes[data.label] ?? []).map((key) => (key === "image" ? <></> : <ListGroup.Item onClick={status[key] ? () => { add(data, key) } : () => { remove(data, key) }} action>{
-                      status[key] ? `${key} (show)` : `${key} (hide)`
-                    }</ListGroup.Item>))}
-
-                  </ListGroup>
-                  <Button variant="primary" href={`/detail/${iri[data.id]}`} active>detail</Button>
-                  <Button variant="danger" active onClick={onClose}>Tutup</Button>
-                </Card.Body>
-              </Card>}
-            onNodeDoubleClick={del ? hapus : () => { }}
             onNodeClick={handleShow}
 
           />
