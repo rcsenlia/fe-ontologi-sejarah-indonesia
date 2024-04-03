@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Container } from "react-bootstrap";
 import 'leaflet/dist/leaflet.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import SearchBar from './SearchBar';
 import DetailCard from './DetailCard';
 
 const Detail = () => {
@@ -44,7 +42,7 @@ const Detail = () => {
   }, [iri_peristiwa]);
 
   return (
-    <Container fluid>
+    <div className='container mx-auto px-4'>
       <div className='my-4 w-1/2 mx-auto h-12'>
         {/* <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} suggestions={suggestions} handleChange={handleChange} handleClick={handleClick} placeHolder={placeHolder} /> */}
       </div>
@@ -56,7 +54,7 @@ const Detail = () => {
         <h1 style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold" }}> Data {iri_peristiwa} tidak tersedia </h1>}
 
       {response?.detail?.name && (<DetailCard response={response} />)}
-    </Container>
+    </div>
   )
 }
 
