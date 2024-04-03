@@ -1,40 +1,96 @@
-import { Outlet, Link } from "react-router-dom";
-import Container from 'react-bootstrap/Container';
+import React, { useState, useEffect } from 'react';
+import { Outlet, useNavigate } from "react-router-dom";
+import { Container, Button } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import SearchBar from "./components/SearchBar";
+
 const Layout = () => {
-    return(
-        <>
-        <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
-        <Navbar.Brand href="/">Sejarah Indonesia</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/canvas/">Canvas</Nav.Link>
-            <Nav.Link href="/map/">Map</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-       <div className="px-16">
-       <Outlet />
-       </div>
-        </>
-    )
+  const navigate = useNavigate();
+  const [datas, setDatas] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchIRI, setSearchIRI] = useState("");
+  const placeHolder = "Ketikkan nama peristiwa, tokoh, atau tempat sejarah...";
+
+  const handleClick = (val) => {
+    setSearchTerm("");
+    setSuggestions([]);
+    navigate("/detail/" + val);
   };
-  
-  export default Layout;
+
+  const handleChange = (trigger) => {
+    setSearchTerm(trigger.target.value);
+    setSuggestions(Object.values(datas)
+      .map(data => ({ value: data.iri, label: data.name }))
+      .filter(data => data.value.toLowerCase().includes(trigger.target.value.toLowerCase()))
+      .sort((a, b) => a.label > b.label ? 1 : -1));
+  }
+
+  const handleSearchClick = () => {
+    navigate("/detail/" + searchIRI)
+    setSearchTerm("")
+    setSearchIRI("")
+    setSuggestions([])
+  }
+
+  useEffect(() => {
+    let url = 'http://127.0.0.1:8000/map/all';
+    fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => { setDatas(data) })
+      .catch((error) => console.error(error))
+  }, [])
+
+  return (
+    <>
+      <Navbar expand="lg" className="bg-body-tertiary">
+        <Container fluid>
+          <Navbar.Brand href="#home">Sejarah Indonesia</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link href="#home">Home</Nav.Link>
+              <Nav.Link href="/canvas/">Canvas</Nav.Link>
+              <Nav.Link href="/map/">Map</Nav.Link>
+              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.2">
+                  Another action
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="#action/3.4">
+                  Separated link
+                </NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+            <div className="flex w-1/2 gap-4">
+              <div className="w-9/10 grow">
+                <SearchBar
+                  searchTerm={searchTerm}
+                  setSearchTerm={setSearchTerm}
+                  searchIRI={searchIRI}
+                  setSearchIRI={setSearchIRI}
+                  suggestions={suggestions}
+                  handleChange={handleChange}
+                  handleClick={handleClick}
+                  placeHolder={placeHolder} />
+              </div>
+              <Button variant="outline-success" className="w-1/10" onClick={handleSearchClick}>Search</Button>
+            </div>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <Outlet />
+    </>
+  )
+};
+
+export default Layout;
