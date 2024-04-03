@@ -22,7 +22,7 @@ export default function App() {
           <Route path="detail/:iri_peristiwa" element={<Detail />} />
           <Route path="map" element={<Map />} />
           <Route path="map/:name" element={<MapTimelineClick />} />
-          <Route path="timeline" element={<TimelineEvent />} />
+          <Route path="" element={<TimelineEvent />} />
           <Route path='search/:search' element={<Search />} />
           {/* <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage />} /> */}
