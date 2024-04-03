@@ -27,11 +27,11 @@ const Map = () => {
   };
 
   const handleChange = (trigger) => {
-    setSearchTerm(trigger.target.value);
+    setSearchTerm(trigger.target.value)
     setSuggestions(Object.values(datas)
-      .map(data => data.name)
-      .filter(name => name.toLowerCase().includes(trigger.target.value.toLowerCase()))
-      .sort());
+      .map(data => ({ value: data.iri, label: data.name }))
+      .filter(data => data.value.toLowerCase().includes(trigger.target.value.toLowerCase()))
+      .sort((a, b) => a.label > b.label ? 1 : -1));
   }
 
   useEffect(() => {
@@ -82,7 +82,7 @@ const Map = () => {
 
       <div className="flex my-3 gap-4">
         <div className='w-1/2 grow'>
-        <SearchBar searchTerm={searchTerm} suggestions={suggestions} handleChange={handleChange} handleClick={handleClick} placeHolder={placeHolder} />
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} suggestions={suggestions} handleChange={handleChange} handleClick={handleClick} placeHolder={placeHolder} />
         </div>
         <div className='w-1/2 grow'>
           <MultiRangeSlider

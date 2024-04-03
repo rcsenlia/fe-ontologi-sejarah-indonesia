@@ -30,19 +30,6 @@ const Detail = () => {
   }
 
   useEffect(() => {
-    let url = 'http://127.0.0.1:8000/map/all';
-    fetch(url, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" }
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => { setDatas(data) })
-      .catch((error) => console.error(error))
-  }, [])
-
-  useEffect(() => {
     let url = 'http://127.0.0.1:8000/map/detail/' + iri_peristiwa;
     // console.log(url)
     fetch(url, {
@@ -59,14 +46,14 @@ const Detail = () => {
   return (
     <Container fluid>
       <div className='my-4 w-1/2 mx-auto h-12'>
-        <SearchBar searchTerm={searchTerm} suggestions={suggestions} handleChange={handleChange} handleClick={handleClick} placeHolder={placeHolder} />
+        {/* <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} suggestions={suggestions} handleChange={handleChange} handleClick={handleClick} placeHolder={placeHolder} /> */}
       </div>
 
       {!response?.detail &&
         <h1 style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold" }}> Loading detail... </h1>}
 
       {response?.detail && !response?.detail?.name &&
-        <h1 style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold" }}> Tidak ada data </h1>}
+        <h1 style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold" }}> Data {iri_peristiwa} tidak tersedia </h1>}
 
       {response?.detail?.name && (<DetailCard response={response} />)}
     </Container>
