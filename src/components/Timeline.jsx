@@ -5,13 +5,14 @@ import { Timeline } from '@knight-lab/timelinejs';
 import '@knight-lab/timelinejs/dist/css/timeline.css';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 const TimelineEvent = () => {
     const [nameFilter, setNameFilter] = useState('');
     const [appliedNameFilter, setAppliedNameFilter] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const placeHolder = "Ketikkan nama peristiwa atau tokoh sejarah...";
+    const placeHolder = "Ketikkan nama peristiwa sejarah...";
 
     useEffect(() => {
         const fetchTimeline = async () => {
@@ -19,17 +20,18 @@ const TimelineEvent = () => {
                 const params = {};
                 params['filter[name]'] = appliedNameFilter;
                 const responseEvent = await axios.get('http://127.0.0.1:8000/timeline/event/', { params });
-                const responsePerson = await axios.get('http://127.0.0.1:8000/timeline/person/', { params });
+                // const responsePerson = await axios.get('http://127.0.0.1:8000/timeline/person/', { params });
 
-                if (responseEvent.data.length !== 0 || responsePerson.data.length !== 0) {
+                //responsePerson.data.length !== 0
+                if (responseEvent.data.length !== 0 ) {
                     await loadTimelineScript();
                     const tlEvent = mapTimelineEvent(responseEvent.data)
-                    const tlPerson = mapTimelinePerson(responsePerson.data)
+                    // const tlPerson = mapTimelinePerson(responsePerson.data)
 
-                    let tlData = {
-                        events: [tlEvent, tlPerson].flatMap(obj => obj.events)
-                    };
-                    new Timeline('timeline-embed', tlData)
+                    // let tlData = {
+                    //     events: [tlEvent, tlPerson].flatMap(obj => obj.events)
+                    // };
+                    new Timeline('timeline-embed', tlEvent)
                 }
                 else {
                     toast.warn(`${appliedNameFilter} tidak ditemukan`)
@@ -58,6 +60,7 @@ const TimelineEvent = () => {
             events: rawData.map(({name, summary, wikiurl, dateStart, dateEnd, event, image}) => {
                 // handles if the image are retrieved from wikipedia or outside wikipedia
                 const url = image.slice(0,4) === 'http' ? image : `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`;
+                const eventEncoded = event.replace('/', '%2F')
 
                 return {
                     start_date: {
@@ -71,50 +74,53 @@ const TimelineEvent = () => {
                         day: dateEnd.split("-")[2],
                     },
                     text: {
-                        headline: `<a style="color: #282c34" href="/detail/${event}">${name}</a>`,
-                        text: `<div><small><a style="color: #282c34" href="${wikiurl}">laman wikipedia</a></small> - <small><a style="color: #282c34" href="/canvas/${event}">laman graph</a></small> <br> </div>`
-                            + summary,
+                        headline: `<a style="color: #282c34" href="/detail/${eventEncoded}">${name}</a>`,
+                        text: `<div style="padding-bottom: 10px"> 
+                                <a href="${wikiurl}" style="background: #0aa85d; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Laman Wikipedia</a> 
+                                <a href="/detail/${eventEncoded}" style="background: #07a393; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Detail Peristiwa</a>
+                                <a href="/canvas/${eventEncoded}" style="background: #1360E7; color: #f0f0f0" class="btn" style="color: #f0f0f0" role="button">Canvas Graph Peristiwa</a> 
+                                </div>` + summary
                     },
                     media : {
                         url: url,
                         link: url
                     },
-                    group: "Peristiwa Sejarah"
+                    // group: "Timeline Sejarah"
                 };
             })
         };
     }
 
-    const mapTimelinePerson = (rawData) => {
-        return {
-            events: rawData.map(({name, summary, wikiurl, birthDate, deathDate, person, image}) => {
-                const url = image.slice(0,4) === 'http' ? image : `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`;
-
-                return {
-                    start_date: {
-                        year: birthDate.split("-")[0],
-                        month: birthDate.split("-")[1],
-                        day: birthDate.split("-")[2],
-                    },
-                    end_date: {
-                        year: deathDate.split("-")[0],
-                        month: deathDate.split("-")[1],
-                        day: deathDate.split("-")[2],
-                    },
-                    text: {
-                        headline: `<a style="color: #282c34" href="/detail/${person}">${name}</a>`,
-                        text: `<div><small><a style="color: #282c34" href="${wikiurl}">laman wikipedia</a></small> - <small><a style="color: #282c34" href="/canvas/${person}">laman graph</a></small> <br> </div>`
-                            + summary,
-                    },
-                    media : {
-                        url: url,
-                        link: url
-                    },
-                    group: "Tokoh Sejarah"
-                };
-            })
-        };
-    }
+    // const mapTimelinePerson = (rawData) => {
+    //     return {
+    //         events: rawData.map(({name, summary, wikiurl, birthDate, deathDate, person, image}) => {
+    //             const url = image.slice(0,4) === 'http' ? image : `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`;
+    //
+    //             return {
+    //                 start_date: {
+    //                     year: birthDate.split("-")[0],
+    //                     month: birthDate.split("-")[1],
+    //                     day: birthDate.split("-")[2],
+    //                 },
+    //                 end_date: {
+    //                     year: deathDate.split("-")[0],
+    //                     month: deathDate.split("-")[1],
+    //                     day: deathDate.split("-")[2],
+    //                 },
+    //                 text: {
+    //                     headline: `<a style="color: #282c34" href="/detail/${person}">${name}</a>`,
+    //                     text: `<div><small><a style="color: #282c34" href="${wikiurl}">laman wikipedia</a></small> - <small><a style="color: #282c34" href="/canvas/${person}">laman graph</a></small> <br> </div>`
+    //                         + summary,
+    //                 },
+    //                 media : {
+    //                     url: url,
+    //                     link: url
+    //                 },
+    //                 group: "Tokoh Sejarah"
+    //             };
+    //         })
+    //     };
+    // }
 
     return (
         <div>
@@ -151,7 +157,7 @@ const TimelineEvent = () => {
                     </div>
                 </div>
             </div>
-            <div id="timeline-embed" style={{ width: '100%', height: '600px' }}></div>
+            <div id="timeline-embed" style={{ width: '100%', height: '70vh' }}></div>
         </div>
     );
 };
