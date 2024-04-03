@@ -22,6 +22,7 @@ const Layout = () => {
 
   const handleChange = (trigger) => {
     setSearchTerm(trigger.target.value);
+    setSearchIRI("")
     setSuggestions(Object.values(datas)
       .map(data => ({ value: data.iri, label: data.name }))
       .filter(data => data.value.toLowerCase().includes(trigger.target.value.toLowerCase()))
@@ -29,10 +30,27 @@ const Layout = () => {
   }
 
   const handleSearchClick = () => {
+    if (!searchIRI) {
+      navigate("/search/" + searchTerm)
+      setSearchIRI("")
+      setSuggestions([])
+      return
+    }
+
     navigate("/detail/" + searchIRI)
     setSearchTerm("")
     setSearchIRI("")
     setSuggestions([])
+  }
+
+  const handleEnter = (e) => {
+    if (e.keyCode === 13) {
+      if (suggestions.length === 0 && searchIRI) {
+        navigate("/detail/" + searchIRI)
+      } else if (suggestions.length === 0 && !searchIRI) {
+        navigate("/search/" + searchTerm)
+      }
+    }
   }
 
   useEffect(() => {
@@ -79,8 +97,10 @@ const Layout = () => {
                   searchIRI={searchIRI}
                   setSearchIRI={setSearchIRI}
                   suggestions={suggestions}
+                  setSuggestions={setSuggestions}
                   handleChange={handleChange}
                   handleClick={handleClick}
+                  handleEnter={handleEnter}
                   placeHolder={placeHolder} />
               </div>
               <Button variant="outline-success" className="w-1/10" onClick={handleSearchClick}>Search</Button>

@@ -46,17 +46,32 @@ const SearchBar = (props) => {
       if (activeSuggestion) {
         setSearchTerm(activeSuggestion.label)
         setSearchIRI(activeSuggestion.value)
+        setSuggestions([])
       }
     }
-  };
 
+    handleEnter(e)
+  };
 
   const handleAdditionalChange = (trigger) => {
     handleChange(trigger)
     setSelectedIndex(0)
   }
 
-  const { searchTerm, setSearchTerm, searchIRI, setSearchIRI, suggestions, handleChange, handleClick, placeHolder } = props;
+  const {
+    searchTerm,
+    setSearchTerm,
+    searchIRI,
+    setSearchIRI,
+    suggestions,
+    setSuggestions,
+    handleChange,
+    handleClick,
+    handleEnter,
+    placeHolder 
+  }
+    = props;
+
   return <div style={{ height: '100%' }}>
     <Form style={{ height: "100%" }}>
       <Form.Control
