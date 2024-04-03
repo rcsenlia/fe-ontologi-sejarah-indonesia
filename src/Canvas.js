@@ -11,7 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 import { useParams } from "react-router-dom";
-import CanvasSearchBar from './components/CanvasSearchBar';
+import SearchBar from './components/SearchBar';
 import { useNavigate } from "react-router-dom";
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -38,6 +38,7 @@ function Canvas() {
   const placeHolder = "Ketikkan nama peristiwa, tokoh, atau tempat sejarah...";
   const [show, setShow] = useState(false);
   const [node,setNode] = useState('')
+  const [searchIRI,setSearchIRI] = useState("")
 
   
   
@@ -187,6 +188,7 @@ function Canvas() {
         'id':iri[root],
         'label':iri[root]
       }])
+      setEdges([{}])
       getRootData(iri[root])
       
     }
@@ -205,6 +207,14 @@ function Canvas() {
       .map(data => ({ value: data.iri, label: data.name }))
       .filter(data => data.value.toLowerCase().includes(trigger.target.value.toLowerCase()))
       .sort((a, b) => a.label > b.label ? 1 : -1));
+  }
+  const handleEnter = (e) => {
+    console.log(e.keyCode)
+    if (e.keyCode === 13) {
+      console.log("disini",searchIRI)
+        navigate("/canvas/" + searchIRI)
+        setRoot(searchIRI)
+    }
   }
   const handleClose = () => setShow(false);
   const handleShow = (node, props) => {
@@ -247,7 +257,18 @@ function Canvas() {
         
         
         <div className='my-4 w-1/2 mx-auto h-12'>
-          <CanvasSearchBar searchTerm={searchTerm} suggestions={suggestions} handleChange={handleChange} handleClick={handleClick} placeHolder={placeHolder} />
+          {/* <CanvasSearchBar searchTerm={searchTerm} suggestions={suggestions} handleChange={handleChange} handleClick={handleClick} placeHolder={placeHolder} /> */}
+          <SearchBar
+                  searchTerm={searchTerm}
+                  setSearchTerm={setSearchTerm}
+                  searchIRI={searchIRI}
+                  setSearchIRI={setSearchIRI}
+                  suggestions={suggestions}
+                  setSuggestions={setSuggestions}
+                  handleChange={handleChange}
+                  handleClick={handleClick}
+                  handleEnter={handleEnter}
+                  placeHolder={placeHolder} />
         </div>        
         
         
