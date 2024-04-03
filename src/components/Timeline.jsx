@@ -15,6 +15,8 @@ const TimelineEvent = () => {
     const [datas, setDatas] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [searchIRI, setSearchIRI] = useState("");
+
     const placeHolder = "Ketikkan nama peristiwa sejarah...";
 
     const handleClick = (val) => {
@@ -24,6 +26,7 @@ const TimelineEvent = () => {
 
     const handleChange = (trigger) => {
         setSearchTerm(trigger.target.value)
+        setSearchIRI("")
         setSuggestions(Object.values(datas)
             .map(data => ({ value: data.event, label: data.name }))
             .filter(data => data.value.toLowerCase().includes(trigger.target.value.toLowerCase()))
@@ -36,10 +39,6 @@ const TimelineEvent = () => {
                 const responseEvent = await axios.get('http://127.0.0.1:8000/timeline/event/');
                 if (responseEvent.data.length !== 0 ) {
                     setDatas(responseEvent.data)
-                    await loadTimelineScript();
-                    const filteredDatas = datas.filter(filterData);
-                    const tlEvent = mapTimelineEvent(filteredDatas);
-                    new Timeline('timeline-embed', tlEvent)
                 }
                 else {
                     toast.warn(`Peristiwa tidak ditemukan`)
@@ -53,13 +52,14 @@ const TimelineEvent = () => {
     }, []);
 
     useEffect(() => {
+        console.log(datas)
         const filteredDatas = datas.filter(filterData);
         const tlEvent = mapTimelineEvent(filteredDatas);
         new Timeline('timeline-embed', tlEvent)
     })
 
     const filterData = (dt) => {
-        console.log(dt)
+        // console.log(dt)
         const isYearInRange = (dt.yearStart >= minYear && dt.yearStart <= maxYear) ||
             (dt.yearEnd >= minYear && dt.yearEnd <= maxYear)
 
@@ -111,7 +111,17 @@ const TimelineEvent = () => {
             <div className="mt-3 mb-3 p-4" style={{ width:'100%', maxWidth:'80vw', margin:'auto auto', padding:'12px'}}>
                 <div className="flex my-3 gap-4">
                     <div className='w-1/2 grow'>
-                        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} suggestions={suggestions} handleChange={handleChange} handleClick={handleClick} placeHolder={placeHolder} />
+                        <SearchBar
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
+                            searchIRI={searchIRI}
+                            setSearchIRI={setSearchIRI}
+                            suggestions={suggestions}
+                            setSuggestions={setSuggestions}
+                            handleChange={handleChange}
+                            handleClick={handleClick}
+                            handleEnter={() => { }}
+                            placeHolder={placeHolder} />
                     </div>
                     <div className='w-1/2 grow'>
                         <MultiRangeSlider

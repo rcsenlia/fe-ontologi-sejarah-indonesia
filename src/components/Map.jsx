@@ -20,6 +20,7 @@ const Map = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeMarker, setActiveMarker] = useState(null);
   const placeHolder = "Ketikkan nama peristiwa sejarah...";
+  const [searchIRI, setSearchIRI] = useState("");
 
   const handleClick = (val) => {
     setSearchTerm(val)
@@ -83,13 +84,16 @@ const Map = () => {
       <div className="flex my-3 gap-4">
         <div className='w-1/2 grow'>
           <SearchBar
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            suggestions={suggestions}
-            setSuggestions={setSuggestions}
-            handleChange={handleChange}
-            handleClick={handleClick}
-            placeHolder={placeHolder} />
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              searchIRI={searchIRI}
+              setSearchIRI={setSearchIRI}
+              suggestions={suggestions}
+              setSuggestions={setSuggestions}
+              handleChange={handleChange}
+              handleClick={handleClick}
+              handleEnter={() => { }}
+              placeHolder={placeHolder} />
         </div>
         <div className='w-1/2 grow'>
           <MultiRangeSlider
