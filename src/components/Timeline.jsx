@@ -61,7 +61,9 @@ const TimelineEvent = () => {
             new Timeline('timeline-embed', tlEvent, options)
         }
         else if (searchTerm !== '') {
-            toast.warn(`${searchTerm} tidak ditemukan`)
+            toast.warn(`${searchTerm} tidak ditemukan`, {
+                autoClose: 2000
+            })
         }
 
     }, [minYear, maxYear, searchTerm, datas])

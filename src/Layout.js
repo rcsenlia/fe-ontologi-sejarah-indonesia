@@ -77,17 +77,6 @@ const Layout = () => {
               <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="/canvas/">Canvas</Nav.Link>
               <Nav.Link href="/map/">Map</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown>
             </Nav>
             <div className="flex w-1/2 gap-4">
               <div className="w-9/10 grow">
