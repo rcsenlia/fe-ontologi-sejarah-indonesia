@@ -1,49 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import loadTimelineScript from '../utils/TimelineLoader';
 import { Timeline } from '@knight-lab/timelinejs';
-import '@knight-lab/timelinejs/dist/css/timeline.css';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import SearchBar from "./SearchBar";
-import MultiRangeSlider from "multi-range-slider-react";
+import '../tl.css'
+import { useParams } from "react-router-dom";
+import LandingPage from "./LandingPage";
+import { Card } from "react-bootstrap";
 
 const TimelineEvent = () => {
-    const [minYear, setMinYear] = useState(1200);
-    const [maxYear, setMaxYear] = useState(2024);
-    const [datas, setDatas] = useState([]);
-    const [suggestions, setSuggestions] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [searchIRI, setSearchIRI] = useState("");
-    const placeHolder = "Ketikkan nama peristiwa sejarah...";
+    const { searchSent, roleSent } = useParams();
+    const [ roleLabel, setRoleLabel] = useState("");
 
     const options = {
         initial_zoom: 2,
+        scale_factor: 2
     }
 
-    const handleClick = (val) => {
-        setSearchTerm(val.label)
-        setSuggestions([])
-    };
-
-    const handleChange = (trigger) => {
-        setSearchTerm(trigger.target.value)
-        setSearchIRI("")
-        setSuggestions(Object.values(datas)
-            .map(data => ({ value: data.event, label: data.name }))
-            .filter(data => data.value.toLowerCase().includes(trigger.target.value.toLowerCase()))
-            .sort((a, b) => a.label > b.label ? 1 : -1));
-    }
+    const role = [
+        { value: 'Event', label: 'Peristiwa' },
+        { value: 'Actor', label: 'Tokoh' },
+        { value: 'Place', label: 'Tempat' }
+    ];
 
     useEffect(() => {
         const fetchTimeline = async () => {
             try {
-                const responseEvent = await axios.get('http://127.0.0.1:8000/timeline/event/');
-                if (responseEvent.data.length !== 0 ) {
-                    setDatas(responseEvent.data)
-                    const tlEvent = mapTimelineEvent(responseEvent.data);
-                    new Timeline('timeline-embed', tlEvent, options)
+                const params = {};
+                params['filter[search]'] = searchSent;
+                params['filter[role]'] = roleSent;
+                const response = await axios.get('http://127.0.0.1:8000/timeline/', { params });
+
+                if (response.data.length !== 0 ) {
+                    const timeline = roleSent === 'Event' ? mapTimelineEvents(response.data) : mapTimeline(response.data);
+                    new Timeline('timeline-embed', timeline, options)
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -51,59 +41,72 @@ const TimelineEvent = () => {
         };
 
         fetchTimeline();
-    }, []);
+    }, [searchSent, roleSent]);
 
     useEffect(() => {
-        const filteredDatas = datas.filter(filterData);
-
-        if (filteredDatas.length !== 0) {
-            const tlEvent = mapTimelineEvent(filteredDatas);
-            new Timeline('timeline-embed', tlEvent, options)
+        for (const idx in role) {
+            if (roleSent === role[idx].value) {
+                setRoleLabel(role[idx].label)
+                break
+            }
         }
-        else if (searchTerm !== '') {
-            toast.warn(`${searchTerm} tidak ditemukan`, {
-                autoClose: 2000
-            })
-        }
+    }, [roleSent])
 
-    }, [minYear, maxYear, searchTerm, datas])
 
-    const filterData = (dt) => {
-        const isYearInRange = (dt.dateStart.split("-")[0] >= minYear && dt.dateStart.split("-")[0] <= maxYear) ||
-            (dt.dateEnd.split("-")[0] >= minYear && dt.dateEnd.split("-")[0] <= maxYear)
-
-        if (searchTerm) {
-            const doesNameContainSearch = dt.name.toLowerCase().includes(searchTerm.toLowerCase());
-            return isYearInRange && doesNameContainSearch
-        }
-
-        return isYearInRange
-    }
-
-    const mapTimelineEvent = (rawData) => {
+    const mapTimeline = (rawData) => {
         return {
-            events: rawData.map(({name, summary, wikiurl, dateStart, dateEnd, event, image}) => {
+            events: rawData.map(({name, summary, wikiurl, firstDate, thing, image}) => {
                 // handles if the image are retrieved from wikipedia or outside wikipedia
                 const url = image.slice(0,4) === 'http' ? image : `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`;
-                const eventEncoded = event.replace('/', '%2F')
+                const uriEncoded = thing.replace('/', '%2F')
 
                 return {
                     start_date: {
-                        year: dateStart.split("-")[0],
-                        month: dateStart.split("-")[1],
-                        day: dateStart.split("-")[2],
-                    },
-                    end_date: {
-                        year: dateEnd.split("-")[0],
-                        month: dateEnd.split("-")[1],
-                        day: dateEnd.split("-")[2],
+                        year: firstDate.split("-")[0],
+                        month: firstDate.split("-")[1],
+                        day: firstDate.split("-")[2],
                     },
                     text: {
-                        headline: `<a style="color: #282c34" href="/detail/${eventEncoded}">${name}</a>`,
-                        text: `<div style="padding-bottom: 10px"> 
-                                <a href="${wikiurl}" style="background: #0aa85d; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Laman Wikipedia</a> 
-                                <a href="/detail/${eventEncoded}" style="background: #07a393; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Detail Peristiwa</a>
-                                <a href="/canvas/${eventEncoded}" style="background: #1360E7; color: #f0f0f0" class="btn" style="color: #f0f0f0" role="button">Canvas Graph Peristiwa</a> 
+                        headline: `<a style="color: #282c34" href="/detail/${uriEncoded}">${name}</a>`,
+                        text: `<div style="padding-bottom: 10px">
+                                <a href="${wikiurl}" style="background: #0b9955; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Laman Wikipedia</a>
+                                <a href="/detail/${uriEncoded}" style="background: #9810ad; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Detail</a>
+                                <a href="/canvas/${uriEncoded}" style="background: #1360E7; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Canvas Graph</a>
+                                <a href="/events/${uriEncoded}/${name}" style="background: #99630b; color: #f0f0f0" class="btn" style="color: #f0f0f0" role="button">Peristiwa yang Terlibat</a>
+                                </div>` + summary
+                    },
+                    media : {
+                        url: url,
+                        link: url
+                    },
+                };
+            })
+        };
+    }
+
+    const mapTimelineEvents = (rawData) => {
+        return {
+            events: rawData.map(({name, summary, wikiurl, firstDate, secondDate, thing, image}) => {
+                const url = image.slice(0,4) === 'http' ? image : `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`;
+                const uriEncoded = thing.replace('/', '%2F')
+
+                return {
+                    start_date: {
+                        year: firstDate.split("-")[0],
+                        month: firstDate.split("-")[1],
+                        day: firstDate.split("-")[2],
+                    },
+                    end_date: {
+                        year: secondDate.split("-")[0],
+                        month: secondDate.split("-")[1],
+                        day: secondDate.split("-")[2],
+                    },
+                    text: {
+                        headline: `<a style="color: #282c34" href="/detail/${uriEncoded}">${name}</a>`,
+                        text: `<div style="padding-bottom: 10px">
+                                <a href="${wikiurl}" style="background: #0b9955; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Laman Wikipedia</a>
+                                <a href="/detail/${uriEncoded}" style="background: #9810ad; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Detail</a>
+                                <a href="/canvas/${uriEncoded}" style="background: #1360E7; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Canvas Graph</a>
                                 </div>` + summary
                     },
                     media : {
@@ -117,39 +120,9 @@ const TimelineEvent = () => {
 
     return (
         <div>
-            <div className="mt-3 mb-3 p-4" style={{ width:'100%', maxWidth:'80vw', margin:'auto auto', padding:'12px'}}>
-                <div className="flex my-3 gap-4">
-                    <div className='w-1/2 grow'>
-                        <SearchBar
-                            searchTerm={searchTerm}
-                            setSearchTerm={setSearchTerm}
-                            searchIRI={searchIRI}
-                            setSearchIRI={setSearchIRI}
-                            suggestions={suggestions}
-                            setSuggestions={setSuggestions}
-                            handleChange={handleChange}
-                            handleClick={handleClick}
-                            handleEnter={() => { }}
-                            placeHolder={placeHolder} />
-                    </div>
-                    <div className='w-1/2 grow'>
-                        <MultiRangeSlider
-                            min={1200}
-                            max={2024}
-                            step={1}
-                            minValue={minYear}
-                            maxValue={maxYear}
-                            onInput={(e) => {
-                                setMinYear(e.minValue);
-                                setMaxYear(e.maxValue);
-                            }}
-                            barInnerColor='blue'
-                            ruler={false}
-                        />
-                    </div>
-                </div>
-            </div>
-            <div id="timeline-embed" style={{ width: '100%', height: '70vh' }}></div>
+            <LandingPage></LandingPage>
+            <Card.Header as="h5" className='p-5' style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold"}} >Hasil pencarian '{searchSent}' dengan tipe {roleLabel}</Card.Header>
+            <div id="timeline-embed" style={{ width: '100%', height: '65vh'}} ></div>
         </div>
     );
 };
