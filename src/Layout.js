@@ -74,37 +74,25 @@ const Layout = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/canvas/">Canvas</Nav.Link>
-              <Nav.Link href="/map/">Map</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown>
+              <Nav.Link href="/">Timeline</Nav.Link>
+              <Nav.Link href="/map/">Peta</Nav.Link>
             </Nav>
-            <div className="flex w-1/2 gap-4">
-              <div className="w-9/10 grow">
-                <SearchBar
-                  searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                  searchIRI={searchIRI}
-                  setSearchIRI={setSearchIRI}
-                  suggestions={suggestions}
-                  setSuggestions={setSuggestions}
-                  handleChange={handleChange}
-                  handleClick={handleClick}
-                  handleEnter={handleEnter}
-                  placeHolder={placeHolder} />
-              </div>
-              <Button variant="outline-success" className="w-1/10" onClick={handleSearchClick}>Search</Button>
-            </div>
+            {/*<div className="flex w-1/2 gap-4">*/}
+            {/*  <div className="w-9/10 grow">*/}
+            {/*    <SearchBar*/}
+            {/*      searchTerm={searchTerm}*/}
+            {/*      setSearchTerm={setSearchTerm}*/}
+            {/*      searchIRI={searchIRI}*/}
+            {/*      setSearchIRI={setSearchIRI}*/}
+            {/*      suggestions={suggestions}*/}
+            {/*      setSuggestions={setSuggestions}*/}
+            {/*      handleChange={handleChange}*/}
+            {/*      handleClick={handleClick}*/}
+            {/*      handleEnter={handleEnter}*/}
+            {/*      placeHolder={placeHolder} />*/}
+            {/*  </div>*/}
+            {/*  <Button variant="outline-success" className="w-1/10" onClick={handleSearchClick}>Search</Button>*/}
+            {/*</div>*/}
           </Navbar.Collapse>
         </Container>
       </Navbar>
