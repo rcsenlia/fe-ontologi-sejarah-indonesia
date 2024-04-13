@@ -1,11 +1,10 @@
 // https://www.youtube.com/watch?v=D4jq5Bd9bTA
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import MultiRangeSlider from "multi-range-slider-react";
 import { Container } from "react-bootstrap";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { divIcon } from 'leaflet';
-import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'bootstrap/dist/css/bootstrap.css'
 import './styles.css';
@@ -13,13 +12,13 @@ import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
 
 const Map = () => {
-  const [datas, setDatas] = useState([]);
+  const [datas, setDatas] = useState({});
   const [minYear, setMinYear] = useState(1600);
-  const [maxYear, setMaxYear] = useState(1998);
+  const [maxYear, setMaxYear] = useState(2024);
   const [suggestions, setSuggestions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchIRI, setSearchIRI] = useState("");
-  const [activeMarker, setActiveMarker] = useState(null);
+  const [activeMarker, setActiveMarker] = useState();
   const placeHolder = "Ketikkan nama peristiwa sejarah...";
 
   const handleClick = (val) => {
@@ -29,20 +28,17 @@ const Map = () => {
 
   const handleChange = (trigger) => {
     setSearchTerm(trigger.target.value)
-    const labelsMap = {};
     setSuggestions(Object.values(datas)
-      .map(data => ({ value: data.iri, label: data.name }))
-      .filter(data => {
-        const labelLower = data.label.toLowerCase();
-        if (labelLower.includes(trigger.target.value.toLowerCase()) && !labelsMap[labelLower]) {
-          labelsMap[labelLower] = true;
-          return true;
-        }
-        return false;
-      })
-      .sort((a, b) => a.label > b.label ? 1 : -1));
+      .flatMap((latitudeEvents) =>
+        Object.values(latitudeEvents)
+          .flatMap((events) =>
+            events
+              .filter((event) => event.name.toLowerCase().includes(trigger.target.value.toLowerCase()))
+              .map((event) => ({ value: event.iri, label: event.name }))
+          )
+      ).sort((a, b) => a.label > b.label ? 1 : -1))
   }
-  
+
 
   useEffect(() => {
     let url = 'http://127.0.0.1:8000/map/';
@@ -62,19 +58,29 @@ const Map = () => {
     [90, 180],
   ];
 
-  const filterData = (data) => {
-    const isYearInRange = (data.yearStart >= minYear && data.yearStart <= maxYear) ||
-      (data.yearEnd >= minYear && data.yearEnd <= maxYear)
+  const filteredData = useMemo(() => {
+    return Object.entries(datas).reduce((result, [latitude, latitudeEvents]) => {
+      result[latitude] = Object.entries(latitudeEvents).reduce((eachResult, [longitude, events]) => {
+        const filteredEvents = events.filter((event) => {
+          const isYearInRange =
+            (event.yearStart >= minYear && event.yearStart <= maxYear) ||
+            (event.yearEnd >= minYear && event.yearEnd <= maxYear);
 
-    if (searchTerm) {
-      const doesNameContainSearch = data.name.toLowerCase().includes(searchTerm.toLowerCase());
-      return isYearInRange && doesNameContainSearch
-    }
+          const doesNameContainSearch = !searchTerm || event.name.toLowerCase().includes(searchTerm.toLowerCase());
 
-    return isYearInRange
-  }
+          return isYearInRange && doesNameContainSearch;
+        });
 
-  const filteredDatas = datas.filter(filterData);
+        if (filteredEvents.length > 0) {
+          eachResult[longitude] = filteredEvents;
+        }
+
+        return eachResult;
+      }, {});
+
+      return result;
+    }, {});
+  }, [datas, minYear, maxYear, searchTerm]);
 
   const thickDotDivIcon = divIcon({
     className: 'thick-dot-icon',
@@ -107,7 +113,7 @@ const Map = () => {
         <div className='w-1/2 grow'>
           <MultiRangeSlider
             min={1600}
-            max={1998}
+            max={2024}
             step={1}
             minValue={minYear}
             maxValue={maxYear}
@@ -139,27 +145,36 @@ const Map = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        {filteredDatas.map((data, index) => (
-          <Marker
-            key={`${data.iri}_${data.latitude}_${data.longitude}`}
-            position={[data.latitude, data.longitude]}
-            icon={activeMarker === data.iri ? activeThickDotDivIcon : thickDotDivIcon}
-            eventHandlers={{
-              click: () => {
-                setActiveMarker(activeMarker === data.iri ? null : data.iri);
-              }
-            }}
-          >
-            <Popup>
-              <h3 style={{ fontSize: '1rem', fontWeight: 'bold' }}>{data.name}</h3>
-              <Link to={`/detail/${data.iri}`}
-                className='btn btn-info btn-sm mt-2'
-                style={{ display: 'block' }}>
-                Lihat detail
-              </Link>
-            </Popup>
-          </Marker>
+        {Object.entries(filteredData).map(([latitude, latitudeEvents]) => (
+          Object.entries(latitudeEvents).map(([longitude, events]) => (
+            <Marker
+              key={`${latitude}+${longitude}`}
+              position={[latitude, longitude]}
+              icon={activeMarker === `${latitude}+${longitude}` ? activeThickDotDivIcon : thickDotDivIcon}
+              eventHandlers={{
+                click: () => {
+                  setActiveMarker(activeMarker === `${latitude}+${longitude}` ? null : `${latitude}+${longitude}`)
+                }
+              }}
+            >
+              <Popup>
+                <div className='max-h-40 overflow-y-auto'>
+                  {events.map((event, index) => (<div className='w-48' key={`${latitude}+${longitude}+${index}`}>
+                    <h3 style={{ fontSize: '0.75rem', fontWeight: 'bold' }}>{event.name}</h3>
+                    <Link to={`/detail/${event.iri}`}
+                      className='btn btn-info btn-sm mt-2'
+                      style={{ display: 'block' }}>
+                      Lihat detail
+                    </Link>
+                    {index !== events.length - 1 && <><br /><hr /><br /></>}
+                  </div>))
+                  }
+                </div>
+              </Popup>
+            </Marker>
+          ))
         ))}
+
 
       </MapContainer>
 
