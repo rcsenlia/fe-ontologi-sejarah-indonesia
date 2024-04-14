@@ -25,7 +25,7 @@ const ListEvents = () => {
 
                 if (response.data.length !== 0 ) {
                     const timeline = mapTimelineEvents(response.data);
-                    new Timeline('timeline-embed', timeline, options)
+                    new Timeline('tl-timeline', timeline, options)
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -73,7 +73,7 @@ const ListEvents = () => {
         <div>
             <LandingPage></LandingPage>
             <Card.Header as="h5" className='p-5' style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold"}} >Peristiwa yang berkaitan dengan {iriLabel}</Card.Header>
-            <div id="timeline-embed" style={{ width: '100%', height: '65vh'}} ></div>
+            <div id="tl-timeline" style={{ width: '100%', height: '65vh'}} ></div>
         </div>
     );
 };
