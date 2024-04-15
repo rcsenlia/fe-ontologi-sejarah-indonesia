@@ -72,7 +72,7 @@ const LandingPage = () => {
 
     useEffect(() => {
         const filterData = (dt) => {
-            const isDataWithTypeAvailable = dt.type.slice(-5) === appliedRole.value;
+            const isDataWithTypeAvailable = appliedRole.value !== 'Place' ? dt.type.slice(-5) === appliedRole.value : dt.type.slice(-7) === 'Feature';
             const doesNameContainSearch = dt.name.toLowerCase().includes(appliedSearch.toLowerCase());
             return isDataWithTypeAvailable && doesNameContainSearch
         }
