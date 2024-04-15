@@ -57,7 +57,7 @@ const TimelineEvent = () => {
 
     const mapTimeline = (rawData) => {
         return {
-            events: rawData.map(({name, summary, wikiurl, firstDate, thing, image}) => {
+            events: rawData.map(({name, summary, wikiurl, dummyDate, thing, image}) => {
                 // handles if the image are retrieved from wikipedia or outside wikipedia
                 const url = image.slice(0,4) === 'http' ? image : `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`;
                 const uriEncoded = thing.replace('/', '%2F')
@@ -65,9 +65,9 @@ const TimelineEvent = () => {
 
                 return {
                     start_date: {
-                        year: firstDate.split("-")[0],
-                        month: firstDate.split("-")[1],
-                        day: firstDate.split("-")[2],
+                        year: dummyDate.split("-")[0],
+                        month: dummyDate.split("-")[1],
+                        day: dummyDate.split("-")[2],
                     },
                     text: {
                         headline: `<a style="color: #282c34" href="/detail/${uriEncoded}">${name}</a>`,

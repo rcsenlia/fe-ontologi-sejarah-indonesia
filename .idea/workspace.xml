@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="443b8def-9b0f-45d4-8e44-0a7d9141d313" name="Changes" comment="restructuring timeline frontend">
+    <list default="true" id="443b8def-9b0f-45d4-8e44-0a7d9141d313" name="Changes" comment="removing slider in actor and place">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ListEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ListEvents.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Timeline.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Timeline.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -104,7 +103,8 @@
     <MESSAGE value="redo timeline buttons and search" />
     <MESSAGE value="removing dropdowns" />
     <MESSAGE value="restructuring timeline frontend" />
-    <option name="LAST_COMMIT_MESSAGE" value="restructuring timeline frontend" />
+    <MESSAGE value="removing slider in actor and place" />
+    <option name="LAST_COMMIT_MESSAGE" value="removing slider in actor and place" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
