@@ -9,88 +9,67 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-
+import Toast from 'react-bootstrap/Toast';
 import { useParams } from "react-router-dom";
 import SearchBar from './components/SearchBar';
 import { useNavigate } from "react-router-dom";
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { ButtonGroup, FormText, CloseButton,Alert,Stack,Offcanvas,Image,Spinner } from 'react-bootstrap';
+import { scryRenderedComponentsWithType } from "react-dom/test-utils";
 
 const baseURL = "http://localhost:8000/graph/"
 
 function Canvas() {
-  const navigate = useNavigate();
+  
   const { nama_peristiwa } = useParams();
   const ref = useRef(null);
   const [dataNodes, setData] = useState({})
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
-  const [del, setDel] = useState(false)
-  const [status, setStatus] = useState({})
-  const [datas, setDatas] = useState([])
-  const [suggestions, setSuggestions] = useState([])
-  const [iri, setIri] = useState({})
-  const [root,setRoot] = useState(nama_peristiwa)
-  const [pending,setPending] = useState([])
-  const [searchTerm, setSearchTerm] = useState("");
+  const [type,setType] = useState("")
+  
   const [load,setLoad] = useState(false)
-  const placeHolder = "Ketikkan nama peristiwa, tokoh, atau tempat sejarah...";
+  
   const [show, setShow] = useState(false);
   const [node,setNode] = useState('')
-  const [searchIRI,setSearchIRI] = useState("")
+
 
   
   
   function add(source, key) {
-    console.log("add", key,nodes)
-    let temp = status;
-    temp[key] = false;
-    setStatus(temp);
-    if (typeof (dataNodes[source.label][key]) === "object") {
-      dataNodes[source.label][key].forEach(element => {
-        getData(element)
-      });
-      setNodes(prevnodes=>([...prevnodes.filter(n => !(dataNodes[source.label][key].includes(n.id))), ...dataNodes[source.label][key].map((val) => (
+    console.log("add", key, source.id)
+    const start = source.id
+    const property = key
 
-        {
-          id: val,
-          label: val
-        }))]));
+    dataNodes[start]['property'][property]['value'].forEach(element => {
+      getData(element.iri)
+      dataNodes[start]['property'][property]['status'] = false
+    })
+    setNodes(prevnodes=>([...prevnodes.filter(n => !(dataNodes[start]['property'][property]['value'].map((data)=>data.iri).includes(n.id))), ...dataNodes[start]['property'][property]['value'].map((val) => (
 
-      setEdges(prevedges=>([...prevedges, ...dataNodes[source.label][key].map((val) => ({
-        id: `${source.label}|?${val}|?${key}`,
-        label: key,
-        target: val,
-        source: source.label
+      {
+        id: val.iri,
+        label: val.label
+      }))]));
+    setEdges(prevedges=>([...prevedges, ...dataNodes[start]['property'][property]['value'].map((val) => ({
+        id: `${start}|?${val.iri}|?${key}`,
+        label: property,
+        target: val.iri,
+        source: start,
+        detail:val.detail
       }))
       ]));
-    }
-    else {
-      getData(dataNodes[source.label][key])
-      setNodes(prevnodes=>([...prevnodes.filter(n => !(dataNodes[source.label][key] === n.id)), {
-        id: dataNodes[source.label][key],
-        label: dataNodes[source.label][key]
-      }]))
-      setEdges(prevedges=>([...prevedges, {
-        id: `${source.label}|?${dataNodes[source.label][key]}|?${key}`,
-        label: key,
-        target: dataNodes[source.label][key],
-        source: source.label
-      }]))
-    }
+    setData(dataNodes)
+    
   }
   function remove(source, key) {
-    console.log("remove", status)
-    console.log("node", nodes)
-    console.log("edges", edges)
-    let temp = status;
-    temp[key] = true;
-    setStatus(temp);
-
-
-    setEdges(edges.filter(n => !(n.id.split("|?")[0] === source.label && n.id.split("|?")[2] === key)));
-
+    console.log("remove", source,key)
+    setEdges(edges.filter(n => !(n.id.split("|?")[0] === source.id && n.id.split("|?")[2] === key)));
+    dataNodes[source.id]['property'][key]['value'].forEach(element => {
+      dataNodes[source.id]['property'][key]['status'] = true
+    })
+    setData(dataNodes)
   }
   function hapus() {
     console.log(node)
@@ -99,21 +78,19 @@ function Canvas() {
     setNodes(nodes.filter(n => n.id !== node.id))
   }
   
-  function getData(label) {
-    console.log("get data",label)
-
-    axios.post(baseURL + "uri/", { 'label': label }, {
+  function getData(iri) {
+    console.log("get data",iri)
+    if(Object.keys(dataNodes).includes(iri)){
+      return
+    }
+    axios.post(baseURL + "uri/", { 'iri': iri }, {
       headers: {
         'Content-Type': 'application/json'
       }
     }).then((response) => {
-      dataNodes[label] = response.data
-      Object.keys(response.data).map((key) => {
-        status[key] = true
-      })
+      dataNodes[iri] = response.data
       console.log(response.data)
       setData(dataNodes);
-      setStatus(status);
       
     }).catch(function (error) {
       console.log(error)
@@ -122,129 +99,77 @@ function Canvas() {
 
   }
 
-  function getRootData(root) {
-    console.log("root data"+root)
-
-    axios.post(baseURL + "uri/", { 'label': root }, {
+  useEffect(() => {
+    //get edges dan target node dari nama peristiwa
+    axios.post(baseURL + "uri/", { 'iri': nama_peristiwa }, {
       headers: {
         'Content-Type': 'application/json'
       }
     }).then((response) => {
-      dataNodes[root] = response.data
-      Object.keys(response.data).map((key) => {
-        status[key] = true
-      })
+      dataNodes[nama_peristiwa] = response.data
       setData(dataNodes);
-      setStatus(status);
-      Object.keys(dataNodes[root]).map((key)=>{
-        if(key !== 'image') add({'label':root},key)
+      setNodes([{
+        'id':nama_peristiwa,
+        'label':dataNodes[nama_peristiwa]['label']
+      }])
+      Object.keys(dataNodes[nama_peristiwa]['property']).map((key)=>{
+        add({'id':nama_peristiwa},key)
       })
     setLoad(true)
     }).catch(function (error) {
       console.log(error)
     })
-    
 
-  }
-  useEffect(() => {
-    
-    console.log("initial data")
-    let url = 'http://127.0.0.1:8000/map/all';
-    fetch(url, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" }
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => { setDatas(data) 
-                        
-      })
-      .catch((error) => console.error(error))
-
-    axios.get(baseURL + "event").catch((error) => {
-        console.log(error)
-      }).then((response) => {
-        setIri(response.data[1])
-      })
-      
-  } , [])
-
-  useEffect(() => {
-    setLoad(false)
-    console.log("root",root,nodes)
-    const temp = Object.values(datas).map(data => (data.iri)).sort()
-    console.log("temp",temp)
-    if(temp.length===0 | Object.keys(iri).length === 0){
-      return
-    }
-    if(!temp.includes(root)){
-      navigate("/canvas/"+temp[0])
-      setRoot(temp[0])
-      return
-    }
-    if(iri[root] !== undefined){
-      setNodes([{
-        'id':iri[root],
-        'label':iri[root]
-      }])
-      setEdges([{}])
-      getRootData(iri[root])
-      
-    }
-    
-    },[root,iri,datas])
+  },[])
   
-  const handleClick = event => {
-    setSearchTerm("");
-    setSuggestions([]);
-    navigate("/canvas/" + event)
-    setRoot(event)
-  };
-  const handleChange= trigger => {
-    setSearchTerm(trigger.target.value);
-    setSuggestions(Object.values(datas)
-      .map(data => ({ value: data.iri, label: data.name }))
-      .filter(data => data.value.toLowerCase().includes(trigger.target.value.toLowerCase()))
-      .sort((a, b) => a.label > b.label ? 1 : -1));
-  }
-  const handleEnter = (e) => {
-    console.log(e.keyCode)
-    if (e.keyCode === 13) {
-      console.log("disini",searchIRI)
-        navigate("/canvas/" + searchIRI)
-        setRoot(searchIRI)
-    }
-  }
   const handleClose = () => setShow(false);
-  const handleShow = (node, props) => {
+  const handleShow = (node, type) => {
     setShow(true);
-    setNode(node)
+    setNode(node);
+    setType(type)
   }
+
   return (
     <Container fluid={true}>
 
       <Offcanvas show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>{node.id}</Offcanvas.Title>
+          <Offcanvas.Title>{node.label}</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Row>
-          <Image  variant="top" src={typeof dataNodes[node.label] === "undefined" ? padri : dataNodes[node.label]['image']} />
-          </Row>
-          <Row>
-          <ListGroup variant="flush" style={{ overflowY: "auto", maxHeight:"300px"}}>
-              {Object.keys(dataNodes[node.label] ?? []).map((key) => (key === "image" ? <></> : <ListGroup.Item onClick={status[key] ? () => { add(node, key) } : () => { remove(node, key) }} action>{
-                status[key] ? `${key} (show)` : `${key} (hide)`
-              }</ListGroup.Item>))}
-            </ListGroup>
-          </Row>
+          {type === 'node' ?
+            dataNodes[node.id] == null ?
+              <Row>
+                data sedang diproses
+              </Row>
+              :<>
+              <Row>
+                <Image  variant="top" src={dataNodes[node.id]['image']} />
+                </Row>
+                <Row>
+                <ListGroup variant="flush" style={{ overflowY: "auto", maxHeight:"300px"}}>
+                    {Object.keys(dataNodes[node.id]['property'] ?? []).map((key)=><ListGroup.Item onClick={dataNodes[node.id]['property'][key]['status'] ? () => { add(node, key) } : () => { remove(node, key) }} action>{
+                      dataNodes[node.id]['property'][key]['status'] ? `${key} (show)` : `${key} (hide)`
+                    }</ListGroup.Item>)}
+                  </ListGroup>
+                </Row>
+                  <Row>
+                    <ButtonGroup>
+                  <Button variant="primary" href={`/detail/${node.id}`} active>detail</Button>
+                  <Button variant='danger' onClick={hapus} active>hapus</Button>
+                  </ButtonGroup>
+              </Row>
+              </>
+            :
             <Row>
-              <ButtonGroup>
-            <Button variant="primary" href={`/detail/${iri[node.id]}`} active>detail</Button>
-            <Button variant='danger' onClick={hapus} active>hapus</Button>
-            </ButtonGroup>
+              {node.detail}
             </Row>
+
+              
+            
+          }
+          
+          
         </Offcanvas.Body>
       </Offcanvas>
 
@@ -256,20 +181,7 @@ function Canvas() {
         </Alert>}
         
         
-        <div className='my-4 w-1/2 mx-auto h-12'>
-          {/* <CanvasSearchBar searchTerm={searchTerm} suggestions={suggestions} handleChange={handleChange} handleClick={handleClick} placeHolder={placeHolder} /> */}
-          <SearchBar
-                  searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                  searchIRI={searchIRI}
-                  setSearchIRI={setSearchIRI}
-                  suggestions={suggestions}
-                  setSuggestions={setSuggestions}
-                  handleChange={handleChange}
-                  handleClick={handleClick}
-                  handleEnter={handleEnter}
-                  placeHolder={placeHolder} />
-        </div>        
+            
         
         
         
@@ -288,8 +200,8 @@ function Canvas() {
             nodes={nodes}
             edges={edges}
             draggable={true}
-            onNodeClick={handleShow}
-
+            onNodeClick={(node,prop)=>handleShow(node,'node')}
+            onEdgeClick={(node,prop)=>handleShow(node,'edge')}
           />
 
         </div>
