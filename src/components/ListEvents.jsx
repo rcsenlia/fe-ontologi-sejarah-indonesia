@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { Timeline } from '@knight-lab/timelinejs';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,7 +10,7 @@ import { Card } from "react-bootstrap";
 
 const ListEvents = () => {
     const { iriSent, iriLabel } = useParams();
-
+    const [ events, setEvents] = useState(false)
     const options = {
         initial_zoom: 2,
         scale_factor: 2
@@ -25,7 +25,8 @@ const ListEvents = () => {
 
                 if (response.data.length !== 0 ) {
                     const timeline = mapTimelineEvents(response.data);
-                    new Timeline('timeline-embed', timeline, options)
+                    setEvents(timeline.length !== 0);
+                    new Timeline('tl-timeline', timeline, options);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -72,8 +73,12 @@ const ListEvents = () => {
     return (
         <div>
             <LandingPage></LandingPage>
-            <Card.Header as="h5" className='p-5' style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold"}} >Peristiwa yang berkaitan dengan {iriLabel}</Card.Header>
-            <div id="timeline-embed" style={{ width: '100%', height: '65vh'}} ></div>
+            {events ? (
+                <Card.Header as="h5" className='p-5' style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold"}} >Peristiwa yang berkaitan dengan {iriLabel}</Card.Header>
+            ) : (
+                <Card.Header as="h5" className='p-5' style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold"}} >Tidak terdapat peristiwa yang berkaitan dengan {iriLabel}</Card.Header>
+            )}
+            <div id="tl-timeline" style={{ width: '100%', height: '65vh'}} ></div>
         </div>
     );
 };
