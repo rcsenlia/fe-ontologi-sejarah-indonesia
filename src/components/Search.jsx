@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Card } from "react-bootstrap";
+import { Container, Card, Pagination } from "react-bootstrap";
 import 'leaflet/dist/leaflet.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useParams, Link } from 'react-router-dom';
 
 const Search = () => {
   const { search } = useParams();
+  const [page, setPage] = useState(0);
+  const [totalData, setTotalData] = useState(0);
   const [datas, setDatas] = useState([]);
+  const [paginations, setPaginations] = useState([]);
+  const maxDataPerPage = 10;
 
   useEffect(() => {
-    let url = 'http://127.0.0.1:8000/map/search/' + search;
+    let url = 'http://127.0.0.1:8000/map/search/' + search + '/' + (page * maxDataPerPage);
     fetch(url, {
       method: "GET",
       headers: { "Content-Type": "application/json" }
@@ -19,7 +23,85 @@ const Search = () => {
       })
       .then((data) => { setDatas(data) })
       .catch((error) => console.error(error))
+  }, [search, page]);
+
+  useEffect(() => {
+    let url = 'http://127.0.0.1:8000/map/search/' + search + '/total';
+    fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => { setTotalData(data['total']) })
+      .catch((error) => console.error(error))
   }, [search]);
+
+  useEffect(() => {
+    let items = []
+    let minPage = 1;
+    let maxPage = Math.ceil(totalData / maxDataPerPage);
+
+    const changePage = (number) => {
+      setPage(number - 1);
+    }
+
+    if (maxPage <= 7) {
+      for (let number = 1; number <= maxPage; number++) {
+        items.push(
+          <Pagination.Item key={number} active={number === page + 1} onClick={() => changePage(number)}>
+            {number}
+          </Pagination.Item>,
+        );
+      }
+      setPaginations(items);
+      return;
+    }
+
+
+    items.push(<Pagination.Item key={minPage} active={minPage === page + 1} onClick={() => changePage(minPage)}>{minPage}</Pagination.Item>)
+
+    if ((minPage <= page + 1) && (page + 1 <= minPage + 3)) {
+      for (let number = 2; number <= 5; number++) {
+        items.push(
+          <Pagination.Item key={number} active={number === page + 1} onClick={() => changePage(number)}>
+            {number}
+          </Pagination.Item>,
+        );
+      }
+
+      items.push(<Pagination.Ellipsis key={'ellipsis'} />)
+    }
+
+    else if ((maxPage - 3 <= page + 1) && (page + 1 <= maxPage)) {
+      items.push(<Pagination.Ellipsis key={'ellipsis'} />)
+
+      for (let number = maxPage - 4; number <= maxPage - 1; number++) {
+        items.push(
+          <Pagination.Item key={number} active={number === page + 1} onClick={() => changePage(number)}>
+            {number}
+          </Pagination.Item>,
+        );
+      }
+    }
+
+    else if ((page + 1 > minPage + 1) || (page + 1 < maxPage - 1)) {
+      items.push(<Pagination.Ellipsis key={'ellipsis1'} />)
+      items.push(<Pagination.Item key={page} onClick={() => changePage(page)}>{page}</Pagination.Item>)
+      items.push(<Pagination.Item key={page + 1} active>{page + 1}</Pagination.Item>)
+      items.push(<Pagination.Item key={page + 2} onClick={() => changePage(page + 2)}>{page + 2}</Pagination.Item>)
+      items.push(<Pagination.Ellipsis key={'ellipsis2'} />)
+    }
+
+    items.push(<Pagination.Item key={maxPage} active={maxPage === page + 1} onClick={() => changePage(maxPage)}>{maxPage}</Pagination.Item>)
+
+    setPaginations(items);
+  }, [totalData, page])
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [page])
 
   return (
     <Container fluid>
@@ -29,9 +111,9 @@ const Search = () => {
 
       {datas.length === 0 && <h1 style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold" }}> Hasil pencarian {search} tidak ditemukan </h1>}
 
-      {datas.length > 1 && (<>
+      {datas.length > 0 && (<>
 
-        <h1 className='mb-4' style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold" }}> Hasil pencarian {search}: </h1>
+        <h1 className='mb-4' style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold" }}> Hasil pencarian {search} </h1>
 
         <div className='container mx-auto px-4'>
 
@@ -49,6 +131,12 @@ const Search = () => {
           })}
         </div>
       </>
+      )}
+
+      {paginations && paginations.length > 0 && (
+        <Pagination className='my-4 flex justify-center font-bold text-xl'>
+          {paginations}
+        </Pagination>
       )}
     </Container>
   )
