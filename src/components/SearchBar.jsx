@@ -85,7 +85,7 @@ const SearchBar = (props) => {
       />
       {searchTerm && suggestions.length > 0 && (
         <div style={{ zIndex: 9999 }} className='w-100 relative'>
-          <div className='absolute top-4 left-0 border rounded-lg py-2 bg-white w-full max-h-36 overflow-y-auto suggestions-box'>
+          <div className='absolute top-4 left-0 border rounded-lg py-2 bg-white w-full max-h-42 overflow-y-auto suggestions-box'>
             {suggestions.map((val, idx) => (
               <div key={"suggestion-" + idx} className={`hover:bg-gray-300 hover:cursor-pointer py-1 px-4 ${selectedIndex === idx ? 'suggestion-active bg-gray-300' : ''}`} onClick={() => handleClick(val)} >{val.label}</div>
             ))}

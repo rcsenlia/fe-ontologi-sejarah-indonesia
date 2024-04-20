@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="443b8def-9b0f-45d4-8e44-0a7d9141d313" name="Changes" comment="removing slider in actor and place">
+    <list default="true" id="443b8def-9b0f-45d4-8e44-0a7d9141d313" name="Changes" comment="add type-label on suggestion">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ListEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ListEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/LandingPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LandingPage.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="feature/map" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -104,7 +104,8 @@
     <MESSAGE value="removing dropdowns" />
     <MESSAGE value="restructuring timeline frontend" />
     <MESSAGE value="removing slider in actor and place" />
-    <option name="LAST_COMMIT_MESSAGE" value="removing slider in actor and place" />
+    <MESSAGE value="add type-label on suggestion" />
+    <option name="LAST_COMMIT_MESSAGE" value="add type-label on suggestion" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
