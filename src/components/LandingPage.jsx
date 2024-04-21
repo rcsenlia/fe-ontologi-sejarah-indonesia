@@ -18,6 +18,7 @@ const LandingPage = () => {
 
     const [appliedSearch, setAppliedSearch] = useState('');
     const [appliedRole, setAppliedRole] = useState({});
+    const [isClicked, setIsClicked] = useState(false);
 
     const navigate = useNavigate();
 
@@ -31,33 +32,6 @@ const LandingPage = () => {
         else if (tp.slice(-7) === 'Feature' ){
             return 'Feature'
         }
-    }
-
-    const handleClick = (val) => {
-        if (val.label === 'Search more...') {
-            navigate('/search/' + searchTerm)
-        }
-
-        setSearchTerm(val.label)
-        setRoleTerm(mapType(val.type))
-        setSuggestions([])
-    };
-
-    const handleChange = (trigger) => {
-        setSearchTerm(trigger.target.value)
-        setSearchIRI("")
-        let suggestions = Object.values(datas)
-            .map(data => ({ value: data.iri, label: data.name, type: data.type }))
-            .filter(data => data.label.toLowerCase().includes(trigger.target.value.toLowerCase()))
-            .sort((a, b) => a.label > b.label ? 1 : -1)
-
-        if (suggestions.length > 4) {
-            suggestions = suggestions.slice(0, 4)
-            suggestions.push({ value: '', label: 'Search more...', type: 'a' })
-        }
-
-        suggestions = handleAddLabel(suggestions)
-        setSuggestions(suggestions);
     }
 
     const handleAddLabel = (listData) => {
@@ -105,8 +79,23 @@ const LandingPage = () => {
         fetchData();
     }, []);
 
+    const handleClick = (val) => {
+        if (val.label === 'Search more...') {
+            setIsClicked(false)
+            navigate('/search/' + searchTerm)
+        }
+
+        setIsClicked(true)
+        setSearchTerm(val.label)
+        setRoleTerm(mapType(val.type))
+        setSuggestions([])
+    };
 
     const handleFilter = () => {
+        if (!isClicked) {
+            navigate('/search/' + searchTerm)
+            setIsClicked(false)
+        }
         if (searchTerm === '') {
             toast.error(`Masukkan kata kunci pencarian terlebih dahulu`, {
                 autoClose: 2000
@@ -117,6 +106,24 @@ const LandingPage = () => {
             setAppliedRole(roleTerm);
         }
     };
+
+
+    const handleChange = (trigger) => {
+        setSearchTerm(trigger.target.value)
+        setSearchIRI("")
+        let suggestions = Object.values(datas)
+            .map(data => ({ value: data.iri, label: data.name, type: data.type }))
+            .filter(data => data.label.toLowerCase().includes(trigger.target.value.toLowerCase()))
+            .sort((a, b) => a.label > b.label ? 1 : -1)
+
+        if (suggestions.length > 4) {
+            suggestions = suggestions.slice(0, 4)
+            suggestions.push({ value: '', label: 'Search more...', type: 'a' })
+        }
+
+        suggestions = handleAddLabel(suggestions)
+        setSuggestions(suggestions);
+    }
 
     useEffect(() => {
         const finalSearch = handleRemoveLabel(appliedSearch, appliedRole)
@@ -134,12 +141,14 @@ const LandingPage = () => {
                 break;
             }
         }
-        if (filteredDatas.length !== 0) {
+        if (filteredDatas.length !== 0  && appliedRole !== '') {
             setSuggestions([])
+            setIsClicked(false)
             navigate(`/timeline/${finalSearch}/${appliedRole}`)
         }
-        else if (searchTerm !== '') {
-            navigate('/search/' + searchTerm)
+        else if (searchTerm !== '' && appliedRole === '') {
+            setIsClicked(false)
+            navigate('/search/' + finalSearch)
         }
     }, [appliedSearch, appliedRole, datas])
 

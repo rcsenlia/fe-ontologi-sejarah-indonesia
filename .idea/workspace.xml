@@ -7,6 +7,7 @@
     <list default="true" id="443b8def-9b0f-45d4-8e44-0a7d9141d313" name="Changes" comment="add type-label on suggestion">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/LandingPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LandingPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Timeline.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Timeline.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,6 +105,7 @@
     <MESSAGE value="removing dropdowns" />
     <MESSAGE value="restructuring timeline frontend" />
     <MESSAGE value="removing slider in actor and place" />
+    <MESSAGE value="landingpage - timeline" />
     <MESSAGE value="add type-label on suggestion" />
     <option name="LAST_COMMIT_MESSAGE" value="add type-label on suggestion" />
   </component>
