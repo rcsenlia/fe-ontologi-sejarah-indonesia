@@ -29,6 +29,10 @@ const Detail = () => {
   ];
 
   const handleClick = (val) => {
+    if (val.label === 'Search more...') {
+      navigate('/search/' + searchTerm)
+    }
+
     setSearchTerm(val.label)
     setSuggestions([])
   };
@@ -36,10 +40,18 @@ const Detail = () => {
   const handleChange = (trigger) => {
     setSearchTerm(trigger.target.value)
     setSearchIRI("")
-    setSuggestions(Object.values(datas)
+
+    let suggestions = Object.values(datas)
       .map(data => ({ value: data.iri, label: data.name, type: data.type }))
       .filter(data => data.label.toLowerCase().includes(trigger.target.value.toLowerCase()))
-      .sort((a, b) => a.label > b.label ? 1 : -1));
+      .sort((a, b) => a.label > b.label ? 1 : -1)
+
+    if (suggestions.length > 4) {
+      suggestions = suggestions.slice(0, 4)
+      suggestions.push({ value: '', label: 'Search more...', type: 'a' })
+    }
+
+    setSuggestions(suggestions);
   }
 
   const handleFilter = () => {

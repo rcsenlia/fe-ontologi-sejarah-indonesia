@@ -32,7 +32,7 @@ const DetailCard = (prop) => {
         {Object.entries(response?.detail).map(([key, value]) => (
           <div key={key} className='mb-3'>
             {Array.isArray(value) && value.length === 2 && Array.isArray(value[1]) ? (
-              console.log(value[1]),
+              // console.log(value[1]),
               value[1].length > 1 ? (
                 <div>
                   <strong>{value[0]}: </strong>
@@ -78,7 +78,7 @@ const DetailCard = (prop) => {
             <GeoJSON
               data={response?.location}
               pointToLayer={(feature, latlng) => {
-                console.log(latlng)
+                // console.log(latlng)
                 return L.marker(latlng, {
                   icon: activeThickDotDivIcon
                 })
