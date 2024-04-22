@@ -169,7 +169,6 @@ const LandingPage = () => {
 
     useEffect(() => {
         const finalSearch = handleRemoveLabel(appliedSearch, appliedRole)
-        console.log(appliedRole)
 
         const filterData = (dt) => {
             if (appliedSearch !== ''){
