@@ -106,6 +106,11 @@ const LandingPage = () => {
         setIsClicked(true)
         setSearchTerm(val.label)
         setRoleTerm(mapType(val.type))
+
+        // Handling click then automatically redirect to timeline
+        setAppliedSearch(val.label)
+        setAppliedRole(mapType(val.type))
+
         setSearchIRI(val.value)
         setSuggestions([])
     };
@@ -164,6 +169,7 @@ const LandingPage = () => {
 
     useEffect(() => {
         const finalSearch = handleRemoveLabel(appliedSearch, appliedRole)
+        console.log(appliedRole)
 
         const filterData = (dt) => {
             if (appliedSearch !== ''){
