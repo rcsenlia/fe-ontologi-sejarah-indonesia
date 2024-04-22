@@ -21,7 +21,7 @@ const Search = () => {
       .then((response) => {
         return response.json();
       })
-      .then((data) => { setDatas(data) })
+      .then((data) => { setDatas(handleRole(data)) })
       .catch((error) => console.error(error))
   }, [search, page]);
 
@@ -103,6 +103,22 @@ const Search = () => {
     window.scrollTo(0, 0)
   }, [page])
 
+  const handleRole = (listData) => {
+    for (const i in listData) {
+      if (listData[i].type.slice(-5) === 'Event') {
+        listData[i].typeLabel = 'Event'
+      }
+      else if (listData[i].type.slice(-5) === 'Actor') {
+        listData[i].typeLabel = 'Actor'
+      }
+      else if (listData[i].type.slice(-7) === 'Feature') {
+        listData[i].typeLabel = 'Place'
+      }
+    }
+
+    return listData
+  }
+
   return (
     <Container fluid>
       <div className='my-4 w-1/2 mx-auto h-12'>
@@ -122,9 +138,12 @@ const Search = () => {
               <Card key={data + index} className='my-4 mx-20'>
                 <Card.Body>
                   <Card.Title style={{ fontSize: "1.5rem", fontWeight: "bold" }}>{data.name}</Card.Title>
-                  <Link to={`/detail/${data.iri}`}
+                  <Card.Text>
+                    {data.summary}
+                  </Card.Text>
+                  <Link to={`/timeline/${data.name}/${data.typeLabel}`}
                     className='btn btn-info btn-sm mt-2'>
-                    Lihat detail {'>>>'}
+                    Lihat Timeline {'>>>'}
                   </Link>
                 </Card.Body>
               </Card>)
