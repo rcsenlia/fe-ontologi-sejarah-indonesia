@@ -5,7 +5,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import SearchBar from "./SearchBar";
 import '../tl.css'
-import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
@@ -19,28 +18,120 @@ const LandingPage = () => {
 
     const [appliedSearch, setAppliedSearch] = useState('');
     const [appliedRole, setAppliedRole] = useState({});
+    const [isClicked, setIsClicked] = useState(false);
+    const [isEntered, setIsEntered] = useState(false);
 
     const navigate = useNavigate();
 
-    const role = [
-        { value: 'Event', label: 'Peristiwa' },
-        { value: 'Actor', label: 'Tokoh' },
-        { value: 'Place', label: 'Tempat' }
-    ];
+    const mapType = (tp) => {
+        if (tp.slice(-5) === 'Actor') {
+            return 'Actor'
+        }
+        else if (tp.slice(-5) === 'Event' ) {
+            return 'Event'
+        }
+        else if (tp.slice(-7) === 'Feature' ){
+            return 'Feature'
+        }
+    }
 
-    const handleClick = (val) => {
-        setSearchTerm(val.label)
-        setSuggestions([])
-    };
+    const handleAddLabel = (listData) => {
+        for (const i in listData) {
+            if (listData[i].type.slice(-5) === 'Event') {
+                listData[i].label += ' (Peristiwa)'
+            }
+            else if (listData[i].type.slice(-5) === 'Actor') {
+                listData[i].label += ' (Tokoh)'
+            }
+            else if (listData[i].type.slice(-7) === 'Feature') {
+                listData[i].label += ' (Tempat)'
+            }
+        }
+
+        return listData
+    }
+
+    const handleRemoveLabel = (data, role) => {
+        let suffix;
+        if (role === 'Event') {
+            suffix = ' (Peristiwa)'
+        }
+        else if (role === 'Actor') {
+            suffix = ' (Tokoh)'
+        }
+        else if (role === 'Feature') {
+            suffix = ' (Tempat)'
+        }
+        return data.replace(suffix, '');
+    }
+
+    const getTypeBySuffix = (data) => {
+        const splittedData = data.split("(")
+        const suffix = splittedData[splittedData.length - 1]
+        if (suffix.includes('Peristiwa')) {
+            return 'Event'
+        }
+        else if (suffix.includes('Tokoh')) {
+            return 'Actor'
+        }
+        else if (suffix.includes('Tempat')) {
+            return 'Feature'
+        }
+        return 'a'
+    }
 
     const handleChange = (trigger) => {
         setSearchTerm(trigger.target.value)
         setSearchIRI("")
-        setSuggestions(Object.values(datas)
+        let suggestions = Object.values(datas)
             .map(data => ({ value: data.iri, label: data.name, type: data.type }))
             .filter(data => data.label.toLowerCase().includes(trigger.target.value.toLowerCase()))
-            .sort((a, b) => a.label > b.label ? 1 : -1));
+            .sort((a, b) => a.label > b.label ? 1 : -1)
+
+        if (suggestions.length > 4) {
+            suggestions = suggestions.slice(0, 4)
+            suggestions.push({ value: '', label: 'Search more...', type: 'a' })
+        }
+
+        suggestions = handleAddLabel(suggestions)
+        setSuggestions(suggestions);
     }
+
+    const handleClick = (val) => {
+        if (val.label === 'Search more...') {
+            setIsClicked(false)
+            navigate('/search/' + searchTerm)
+        }
+
+        setIsClicked(true)
+        setSearchTerm(val.label)
+        setRoleTerm(mapType(val.type))
+        setSearchIRI(val.value)
+        setSuggestions([])
+    };
+
+    const handleEnter = (val) => {
+        const keyEvents = val.nativeEvent
+        if (keyEvents.keyCode === 13) {
+            setIsEntered(true)
+        }
+    }
+
+    const handleFilter = () => {
+        if (!isClicked) {
+            navigate('/search/' + searchTerm)
+            setIsClicked(false)
+        }
+        if (searchTerm === '') {
+            toast.error(`Masukkan kata kunci pencarian terlebih dahulu`, {
+                autoClose: 2000
+            })
+        }
+        else {
+            setAppliedSearch(searchTerm);
+            setAppliedRole(roleTerm);
+        }
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -57,24 +148,27 @@ const LandingPage = () => {
         fetchData();
     }, []);
 
-
-    const handleFilter = () => {
-        if (searchTerm === '' || roleTerm === '') {
-            toast.error(`Masukkan nama dan tipe pencarian terlebih dahulu`, {
-                autoClose: 2000
-            })
+    useEffect(() => {
+        if (isEntered && suggestions.length === 0) {
+            if (searchIRI === '') {
+                navigate('/search/' + searchTerm);
+            }
+            else {
+                setRoleTerm(getTypeBySuffix(searchTerm));
+                setAppliedRole(getTypeBySuffix(searchTerm));
+                setAppliedSearch(searchTerm);
+            }
+            setIsEntered(false)
         }
-        else {
-            setAppliedSearch(searchTerm);
-            setAppliedRole(roleTerm);
-        }
-    };
+    }, [isEntered])
 
     useEffect(() => {
+        const finalSearch = handleRemoveLabel(appliedSearch, appliedRole)
+
         const filterData = (dt) => {
-            const isDataWithTypeAvailable = appliedRole.value !== 'Place' ? dt.type.slice(-5) === appliedRole.value : dt.type.slice(-7) === 'Feature';
-            const doesNameContainSearch = dt.name.toLowerCase().includes(appliedSearch.toLowerCase());
-            return isDataWithTypeAvailable && doesNameContainSearch
+            if (appliedSearch !== ''){
+                return dt.name.toLowerCase().includes(finalSearch.toLowerCase());
+            }
         }
 
         const filteredDatas = [];
@@ -84,14 +178,14 @@ const LandingPage = () => {
                 break;
             }
         }
-        if (filteredDatas.length !== 0) {
+        if (filteredDatas.length !== 0  && appliedRole !== '') {
             setSuggestions([])
-            navigate(`/timeline/${appliedSearch}/${appliedRole.value}`)
+            setIsClicked(false)
+            navigate(`/timeline/${finalSearch}/${appliedRole}`)
         }
-        else if (searchTerm !== '') {
-            toast.warn(`${appliedSearch} dengan tipe ${appliedRole.label} tidak ditemukan`, {
-                autoClose: 2000
-            })
+        else if (searchTerm !== '' && appliedRole === '') {
+            setIsClicked(false)
+            navigate('/search/' + finalSearch)
         }
     }, [appliedSearch, appliedRole, datas])
 
@@ -109,21 +203,11 @@ const LandingPage = () => {
                             setSuggestions={setSuggestions}
                             handleChange={handleChange}
                             handleClick={handleClick}
-                            handleEnter={() => { }}
+                            handleEnter={handleEnter}
                             placeHolder={placeHolder}/>
                     </div>
                     <div className='w-1/4 grow'>
                         <div style={{ display: 'flex', justifyContent: 'left'}}>
-                            <Select
-                                placeholder="Pilih Tipe..."
-                                className="basic-single"
-                                classNamePrefix="select"
-                                name="role"
-                                options={role}
-                                onChange={setRoleTerm}
-                                styles={{ menuPortal: zzz => ({ ...zzz,  position: "relative", zIndex: 9999}) }}
-                            />
-
                             <button
                                 style={{ marginLeft: '10px', padding: '7px', background: '#1360E7', color: 'white', borderRadius: '5px', cursor: 'pointer' }}
                                 onClick={handleFilter}

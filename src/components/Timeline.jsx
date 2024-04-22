@@ -21,7 +21,7 @@ const TimelineEvent = () => {
     const role = [
         { value: 'Event', label: 'Peristiwa' },
         { value: 'Actor', label: 'Tokoh' },
-        { value: 'Place', label: 'Tempat' }
+        { value: 'Feature', label: 'Tempat' }
     ];
 
     useEffect(() => {
