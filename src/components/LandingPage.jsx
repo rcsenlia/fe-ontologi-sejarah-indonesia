@@ -106,6 +106,11 @@ const LandingPage = () => {
         setIsClicked(true)
         setSearchTerm(val.label)
         setRoleTerm(mapType(val.type))
+
+        // Handling click then automatically redirect to timeline
+        setAppliedSearch(val.label)
+        setAppliedRole(mapType(val.type))
+
         setSearchIRI(val.value)
         setSuggestions([])
     };
