@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import SearchBar from "./SearchBar";
 import Select from "react-select";
 import axios from 'axios';
+import LandingPage from "./LandingPage";
 
 const Detail = () => {
   const navigate = useNavigate();
@@ -123,43 +124,7 @@ const Detail = () => {
   return (
     <div className='container mx-auto px-4'>
       <div>
-        <div className="mt-3 mb-3 p-4" style={{ maxWidth: '70vw', margin: 'auto auto', padding: '12px', zIndex: 922999 }}>
-          <div className="flex my-3 gap-4">
-            <div className='w-3/4 grow'>
-              <SearchBar
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-                searchIRI={searchIRI}
-                setSearchIRI={setSearchIRI}
-                suggestions={suggestions}
-                setSuggestions={setSuggestions}
-                handleChange={handleChange}
-                handleClick={handleClick}
-                handleEnter={() => { }}
-                placeHolder={placeHolder} />
-            </div>
-            <div className='w-1/4 grow'>
-              <div style={{ display: 'flex', justifyContent: 'left' }}>
-                <Select
-                  placeholder="Pilih Tipe..."
-                  className="basic-single"
-                  classNamePrefix="select"
-                  name="role"
-                  options={role}
-                  onChange={setRoleTerm}
-                  styles={{ menuPortal: zzz => ({ ...zzz, position: "relative", zIndex: 9999 }) }}
-                />
-
-                <button
-                  style={{ marginLeft: '10px', padding: '7px', background: '#1360E7', color: 'white', borderRadius: '5px', cursor: 'pointer' }}
-                  onClick={handleFilter}
-                >
-                  Cari
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <LandingPage></LandingPage>
       </div>
 
       {!response?.detail &&
