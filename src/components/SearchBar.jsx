@@ -44,7 +44,9 @@ const SearchBar = (props) => {
       const activeSuggestion = suggestions[selectedIndex]
 
       if (activeSuggestion) {
-        setSearchTerm(activeSuggestion.label)
+        if (activeSuggestion.type !== 'a') {
+          setSearchTerm(activeSuggestion.label)
+        }
         setSearchIRI(activeSuggestion.value)
         setSuggestions([])
       }

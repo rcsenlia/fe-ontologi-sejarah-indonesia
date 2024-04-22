@@ -19,6 +19,7 @@ const LandingPage = () => {
     const [appliedSearch, setAppliedSearch] = useState('');
     const [appliedRole, setAppliedRole] = useState({});
     const [isClicked, setIsClicked] = useState(false);
+    const [isEntered, setIsEntered] = useState(false);
 
     const navigate = useNavigate();
 
@@ -64,49 +65,20 @@ const LandingPage = () => {
         return data.replace(suffix, '');
     }
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const responseEvent = await axios.get('http://127.0.0.1:8000/map/all');
-                if (responseEvent.data.length !== 0 ) {
-                    setDatas(responseEvent.data)
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    const handleClick = (val) => {
-        if (val.label === 'Search more...') {
-            setIsClicked(false)
-            navigate('/search/' + searchTerm)
+    const getTypeBySuffix = (data) => {
+        const splittedData = data.split("(")
+        const suffix = splittedData[splittedData.length - 1]
+        if (suffix.includes('Peristiwa')) {
+            return 'Event'
         }
-
-        setIsClicked(true)
-        setSearchTerm(val.label)
-        setRoleTerm(mapType(val.type))
-        setSuggestions([])
-    };
-
-    const handleFilter = () => {
-        if (!isClicked) {
-            navigate('/search/' + searchTerm)
-            setIsClicked(false)
+        else if (suffix.includes('Tokoh')) {
+            return 'Actor'
         }
-        if (searchTerm === '') {
-            toast.error(`Masukkan kata kunci pencarian terlebih dahulu`, {
-                autoClose: 2000
-            })
+        else if (suffix.includes('Tempat')) {
+            return 'Feature'
         }
-        else {
-            setAppliedSearch(searchTerm);
-            setAppliedRole(roleTerm);
-        }
-    };
-
+        return 'a'
+    }
 
     const handleChange = (trigger) => {
         setSearchTerm(trigger.target.value)
@@ -124,6 +96,71 @@ const LandingPage = () => {
         suggestions = handleAddLabel(suggestions)
         setSuggestions(suggestions);
     }
+
+    const handleClick = (val) => {
+        if (val.label === 'Search more...') {
+            setIsClicked(false)
+            navigate('/search/' + searchTerm)
+        }
+
+        setIsClicked(true)
+        setSearchTerm(val.label)
+        setRoleTerm(mapType(val.type))
+        setSearchIRI(val.value)
+        setSuggestions([])
+    };
+
+    const handleEnter = (val) => {
+        const keyEvents = val.nativeEvent
+        if (keyEvents.keyCode === 13) {
+            setIsEntered(true)
+        }
+    }
+
+    const handleFilter = () => {
+        if (!isClicked) {
+            navigate('/search/' + searchTerm)
+            setIsClicked(false)
+        }
+        if (searchTerm === '') {
+            toast.error(`Masukkan kata kunci pencarian terlebih dahulu`, {
+                autoClose: 2000
+            })
+        }
+        else {
+            setAppliedSearch(searchTerm);
+            setAppliedRole(roleTerm);
+        }
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const responseEvent = await axios.get('http://127.0.0.1:8000/map/all');
+                if (responseEvent.data.length !== 0 ) {
+                    setDatas(responseEvent.data)
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (isEntered && suggestions.length === 0) {
+            if (searchIRI === '') {
+                navigate('/search/' + searchTerm);
+            }
+            else {
+                setRoleTerm(getTypeBySuffix(searchTerm));
+                setAppliedRole(getTypeBySuffix(searchTerm));
+                setAppliedSearch(searchTerm);
+            }
+            setIsEntered(false)
+        }
+    }, [isEntered])
 
     useEffect(() => {
         const finalSearch = handleRemoveLabel(appliedSearch, appliedRole)
@@ -166,7 +203,7 @@ const LandingPage = () => {
                             setSuggestions={setSuggestions}
                             handleChange={handleChange}
                             handleClick={handleClick}
-                            handleEnter={() => { }}
+                            handleEnter={handleEnter}
                             placeHolder={placeHolder}/>
                     </div>
                     <div className='w-1/4 grow'>
