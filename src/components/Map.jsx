@@ -94,7 +94,7 @@ const Map = () => {
 
   return (
     <Container fluid>
-      <h1 className='mt-3' style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold" }}> Peta Sejarah Indonesia </h1>
+      <h1 className='mt-3' style={{ textAlign: "center", fontSize: "2rem", fontWeight: "bold" }}> Peta Sejarah Indonesia </h1>
 
       <div className="flex my-3 gap-4">
         <div className='w-1/2 grow'>
@@ -134,7 +134,7 @@ const Map = () => {
         center={[-2.548926, 118.0148634]}
         maxBounds={maxBounds}
         minZoom={3}
-        className='rounded'
+        className='rounded my-2'
         whenReady={(map) => {
           map.target.on('popupclose', () => {
             setActiveMarker(null);
@@ -157,12 +157,12 @@ const Map = () => {
                 }
               }}
             >
-              <Popup>
-                <div className='max-h-40 overflow-y-auto'>
-                  {events.map((event, index) => (<div className='w-48' key={`${latitude}+${longitude}+${index}`}>
-                    <h3 style={{ fontSize: '0.75rem', fontWeight: 'bold' }}>{event.name}</h3>
+              <Popup className='w-96'>
+                <div className='max-h-60 overflow-y-auto'>
+                  {events.map((event, index) => (<div key={`${latitude}+${longitude}+${index}`}>
+                    <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{event.name}</h3>
                     <Link to={`/detail/${event.iri}`}
-                      className='btn btn-info btn-sm mt-2'
+                      className='btn btn-info btn-lg mt-2'
                       style={{ display: 'block' }}>
                       Lihat detail
                     </Link>
