@@ -74,7 +74,7 @@ const TimelineEvent = () => {
                         text: `<div style="padding-bottom: 10px">
                                 <a href="${wikiurl}" style="background: #0b9955; color: #f0f0f0 ; ${wikiurl === '' ? 'display: none;' : ''}" class="btn mr-2" style="color: #f0f0f0" role="button">Laman Wikipedia</a>
                                 <a href="/detail/${uriEncoded}" style="background: #9810ad; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Detail</a>
-                                <a href="/canvas/${uriEncoded}" style="background: #1360E7; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Canvas Graph</a>
+                                <a href="/canvas/${uriEncoded}" style="background: #1360E7; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Graph</a>
                                 <a href="/events/${uriEncoded}/${name}" style="background: #99630b; color: #f0f0f0" class="btn" style="color: #f0f0f0" role="button">Peristiwa yang Terlibat</a>
                                 </div>` + checkSummary
                     },
