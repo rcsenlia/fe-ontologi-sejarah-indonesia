@@ -88,6 +88,17 @@
     }
 }
 
+.timeline-title {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    padding-bottom: 20px;
+}
+
+/*
+    End for extra CSS for Timeline
+*/
+
 .tl-timeline {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     /* VCard

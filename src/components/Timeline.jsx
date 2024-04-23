@@ -6,7 +6,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../tl.css'
 import { useParams } from "react-router-dom";
 import LandingPage from "./LandingPage";
-import { Card } from "react-bootstrap";
 
 const TimelineEvent = () => {
     const { searchSent, roleSent } = useParams();
@@ -30,6 +29,7 @@ const TimelineEvent = () => {
                 const params = {};
                 params['filter[search]'] = searchSent;
                 params['filter[role]'] = roleSent;
+                setShowTimeline(false)
                 const response = await axios.get('http://127.0.0.1:8000/timeline/', { params });
 
                 if (response.data.length !== 0 ) {
@@ -128,28 +128,29 @@ const TimelineEvent = () => {
         };
     }
 
+    useEffect(() => {
+        const addHeadingToContainers = () => {
+            const slideContentContainers = document.querySelectorAll('.tl-slide-scrollable-container');
+            slideContentContainers.forEach(container => {
+                const heading = document.createElement('div');
+                heading.textContent = `Hasil pencarian '${searchSent}' dengan tipe ${roleLabel}`;
+                heading.className = 'timeline-title'
+
+                container.parentNode.insertBefore(heading, container);
+            });
+        };
+
+        if (showTimeline){
+            addHeadingToContainers();
+        }
+
+        return () => {};
+    }, [showTimeline]);
+
     return (
         <div>
             <LandingPage></LandingPage>
-            <div>
-                <Card.Header as="h5" className='p-2' style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold"}} >
-                    {/* lg or larger resolution */}
-                    <span className="hidden lg:inline">Hasil pencarian '{searchSent}' dengan tipe {roleLabel}</span>
-
-                    {/* md resolution */}
-                    <span className="lg:hidden hidden md:inline">Hasil pencarian '{searchSent}'</span>
-                    <br className="lg:hidden hidden md:inline" />
-                    <span className="lg:hidden hidden md:inline">dengan tipe {roleLabel}</span>
-
-                    {/* sm or lower resolution */}
-                    <span className="inline lg:hidden md:hidden">Hasil pencarian </span>
-                    <br className="inline lg:hidden md:hidden" />
-                    <span className="inline lg:hidden md:hidden">'{searchSent}'</span>
-                    <br className="inline lg:hidden md:hidden" />
-                    <span className="inline lg:hidden md:hidden"> dengan tipe {roleLabel}</span>
-                </Card.Header>
-            </div>
-            <div id="tl-timeline" className="tl-timeline" style={{ width: '100%', height: '65vh'}}></div>
+            <div id="tl-timeline" className="tl-timeline" style={{ width: '100%', height: '70vh'}}></div>
             {showTimeline  && roleSent !== 'Event' && (
                 <div className="tl-timenav" style={{ display: "none !important" }}>
                     <style>
