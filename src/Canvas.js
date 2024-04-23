@@ -325,7 +325,7 @@ useEffect(() => {
 
       <Offcanvas show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>{node.label}</Offcanvas.Title>
+          <Offcanvas.Title style={{ fontSize:"30px"}}>{node.label}</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           {type === 'node' ?
@@ -340,8 +340,8 @@ useEffect(() => {
                 
                 <Row>
                 <ListGroup variant="flush" style={{ overflowY: "auto",height:"350px"}}>
-                  <ListGroup.Item>Nama Property :</ListGroup.Item>
-                    {Object.keys(dataNodes[node.id]['property'] ?? []).map((key)=><ListGroup.Item  onClick={dataNodes[node.id]['property'][key]['status'] ? () => { add(node, key) } : () => { remove(node, key) }} action>{
+                  <ListGroup.Item style={{ fontSize:"25px"}}>Nama Property :</ListGroup.Item>
+                    {Object.keys(dataNodes[node.id]['property'] ?? []).map((key)=><ListGroup.Item style={{ fontSize:"20px"}}  onClick={dataNodes[node.id]['property'][key]['status'] ? () => { add(node, key) } : () => { remove(node, key) }} action>{
                       dataNodes[node.id]['property'][key]['status'] ? `${key} (show)` : `${key} (hide)`
                     }</ListGroup.Item>)}
                   
@@ -357,9 +357,9 @@ useEffect(() => {
               </>
             :
             <Row>
-              Detail Property :
+              <p style={{ fontSize:"25px"}}>Penjelasan :</p>
               <br/>
-              {node.detail}
+              <p style={{ fontSize:"20px"}}>{node.detail}</p>
             </Row>
 
               
@@ -412,7 +412,7 @@ useEffect(() => {
 
           <GraphCanvas
             ref={ref}
-            theme={darkTheme}
+            // theme={darkTheme}
             labelType={'all'}
             nodes={nodes}
             edges={edges}
