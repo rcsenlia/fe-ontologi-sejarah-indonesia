@@ -71,12 +71,15 @@ const TimelineEvent = () => {
                     },
                     text: {
                         headline: `<a style="color: #282c34" href="/detail/${uriEncoded}">${name}</a>`,
-                        text: `<div style="padding-bottom: 10px">
-                                <a href="${wikiurl}" style="background: #0b9955; color: #f0f0f0 ; ${wikiurl === '' ? 'display: none;' : ''}" class="btn mr-2" style="color: #f0f0f0" role="button">Laman Wikipedia</a>
-                                <a href="/detail/${uriEncoded}" style="background: #9810ad; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Detail</a>
-                                <a href="/canvas/${uriEncoded}" style="background: #1360E7; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Canvas Graph</a>
-                                <a href="/events/${uriEncoded}/${name}" style="background: #99630b; color: #f0f0f0" class="btn" style="color: #f0f0f0" role="button">Peristiwa yang Terlibat</a>
-                                </div>` + checkSummary
+                        text: `<div style="padding-bottom: 10px" class="timeline-button-wrapper">
+                                <a href="${wikiurl}" class="timeline-button" style="background: #0b9955; color: #f0f0f0; ${wikiurl === '' ? 'display: none;' : ''}" role="button">Laman Wikipedia</a>
+                                <a href="/detail/${uriEncoded}" class="timeline-button" style="background: #9810ad; color: #f0f0f0" role="button">Detail</a>
+                                <a href="/canvas/${uriEncoded}" class="timeline-button" style="background: #1360E7; color: #f0f0f0" role="button">Canvas Graph</a>
+                                <a href="/events/${uriEncoded}/${name}" class="timeline-button" style="background: #99630b; color: #f0f0f0" role="button">Peristiwa Terlibat</a>
+                                </div> 
+                                <div class="timeline-text"> 
+                                ${checkSummary} 
+                                </div>`
                     },
                     media : {
                         url: url,
@@ -107,11 +110,14 @@ const TimelineEvent = () => {
                     },
                     text: {
                         headline: `<a style="color: #282c34" href="/detail/${uriEncoded}">${name}</a>`,
-                        text: `<div style="padding-bottom: 10px">
-                                <a href="${wikiurl}" style="background: #0b9955; color: #f0f0f0 ; ${wikiurl === '' ? 'display: none;' : ''}" class="btn mr-2" style="color: #f0f0f0" role="button">Laman Wikipedia</a>
-                                <a href="/detail/${uriEncoded}" style="background: #9810ad; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Detail</a>
-                                <a href="/canvas/${uriEncoded}" style="background: #1360E7; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Canvas Graph</a>
-                                </div>` + checkSummary
+                        text: `<div style="padding-bottom: 10px" class="timeline-button-wrapper">
+                                <a href="${wikiurl}" class="timeline-button" style="background: #0b9955; color: #f0f0f0 ; ${wikiurl === '' ? 'display: none;' : ''}" class="btn mr-2" style="color: #f0f0f0" role="button">Laman Wikipedia</a>
+                                <a href="/detail/${uriEncoded}" class="timeline-button" style="background: #9810ad; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Detail</a>
+                                <a href="/canvas/${uriEncoded}"  class="timeline-button" style="background: #1360E7; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Canvas Graph</a>
+                                </div> 
+                                <div class="timeline-text"> 
+                                ${checkSummary} 
+                                </div>`
                     },
                     media : {
                         url: url,
@@ -125,7 +131,24 @@ const TimelineEvent = () => {
     return (
         <div>
             <LandingPage></LandingPage>
-            <Card.Header as="h5" className='p-5' style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold"}} >Hasil pencarian '{searchSent}' dengan tipe {roleLabel}</Card.Header>
+            <div>
+                <Card.Header as="h5" className='p-2' style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold"}} >
+                    {/* lg or larger resolution */}
+                    <span className="hidden lg:inline">Hasil pencarian '{searchSent}' dengan tipe {roleLabel}</span>
+
+                    {/* md resolution */}
+                    <span className="lg:hidden hidden md:inline">Hasil pencarian '{searchSent}'</span>
+                    <br className="lg:hidden hidden md:inline" />
+                    <span className="lg:hidden hidden md:inline">dengan tipe {roleLabel}</span>
+
+                    {/* sm or lower resolution */}
+                    <span className="inline lg:hidden md:hidden">Hasil pencarian </span>
+                    <br className="inline lg:hidden md:hidden" />
+                    <span className="inline lg:hidden md:hidden">'{searchSent}'</span>
+                    <br className="inline lg:hidden md:hidden" />
+                    <span className="inline lg:hidden md:hidden"> dengan tipe {roleLabel}</span>
+                </Card.Header>
+            </div>
             <div id="tl-timeline" className="tl-timeline" style={{ width: '100%', height: '65vh'}}></div>
             {showTimeline  && roleSent !== 'Event' && (
                 <div className="tl-timenav" style={{ display: "none !important" }}>

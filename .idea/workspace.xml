@@ -4,14 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f374897-5065-44a1-a876-8a8b834b658f" name="Changes" comment="implement handle-enter timeline">
+    <list default="true" id="5f374897-5065-44a1-a876-8a8b834b658f" name="Changes" comment="solve bugs on landingpage searchbar">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Search.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Search.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ListEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ListEvents.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -22,4 +29,12 @@
     &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\GoLand 2023.1.2\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;
   }
 }</component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="handle click automatic redirect" />
+    <MESSAGE value="Merge branch 'master' into feature/timeline" />
+    <MESSAGE value="Change responsiveness on title, button, and text" />
+    <MESSAGE value="change 'z-index' on search title" />
+    <MESSAGE value="solve bugs on landingpage searchbar" />
+    <option name="LAST_COMMIT_MESSAGE" value="solve bugs on landingpage searchbar" />
+  </component>
 </project>

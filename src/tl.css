@@ -42,6 +42,52 @@
 /*	Mixins.less
 	Snippets of reusable CSS to develop faster and keep code readable
  * ----------------------------------------------------------------- */
+
+/*
+    Extra CSS for Timeline
+*/
+
+.timeline-button {
+    width: 200px;
+    height: 40px;
+    display: inline-block;
+    text-align: center;
+    line-height: 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    padding: 10px 10px;
+    margin: 5px;
+}
+
+.timeline-text {
+    text-align: justify;
+}
+
+@media screen and (min-width: 500px) and (max-width: 650px) {
+    .timeline-button-wrapper {
+        display: inline-flex;
+        justify-content: center;
+        width: calc(100% - 20px);
+    }
+    .timeline-button {
+        height: 60px;
+        text-align: center;
+    }
+}
+
+/* Media query for screens wider than 1280 pixels */
+@media screen and (min-width: 1280px) {
+    .timeline-button {
+        width: calc(50% - 20px); /* 20px represents the total horizontal margins (5px margin on each side) */
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .timeline-button {
+        width: calc(25% - 20px); /* 20px represents the total horizontal margins (5px margin on each side) */
+    }
+}
+
 .tl-timeline {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     /* VCard

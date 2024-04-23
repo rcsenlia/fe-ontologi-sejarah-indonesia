@@ -196,9 +196,9 @@ const LandingPage = () => {
 
     return (
         <div>
-            <div className="mt-3 mb-3 p-4" style={{ maxWidth:'70vw', margin:'auto auto', padding:'12px', zIndex: 922999}}>
+            <div className="p-2" style={{ maxWidth:'70vw', margin:'auto auto', padding:'12px', zIndex: 922999}}>
                 <div className="flex my-3 gap-4">
-                    <div className='w-3/4 grow'>
+                    <div className='w-3/4 grow' style={{ flex: '1', paddingRight: '10px' }}>
                         <SearchBar
                             searchTerm={searchTerm}
                             setSearchTerm={setSearchTerm}
@@ -211,20 +211,20 @@ const LandingPage = () => {
                             handleEnter={handleEnter}
                             placeHolder={placeHolder}/>
                     </div>
-                    <div className='w-1/4 grow'>
-                        <div style={{ display: 'flex', justifyContent: 'left'}}>
-                            <button
-                                style={{ marginLeft: '10px', padding: '7px', background: '#1360E7', color: 'white', borderRadius: '5px', cursor: 'pointer' }}
-                                onClick={handleFilter}
-                            >
-                                Cari
-                            </button>
-                        </div>
+                    <div className='w-1/4 grow' style={{ flex: '0 0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <button
+                            className="timeline-button"
+                            style={{ padding: '7px', background: '#1360E7', color: 'white', borderRadius: '5px', cursor: 'pointer' }}
+                            onClick={handleFilter}
+                        >
+                            Cari
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     );
+
 };
 
 export default LandingPage;
