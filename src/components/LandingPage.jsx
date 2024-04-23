@@ -123,7 +123,7 @@ const LandingPage = () => {
     }
 
     const handleFilter = () => {
-        if (!isClicked) {
+        if (!isClicked && searchTerm !== '') {
             navigate('/search/' + searchTerm)
             setIsClicked(false)
         }
@@ -185,11 +185,13 @@ const LandingPage = () => {
         }
         if (filteredDatas.length !== 0  && appliedRole !== '') {
             setSuggestions([])
+            setSearchTerm('')
             setIsClicked(false)
             navigate(`/timeline/${finalSearch}/${appliedRole}`)
         }
         else if (searchTerm !== '' && appliedRole === '') {
             setIsClicked(false)
+            setSearchTerm('')
             navigate('/search/' + finalSearch)
         }
     }, [appliedSearch, appliedRole, datas])
