@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Link } from 'react-router-dom';
 import { MapContainer, GeoJSON, TileLayer, useMap, Marker } from 'react-leaflet';
 import L, { divIcon } from 'leaflet';
+import './styles.css';
 
 const ChangeMapView = ({ bounds }) => {
   const map = useMap();
@@ -27,8 +28,33 @@ const DetailCard = (prop) => {
 
   return <Card className="my-3">
     <Card.Header as="h5" className='p-4' style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold" }} >Detail {response?.detail.name[1]}</Card.Header>
-    <Card.Body className='flex gap-4 p-4'>
-      <div className='w-3/5 grow'>
+    <Card.Body className='detail-card-body flex flex-wrap sm:flex-nowrap sm:gap-4 sm:mp-4'>
+
+      <div className='w-full sm:hidden'>
+        {response?.location != null &&
+          <MapContainer
+            style={{ height: "40vh" }}
+            minZoom={3}
+            className='rounded my-3'
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <GeoJSON
+              data={response?.location}
+              pointToLayer={(feature, latlng) => {
+                return L.marker(latlng, {
+                  icon: activeThickDotDivIcon
+                })
+              }}
+            />
+            <ChangeMapView bounds={response?.bounds} />
+          </MapContainer>
+        }
+      </div>
+
+      <div className='w-full sm:w-3/5 sm:grow'>
         {Object.entries(response?.detail).map(([key, value]) => (
           <div key={key} className='mb-3'>
             {Array.isArray(value) && value.length === 2 && Array.isArray(value[1]) ? (
@@ -36,7 +62,7 @@ const DetailCard = (prop) => {
               value[1].length > 1 ? (
                 <div>
                   <strong>{value[0]}: </strong>
-                  <ul className="grid grid-cols-3 gap-x-4 list-disc list-inside">
+                  <ul className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 list-disc list-inside">
                     {value[1].map((item, index) => (
                       <li key={`${key}-${index}`} className="text-primary">
                         <Link to={`/detail/${item[0]}`}>{item[1]}</Link>
@@ -64,7 +90,7 @@ const DetailCard = (prop) => {
         ))}
 
       </div>
-      <div className='w-2/5 grow'>
+      <div className='sm:w-2/5 sm:grow'>
         {response?.location != null &&
           <MapContainer
             style={{ height: "40vh" }}
