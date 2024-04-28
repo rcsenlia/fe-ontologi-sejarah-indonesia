@@ -6,7 +6,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../tl.css'
 import { useParams } from "react-router-dom";
 import LandingPage from "./LandingPage";
-import { Card } from "react-bootstrap";
 
 const TimelineEvent = () => {
     const { searchSent, roleSent } = useParams();
@@ -30,6 +29,7 @@ const TimelineEvent = () => {
                 const params = {};
                 params['filter[search]'] = searchSent;
                 params['filter[role]'] = roleSent;
+                setShowTimeline(false)
                 const response = await axios.get('http://127.0.0.1:8000/timeline/', { params });
 
                 if (response.data.length !== 0 ) {
@@ -71,12 +71,15 @@ const TimelineEvent = () => {
                     },
                     text: {
                         headline: `<a style="color: #282c34" href="/detail/${uriEncoded}">${name}</a>`,
-                        text: `<div style="padding-bottom: 10px">
-                                <a href="${wikiurl}" style="background: #0b9955; color: #f0f0f0 ; ${wikiurl === '' ? 'display: none;' : ''}" class="btn mr-2" style="color: #f0f0f0" role="button">Laman Wikipedia</a>
-                                <a href="/detail/${uriEncoded}" style="background: #9810ad; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Detail</a>
-                                <a href="/canvas/${uriEncoded}" style="background: #1360E7; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Canvas Graph</a>
-                                <a href="/events/${uriEncoded}/${name}" style="background: #99630b; color: #f0f0f0" class="btn" style="color: #f0f0f0" role="button">Peristiwa yang Terlibat</a>
-                                </div>` + checkSummary
+                        text: `<div style="padding-bottom: 10px" class="timeline-button-wrapper">
+                                <a href="${wikiurl}" class="timeline-button" style="background: #0b9955; color: #f0f0f0; ${wikiurl === '' ? 'display: none;' : ''}" role="button">Laman Wikipedia</a>
+                                <a href="/detail/${uriEncoded}" class="timeline-button" style="background: #9810ad; color: #f0f0f0" role="button">Detail</a>
+                                <a href="/canvas/${uriEncoded}" class="timeline-button" style="background: #1360E7; color: #f0f0f0" role="button">Canvas Graph</a>
+                                <a href="/events/${uriEncoded}/${name}" class="timeline-button" style="background: #99630b; color: #f0f0f0" role="button">Peristiwa Terlibat</a>
+                                </div> 
+                                <div class="timeline-text"> 
+                                ${checkSummary} 
+                                </div>`
                     },
                     media : {
                         url: url,
@@ -107,11 +110,14 @@ const TimelineEvent = () => {
                     },
                     text: {
                         headline: `<a style="color: #282c34" href="/detail/${uriEncoded}">${name}</a>`,
-                        text: `<div style="padding-bottom: 10px">
-                                <a href="${wikiurl}" style="background: #0b9955; color: #f0f0f0 ; ${wikiurl === '' ? 'display: none;' : ''}" class="btn mr-2" style="color: #f0f0f0" role="button">Laman Wikipedia</a>
-                                <a href="/detail/${uriEncoded}" style="background: #9810ad; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Detail</a>
-                                <a href="/canvas/${uriEncoded}" style="background: #1360E7; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Canvas Graph</a>
-                                </div>` + checkSummary
+                        text: `<div style="padding-bottom: 10px" class="timeline-button-wrapper">
+                                <a href="${wikiurl}" class="timeline-button" style="background: #0b9955; color: #f0f0f0 ; ${wikiurl === '' ? 'display: none;' : ''}" class="btn mr-2" style="color: #f0f0f0" role="button">Laman Wikipedia</a>
+                                <a href="/detail/${uriEncoded}" class="timeline-button" style="background: #9810ad; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Detail</a>
+                                <a href="/canvas/${uriEncoded}"  class="timeline-button" style="background: #1360E7; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Canvas Graph</a>
+                                </div> 
+                                <div class="timeline-text"> 
+                                ${checkSummary} 
+                                </div>`
                     },
                     media : {
                         url: url,
@@ -122,11 +128,29 @@ const TimelineEvent = () => {
         };
     }
 
+    useEffect(() => {
+        const addHeadingToContainers = () => {
+            const slideContentContainers = document.querySelectorAll('.tl-slide-scrollable-container');
+            slideContentContainers.forEach(container => {
+                const heading = document.createElement('div');
+                heading.textContent = `Hasil pencarian '${searchSent}' dengan tipe ${roleLabel}`;
+                heading.className = 'timeline-title'
+
+                container.parentNode.insertBefore(heading, container);
+            });
+        };
+
+        if (showTimeline){
+            addHeadingToContainers();
+        }
+
+        return () => {};
+    }, [showTimeline]);
+
     return (
         <div>
             <LandingPage></LandingPage>
-            <Card.Header as="h5" className='p-5' style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold"}} >Hasil pencarian '{searchSent}' dengan tipe {roleLabel}</Card.Header>
-            <div id="tl-timeline" className="tl-timeline" style={{ width: '100%', height: '65vh'}}></div>
+            <div id="tl-timeline" className="tl-timeline" style={{ width: '100%', height: '70vh'}}></div>
             {showTimeline  && roleSent !== 'Event' && (
                 <div className="tl-timenav" style={{ display: "none !important" }}>
                     <style>

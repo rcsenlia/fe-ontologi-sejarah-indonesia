@@ -42,6 +42,64 @@
 /*	Mixins.less
 	Snippets of reusable CSS to develop faster and keep code readable
  * ----------------------------------------------------------------- */
+
+/*
+    Extra CSS for Timeline
+*/
+
+.timeline-button {
+    width: 200px;
+    height: 40px;
+    display: inline-block;
+    text-align: center;
+    line-height: 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    padding: 10px 10px;
+    margin: 5px;
+    font-size: 1rem;
+}
+
+.timeline-text {
+    text-align: justify;
+    font-size: 1rem;
+}
+
+@media screen and (min-width: 500px) and (max-width: 650px) {
+    .timeline-button-wrapper {
+        display: inline-flex;
+        justify-content: center;
+        width: calc(100% - 20px);
+    }
+    .timeline-button {
+        height: 60px;
+        text-align: center;
+    }
+}
+
+/* Media query for screens wider than 1280 pixels */
+@media screen and (min-width: 1280px) {
+    .timeline-button {
+        width: calc(50% - 20px); /* 20px represents the total horizontal margins (5px margin on each side) */
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    .timeline-button {
+        width: calc(25% - 20px); /* 20px represents the total horizontal margins (5px margin on each side) */
+    }
+}
+
+.timeline-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/*
+    End for extra CSS for Timeline
+*/
+
 .tl-timeline {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     /* VCard
@@ -344,7 +402,7 @@
     font-family: 'tl-icons';
     speak: none;
     font-style: normal;
-    font-weight: normal;
+    font-weight: bold;
     font-variant: normal;
     text-transform: none;
     line-height: 1;
@@ -626,7 +684,7 @@
 ================================================== */
 .tl-menubar-button {
     border: none;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 18px;
     background-color: rgba(242, 242, 242, 0.9);
     cursor: pointer;
@@ -798,7 +856,7 @@
 ================================================== */
 .tl-timenav {
     width: 100%;
-    background-color: #f2f2f2;
+    background-color: #efefef;
     position: relative;
     overflow: hidden;
     border-top: 1px solid #e5e5e5;
@@ -1017,7 +1075,7 @@
 }
 .tl-timemarker .tl-timemarker-content-container {
     position: absolute;
-    background-color: #e5e5e5;
+    background-color: #fcfcfc;
     border: 0;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
@@ -1071,7 +1129,7 @@
     overflow: hidden;
     font-weight: normal;
     margin: 0;
-    color: #bfbfbf;
+    color: #000;
     position: relative;
 }
 .tl-timemarker .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline.tl-headline-fadeout:after,
@@ -1257,7 +1315,8 @@
     box-shadow: 1px 1px 3px rgba(145, 145, 145, 0.5);
 }
 .tl-timemarker.tl-timemarker-active .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline {
-    color: #333;
+    color: #000;
+    font-weight: bold;
 }
 .tl-timemarker.tl-timemarker-active .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline.tl-headline-fadeout:after {
     background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #FFF 80%);
@@ -2043,7 +2102,7 @@
     -khtml-opacity: 0.15;
     -moz-opacity: 0.15;
     opacity: 0.15;
-    font-size: 11px;
+    font-size: 13px;
     line-height: 11px;
 }
 .tl-slidenav-previous .tl-slidenav-description,
@@ -2068,7 +2127,7 @@
 .tl-slidenav-previous .tl-slidenav-content-container .tl-slidenav-description,
 .tl-slidenav-next .tl-slidenav-content-container .tl-slidenav-description {
     text-shadow: 1px 1px 1px #FFF;
-    color: #333;
+    color: #000;
 }
 .tl-slidenav-previous .tl-slidenav-content-container.tl-slidenav-inverted .tl-slidenav-icon,
 .tl-slidenav-next .tl-slidenav-content-container.tl-slidenav-inverted .tl-slidenav-icon,
@@ -2077,7 +2136,7 @@
 .tl-slidenav-previous .tl-slidenav-content-container.tl-slidenav-inverted .tl-slidenav-description,
 .tl-slidenav-next .tl-slidenav-content-container.tl-slidenav-inverted .tl-slidenav-description {
     color: #f2f2f2;
-    text-shadow: 1px 1px 1px #333;
+    text-shadow: 1px 1px 1px #000;
 }
 /* ICONS
 ================================================== */
@@ -2092,7 +2151,7 @@
     line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: 32px;
+    font-size: 35px;
     margin-bottom: 5px;
 }
 .tl-slidenav-next {

@@ -11,8 +11,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TimelineEvent from "./components/Timeline";
 import Search from './components/Search';
 import { ToastContainer } from "react-toastify";
-import LandingPage from "./components/LandingPage";
 import ListEvents from "./components/ListEvents";
+import HomePage from "./components/HomePage";
 export default function App() {
   return (
     <BrowserRouter>
@@ -23,7 +23,7 @@ export default function App() {
           <Route path="detail/:iri_peristiwa" element={<Detail />} />
           <Route path="map" element={<Map />} />
           {/*<Route path="map/:name" element={<MapTimelineClick />} />*/}
-          <Route path="" element={<LandingPage />} />
+          <Route path="" element={<HomePage />} />
           <Route path='search/:search' element={<Search />} />
            <Route path="events/:iriSent/:iriLabel" element={<ListEvents />} />
           <Route path="timeline/:searchSent/:roleSent" element={<TimelineEvent />} />
