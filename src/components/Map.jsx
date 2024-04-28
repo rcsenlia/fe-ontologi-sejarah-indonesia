@@ -157,7 +157,7 @@ const Map = () => {
                 }
               }}
             >
-              <Popup className='w-96'>
+              <Popup className='w-84'>
                 <div className='max-h-60 overflow-y-auto'>
                   {events.map((event, index) => (<div key={`${latitude}+${longitude}+${index}`}>
                     <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{event.name}</h3>

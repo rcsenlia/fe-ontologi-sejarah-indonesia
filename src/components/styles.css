@@ -7,3 +7,9 @@
     background-color: aqua;
     border-radius: 50%;
 }
+
+.detail-card-body {
+    @media (min-width: 640px) {
+        flex-wrap: nowrap !important;
+    }
+}
