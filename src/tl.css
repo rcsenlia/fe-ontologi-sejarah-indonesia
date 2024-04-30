@@ -96,6 +96,10 @@
     font-weight: bold;
 }
 
+.tl-icon-image {
+    display: none !important;
+}
+
 /*
     End for extra CSS for Timeline
 */
