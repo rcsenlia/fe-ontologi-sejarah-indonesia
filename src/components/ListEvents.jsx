@@ -40,6 +40,7 @@ const ListEvents = () => {
                 const url = image.slice(0,4) === 'http' ? image : `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`;
                 const uriEncoded = event.replace('/', '%2F');
                 const checkSummary = summary.length === 0 ? 'Tidak terdapat ringkasan' : summary;
+                const thumbnail = image === 'No image available.svg' ? 'kosong' : url
 
                 return {
                     start_date: {
@@ -65,7 +66,8 @@ const ListEvents = () => {
                     },
                     media : {
                         url: url,
-                        link: url
+                        link: url,
+                        thumbnail: thumbnail
                     },
                 };
             })
