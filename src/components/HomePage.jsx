@@ -83,7 +83,7 @@ const HomePage = () => {
                                                     <Card.Title style={{ fontSize: "1.5rem", fontWeight: "bold" }}>{data.name}</Card.Title>
                                                     <Card.Text>
                                                     </Card.Text>
-                                                    <Link to={`/timeline/${data.name}/${data.typeLabel}`} className='btn mt-2' style={{background: "#11ba1f", color: "#fff"}}>
+                                                    <Link to={`/app/timeline/${data.name}/${data.typeLabel}`} className='btn mt-2' style={{background: "#11ba1f", color: "#fff"}}>
                                                         Lihat Timeline {'>>>'}
                                                     </Link>
                                                 </Card.Body>
@@ -108,7 +108,7 @@ const HomePage = () => {
                                                     <Card.Title style={{ fontSize: "1.5rem", fontWeight: "bold" }}>{data.name}</Card.Title>
                                                     <Card.Text>
                                                     </Card.Text>
-                                                    <Link to={`/timeline/${data.name}/${data.typeLabel}`} className='btn mt-2' style={{background: "#11ba1f", color: "#fff"}}>
+                                                    <Link to={`/app/timeline/${data.name}/${data.typeLabel}`} className='btn mt-2' style={{background: "#11ba1f", color: "#fff"}}>
                                                         Lihat Timeline {'>>>'}
                                                     </Link>
                                                 </Card.Body>
@@ -133,7 +133,7 @@ const HomePage = () => {
                                                     <Card.Title style={{ fontSize: "1.5rem", fontWeight: "bold" }}>{data.name}</Card.Title>
                                                     <Card.Text>
                                                     </Card.Text>
-                                                    <Link to={`/timeline/${data.name}/${data.typeLabel}`} className='btn mt-2' style={{background: "#11ba1f", color: "#fff"}}>
+                                                    <Link to={`/app/timeline/${data.name}/${data.typeLabel}`} className='btn mt-2' style={{background: "#11ba1f", color: "#fff"}}>
                                                         Lihat Timeline {'>>>'}
                                                     </Link>
                                                 </Card.Body>
@@ -165,7 +165,7 @@ const HomePage = () => {
                                                     <Card.Text style={{ textAlign: "justify" }}>
                                                         {data.summary}
                                                     </Card.Text>
-                                                    <Link to={`/timeline/${data.name}/${data.typeLabel}`} className='btn mt-2' style={{background: "#11ba1f", color: "#fff"}}>
+                                                    <Link to={`/app/timeline/${data.name}/${data.typeLabel}`} className='btn mt-2' style={{background: "#11ba1f", color: "#fff"}}>
                                                         Lihat Timeline {'>>>'}
                                                     </Link>
                                                 </Card.Body>
@@ -189,7 +189,7 @@ const HomePage = () => {
                                                     <Card.Text style={{ textAlign: "justify" }}>
                                                         {data.summary}
                                                     </Card.Text>
-                                                    <Link to={`/timeline/${data.name}/${data.typeLabel}`} className='btn mt-2' style={{background: "#11ba1f", color: "#fff"}}>
+                                                    <Link to={`/app/timeline/${data.name}/${data.typeLabel}`} className='btn mt-2' style={{background: "#11ba1f", color: "#fff"}}>
                                                         Lihat Timeline {'>>>'}
                                                     </Link>
                                                 </Card.Body>
@@ -235,7 +235,7 @@ const HomePage = () => {
                                                             <ChangeMapView bounds={data.bounds} />
                                                         </MapContainer>
                                                     </Card.Text>
-                                                    <Link to={`/timeline/${data.name}/${data.typeLabel}`} className='btn mt-2' style={{background: "#11ba1f", color: "#fff"}}>
+                                                    <Link to={`/app/timeline/${data.name}/${data.typeLabel}`} className='btn mt-2' style={{background: "#11ba1f", color: "#fff"}}>
                                                         Lihat Timeline {'>>>'}
                                                     </Link>
                                                 </Card.Body>
