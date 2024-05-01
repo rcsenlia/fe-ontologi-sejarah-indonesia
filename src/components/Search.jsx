@@ -142,8 +142,16 @@ const Search = () => {
                     {data.summary}
                   </Card.Text>
                   <Link to={`/timeline/${data.name}/${data.typeLabel}`}
-                    className='btn btn-info btn-sm mt-2'>
+                        className='btn mt-2' style={{background: "#11ba1f", color: "#fff"}}>
                     Lihat Timeline {'>>>'}
+                  </Link>
+                  <Link to={`/detail/${data.iri}`}
+                        className='btn mt-2 ml-2' style={{background: "#f0bd05", color: "#fff"}}>
+                    Lihat Detail {'>>>'}
+                  </Link>
+                  <Link to={`/canvas/${data.iri}`}
+                        className='btn mt-2 ml-2' style={{background: "#1360E7", color: "#fff"}}>
+                    Lihat Canvas Graph {'>>>'}
                   </Link>
                 </Card.Body>
               </Card>)
