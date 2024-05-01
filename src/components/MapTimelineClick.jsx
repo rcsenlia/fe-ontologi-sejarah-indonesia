@@ -18,7 +18,7 @@ const MapTimelineClick = () => {
     useEffect(() => {
         const fetchTimelineLocation = async () => {
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/timeline/location/${name}/`);
+                const response = await axios.get(`/api/timeline/location/${name}/`);
                 setDatas(response.data)
                 setLoading(false);
             } catch (error) {

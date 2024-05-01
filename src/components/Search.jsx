@@ -13,7 +13,7 @@ const Search = () => {
   const maxDataPerPage = 10;
 
   useEffect(() => {
-    let url = 'http://127.0.0.1:8000/map/search/' + search + '/' + (page * maxDataPerPage);
+    let url = '/api/map/search/' + search + '/' + (page * maxDataPerPage);
     fetch(url, {
       method: "GET",
       headers: { "Content-Type": "application/json" }
@@ -26,7 +26,7 @@ const Search = () => {
   }, [search, page]);
 
   useEffect(() => {
-    let url = 'http://127.0.0.1:8000/map/search/' + search + '/total';
+    let url = '/api/map/search/' + search + '/total';
     fetch(url, {
       method: "GET",
       headers: { "Content-Type": "application/json" }

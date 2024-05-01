@@ -41,7 +41,7 @@ const Map = () => {
 
 
   useEffect(() => {
-    let url = 'http://127.0.0.1:8000/map/';
+    let url = '/api/map/';
     fetch(url, {
       method: "GET",
       headers: { "Content-Type": "application/json" }

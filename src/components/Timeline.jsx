@@ -29,7 +29,7 @@ const TimelineEvent = () => {
                 params['filter[search]'] = searchSent;
                 params['filter[role]'] = roleSent;
                 setShowTimeline(false)
-                const response = await axios.get('http://127.0.0.1:8000/timeline/', { params });
+                const response = await axios.get('/api/timeline/', { params });
 
                 if (response.data.length !== 0 ) {
                     const timeline = roleSent === 'Event' ? mapTimelineEvents(response.data) : mapTimeline(response.data);

@@ -34,9 +34,9 @@ const HomePage = () => {
     useEffect(() => {
         const fetchTimeline = async () => {
             try {
-                const responseEvents = await axios.get('http://127.0.0.1:8000/timeline/homepage/event/');
-                const responseActors = await axios.get('http://127.0.0.1:8000/timeline/homepage/actor/');
-                const responsePlaces = await axios.get('http://127.0.0.1:8000/timeline/homepage/place/');
+                const responseEvents = await axios.get('/api/timeline/homepage/event/');
+                const responseActors = await axios.get('/api/timeline/homepage/actor/');
+                const responsePlaces = await axios.get('/api/timeline/homepage/place/');
 
                 if (responseEvents.data.length !== 0 || responseActors.data.length !== 0 || responsePlaces.data.length !== 0) {
                     setDataEvents(responseEvents.data)

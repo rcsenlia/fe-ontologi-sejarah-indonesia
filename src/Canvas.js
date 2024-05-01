@@ -20,7 +20,7 @@ import { scryRenderedComponentsWithType } from "react-dom/test-utils";
 import Select from "react-select";
 import { toast } from 'react-toastify';
 
-const baseURL = "http://localhost:8000/graph/"
+const baseURL = "/api/graph/"
 
 function Canvas() {
   
@@ -131,87 +131,192 @@ function Canvas() {
     setType(type)
   }
 //search
-const [suggestions, setSuggestions] = useState([]);
-const [searchTerm, setSearchTerm] = useState("");
-const placeHolder = "Ketikkan nama peristiwa, tokoh, atau tempat sejarah...";
 const [datas, setDatas] = useState([]);
+const [suggestions, setSuggestions] = useState([]);
+
+const [searchTerm, setSearchTerm] = useState("");
+const [searchIRI, setSearchIRI] = useState("");
+const placeHolder = "Ketikkan nama peristiwa sejarah, tokoh, atau tempat...";
 const [roleTerm, setRoleTerm] = useState('');
+
 const [appliedSearch, setAppliedSearch] = useState('');
 const [appliedRole, setAppliedRole] = useState({});
-const [searchIRI, setSearchIRI] = useState("");
-const navigate = useNavigate();
-const role = [
-  { value: 'Event', label: 'Peristiwa' },
-  { value: 'Actor', label: 'Tokoh' },
-  { value: 'Place', label: 'Tempat' }
-];
+const [isClicked, setIsClicked] = useState(false);
+const [isEntered, setIsEntered] = useState(false);
 
-const handleClick = (val) => {
-  setSearchTerm(val.label)
-  setSuggestions([])
-};
+const navigate = useNavigate();
+
+const mapType = (tp) => {
+  if (tp.slice(-5) === 'Actor') {
+      return 'Actor'
+  }
+  else if (tp.slice(-5) === 'Event' ) {
+      return 'Event'
+  }
+  else if (tp.slice(-7) === 'Feature' ){
+      return 'Feature'
+  }
+}
+
+
+const handleAddLabel = (listData) => {
+  for (const i in listData) {
+      if (listData[i].type.slice(-5) === 'Event') {
+          listData[i].label += ' (Peristiwa)'
+      }
+      else if (listData[i].type.slice(-5) === 'Actor') {
+          listData[i].label += ' (Tokoh)'
+      }
+      else if (listData[i].type.slice(-7) === 'Feature') {
+          listData[i].label += ' (Tempat)'
+      }
+  }
+
+  return listData
+}
+
+const handleRemoveLabel = (data, role) => {
+  let suffix;
+  if (role === 'Event') {
+      suffix = ' (Peristiwa)'
+  }
+  else if (role === 'Actor') {
+      suffix = ' (Tokoh)'
+  }
+  else if (role === 'Feature') {
+      suffix = ' (Tempat)'
+  }
+  return data.replace(suffix, '');
+}
+
+const getTypeBySuffix = (data) => {
+  const splittedData = data.split("(")
+  const suffix = splittedData[splittedData.length - 1]
+  if (suffix.includes('Peristiwa')) {
+      return 'Event'
+  }
+  else if (suffix.includes('Tokoh')) {
+      return 'Actor'
+  }
+  else if (suffix.includes('Tempat')) {
+      return 'Feature'
+  }
+  return 'a'
+}
 
 const handleChange = (trigger) => {
   setSearchTerm(trigger.target.value)
   setSearchIRI("")
-  setSuggestions(Object.values(datas)
-    .map(data => ({ value: data.iri, label: data.name, type: data.type }))
-    .filter(data => data.label.toLowerCase().includes(trigger.target.value.toLowerCase()))
-    .sort((a, b) => a.label > b.label ? 1 : -1));
+  let suggestions = Object.values(datas)
+      .map(data => ({ value: data.iri, label: data.name, type: data.type }))
+      .filter(data => data.label.toLowerCase().includes(trigger.target.value.toLowerCase()))
+      .sort((a, b) => a.label > b.label ? 1 : -1)
+
+  if (suggestions.length > 4) {
+      suggestions = suggestions.slice(0, 4)
+      suggestions.push({ value: '', label: 'Search more...', type: 'a' })
+  }
+
+  suggestions = handleAddLabel(suggestions)
+  setSuggestions(suggestions);
+}
+
+const handleClick = (val) => {
+  if (val.label === 'Search more...') {
+      setIsClicked(false)
+      navigate('/search/' + searchTerm)
+  }
+
+  setIsClicked(true)
+  setSearchTerm(val.label)
+  setRoleTerm(mapType(val.type))
+
+  // Handling click then automatically redirect to timeline
+  setAppliedSearch(val.label)
+  setAppliedRole(mapType(val.type))
+
+  setSearchIRI(val.value)
+  setSuggestions([])
+};
+
+const handleEnter = (val) => {
+  const keyEvents = val.nativeEvent
+  if (keyEvents.keyCode === 13) {
+      setIsEntered(true)
+  }
 }
 
 const handleFilter = () => {
-  if (searchTerm === '' || roleTerm === '') {
-    toast.error(`Masukkan nama dan tipe pencarian terlebih dahulu`, {
-      autoClose: 2000
-    })
+  if (!isClicked) {
+      navigate('/search/' + searchTerm)
+      setIsClicked(false)
+  }
+  if (searchTerm === '') {
+      toast.error(`Masukkan kata kunci pencarian terlebih dahulu`, {
+          autoClose: 2000
+      })
   }
   else {
-    setAppliedSearch(searchTerm);
-    setAppliedRole(roleTerm);
+      setAppliedSearch(searchTerm);
+      setAppliedRole(roleTerm);
   }
 };
 
-
 useEffect(() => {
   const fetchData = async () => {
-    try {
-      const responseEvent = await axios.get('http://127.0.0.1:8000/map/all');
-      if (responseEvent.data.length !== 0) {
-        setDatas(responseEvent.data)
+      try {
+          const responseEvent = await axios.get('/api/map/all');
+          if (responseEvent.data.length !== 0 ) {
+              setDatas(responseEvent.data)
+          }
+      } catch (error) {
+          console.error('Error fetching data:', error);
       }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
   };
 
   fetchData();
 }, []);
 
-  useEffect(() => {
-    const filterData = (dt) => {
-      const isDataWithTypeAvailable = dt.type.slice(-5) === appliedRole.value;
-      const doesNameContainSearch = dt.name.toLowerCase().includes(appliedSearch.toLowerCase());
-      return isDataWithTypeAvailable && doesNameContainSearch
-    }
-
-    const filteredDatas = [];
-    for (const data of datas) {
-      if (filterData(data)) {
-        filteredDatas.push(data);
-        break;
+useEffect(() => {
+  if (isEntered && suggestions.length === 0) {
+      if (searchIRI === '') {
+          navigate('/search/' + searchTerm);
       }
-    }
-    if (filteredDatas.length !== 0) {
+      else {
+          setRoleTerm(getTypeBySuffix(searchTerm));
+          setAppliedRole(getTypeBySuffix(searchTerm));
+          setAppliedSearch(searchTerm);
+      }
+      setIsEntered(false)
+  }
+}, [isEntered])
+
+useEffect(() => {
+  const finalSearch = handleRemoveLabel(appliedSearch, appliedRole)
+
+  const filterData = (dt) => {
+      if (appliedSearch !== ''){
+          return dt.name.toLowerCase().includes(finalSearch.toLowerCase());
+      }
+  }
+
+  const filteredDatas = [];
+  for (const data of datas) {
+      if (filterData(data)) {
+          filteredDatas.push(data);
+          break;
+      }
+  }
+  if (filteredDatas.length !== 0  && appliedRole !== '') {
       setSuggestions([])
-      navigate(`/timeline/${appliedSearch}/${appliedRole.value}`)
-    }
-    else if (searchTerm !== '') {
-      toast.warn(`${appliedSearch} dengan tipe ${appliedRole.label} tidak ditemukan`, {
-        autoClose: 2000
-      })
-    }
-  }, [appliedSearch, appliedRole, datas])
+      setIsClicked(false)
+      navigate(`/timeline/${finalSearch}/${appliedRole}`)
+  }
+  else if (searchTerm !== '' && appliedRole === '') {
+      setIsClicked(false)
+      navigate('/search/' + finalSearch)
+  }
+}, [appliedSearch, appliedRole, datas])
 
 
 
@@ -220,7 +325,7 @@ useEffect(() => {
 
       <Offcanvas show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>{node.label}</Offcanvas.Title>
+          <Offcanvas.Title style={{ fontSize:"30px"}}>{node.label}</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           {type === 'node' ?
@@ -234,11 +339,13 @@ useEffect(() => {
                 </Row>
                 
                 <Row>
-                <ListGroup variant="flush" style={{ overflowY: "auto", maxHeight:"300px"}}>
-                  <ListGroupItem>Nama Property :</ListGroupItem>
-                    {Object.keys(dataNodes[node.id]['property'] ?? []).map((key)=><ListGroup.Item  onClick={dataNodes[node.id]['property'][key]['status'] ? () => { add(node, key) } : () => { remove(node, key) }} action>{
+                <ListGroup variant="flush" style={{ overflowY: "auto",height:"350px"}}>
+                  <ListGroup.Item style={{ fontSize:"25px"}}>Nama Property :</ListGroup.Item>
+                    {Object.keys(dataNodes[node.id]['property'] ?? []).map((key)=><ListGroup.Item style={{ fontSize:"20px"}}  onClick={dataNodes[node.id]['property'][key]['status'] ? () => { add(node, key) } : () => { remove(node, key) }} action>{
                       dataNodes[node.id]['property'][key]['status'] ? `${key} (show)` : `${key} (hide)`
                     }</ListGroup.Item>)}
+                  
+                 
                   </ListGroup>
                 </Row>
                   <Row>
@@ -250,9 +357,9 @@ useEffect(() => {
               </>
             :
             <Row>
-              Detail Property :
+              <p style={{ fontSize:"25px"}}>Penjelasan :</p>
               <br/>
-              {node.detail}
+              <p style={{ fontSize:"20px"}}>{node.detail}</p>
             </Row>
 
               
@@ -264,57 +371,48 @@ useEffect(() => {
       </Offcanvas>
 
       <Row >
-      
-      <div>
-        <div className="mt-3 mb-3 p-4" style={{ maxWidth: '70vw', margin: 'auto auto', padding: '12px', zIndex: 922999 }}>
-          <div className="flex my-3 gap-4">
-          {load==true?<></>:<Alert key='primary' variant='primary'>
+        <div>
+      <div className="mt-3 mb-3 p-4" style={{ maxWidth:'70vw', margin:'auto auto', padding:'12px', zIndex: 922999}}>
+                <div className="flex my-3 gap-4">
+                {load==true?<></>:<Alert key='primary' variant='primary'>
           Loading data! <Spinner size={'sm'} animation="border" role="status">
         </Spinner>
         </Alert>}
-            <div className='w-3/4 grow'>
-              <SearchBar
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-                searchIRI={searchIRI}
-                setSearchIRI={setSearchIRI}
-                suggestions={suggestions}
-                setSuggestions={setSuggestions}
-                handleChange={handleChange}
-                handleClick={handleClick}
-                handleEnter={() => { }}
-                placeHolder={placeHolder} />
+                    <div className='w-3/4 grow'>
+                        <SearchBar
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
+                            searchIRI={searchIRI}
+                            setSearchIRI={setSearchIRI}
+                            suggestions={suggestions}
+                            setSuggestions={setSuggestions}
+                            handleChange={handleChange}
+                            handleClick={handleClick}
+                            handleEnter={handleEnter}
+                            placeHolder={placeHolder}/>
+                    </div>
+                    <div className='w-1/4 grow'>
+                        <div style={{ display: 'flex', justifyContent: 'left'}}>
+                            <button
+                                style={{ marginLeft: '10px', padding: '7px', background: '#1360E7', color: 'white', borderRadius: '5px', cursor: 'pointer' }}
+                                onClick={handleFilter}
+                            >
+                                Cari
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className='w-1/4 grow'>
-              <div style={{ display: 'flex', justifyContent: 'left' }}>
-                <Select
-                  placeholder="Pilih Tipe..."
-                  className="basic-single"
-                  classNamePrefix="select"
-                  name="role"
-                  options={role}
-                  onChange={setRoleTerm}
-                  styles={{ menuPortal: zzz => ({ ...zzz, position: "relative", zIndex: 9999 }) }}
-                />
 
-                <button
-                  style={{ marginLeft: '10px', padding: '7px', background: '#1360E7', color: 'white', borderRadius: '5px', cursor: 'pointer' }}
-                  onClick={handleFilter}
-                >
-                  Cari
-                </button>
-              </div>
+      
             </div>
-          </div>
-        </div>
-        </div>        
       </Row>
       <Row>
         <div style={{ position: "fixed", width: '100%', height: '100%' }}>
 
           <GraphCanvas
             ref={ref}
-            theme={darkTheme}
+            // theme={darkTheme}
             labelType={'all'}
             nodes={nodes}
             edges={edges}

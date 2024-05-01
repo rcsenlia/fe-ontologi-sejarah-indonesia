@@ -2,7 +2,7 @@ import { Component } from "react";
 import { useEffect,useState } from 'react';
 import axios from "axios";
 
-const baseURL = "http://localhost:8000/graph/uri/"
+const baseURL = "/api/graph/uri/"
 
 function Daftar({label,add,remove,status,data}){
     const [list,setList] = useState([])
