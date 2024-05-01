@@ -224,7 +224,7 @@ const handleChange = (trigger) => {
 const handleClick = (val) => {
   if (val.label === 'Search more...') {
       setIsClicked(false)
-      navigate('/search/' + searchTerm)
+      navigate('/app/search/' + searchTerm)
   }
 
   setIsClicked(true)
@@ -248,7 +248,7 @@ const handleEnter = (val) => {
 
 const handleFilter = () => {
   if (!isClicked) {
-      navigate('/search/' + searchTerm)
+      navigate('/app/search/' + searchTerm)
       setIsClicked(false)
   }
   if (searchTerm === '') {
@@ -280,7 +280,7 @@ useEffect(() => {
 useEffect(() => {
   if (isEntered && suggestions.length === 0) {
       if (searchIRI === '') {
-          navigate('/search/' + searchTerm);
+          navigate('/app/search/' + searchTerm);
       }
       else {
           setRoleTerm(getTypeBySuffix(searchTerm));
@@ -310,11 +310,11 @@ useEffect(() => {
   if (filteredDatas.length !== 0  && appliedRole !== '') {
       setSuggestions([])
       setIsClicked(false)
-      navigate(`/timeline/${finalSearch}/${appliedRole}`)
+      navigate(`/app/timeline/${finalSearch}/${appliedRole}`)
   }
   else if (searchTerm !== '' && appliedRole === '') {
       setIsClicked(false)
-      navigate('/search/' + finalSearch)
+      navigate('/app/search/' + finalSearch)
   }
 }, [appliedSearch, appliedRole, datas])
 
@@ -350,7 +350,7 @@ useEffect(() => {
                 </Row>
                   <Row>
                     <ButtonGroup>
-                  <Button variant="primary" href={`/detail/${node.id}`} active>detail</Button>
+                  <Button variant="primary" href={`/app/detail/${node.id}`} active>detail</Button>
                   <Button variant='danger' onClick={hapus} active>hapus</Button>
                   </ButtonGroup>
               </Row>

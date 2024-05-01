@@ -31,7 +31,7 @@ const Detail = () => {
 
   const handleClick = (val) => {
     if (val.label === 'Search more...') {
-      navigate('/search/' + searchTerm)
+      navigate('/app/search/' + searchTerm)
     }
 
     setSearchTerm(val.label)
@@ -112,7 +112,7 @@ const Detail = () => {
     }
     if (filteredDatas.length !== 0) {
       setSuggestions([])
-      navigate(`/timeline/${appliedSearch}/${appliedRole.value}`)
+      navigate(`/app/timeline/${appliedSearch}/${appliedRole.value}`)
     }
     else if (searchTerm !== '') {
       toast.warn(`${appliedSearch} dengan tipe ${appliedRole.label} tidak ditemukan`, {
