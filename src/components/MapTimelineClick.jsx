@@ -9,7 +9,7 @@ import {Link, useParams} from 'react-router-dom';
 import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import domain from "../domain"
 const MapTimelineClick = () => {
     const {name} = useParams();
     const [datas, setDatas] = useState([]);
@@ -18,7 +18,7 @@ const MapTimelineClick = () => {
     useEffect(() => {
         const fetchTimelineLocation = async () => {
             try {
-                const response = await axios.get(`/api/timeline/location/${name}/`);
+                const response = await axios.get(domain+`/api/timeline/location/${name}/`);
                 setDatas(response.data)
                 setLoading(false);
             } catch (error) {

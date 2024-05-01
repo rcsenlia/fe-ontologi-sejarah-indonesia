@@ -17,7 +17,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path="/app/" element={<Layout />}>
           <Route path='canvas/' element={<Canvas />} />
           <Route path='canvas/:nama_peristiwa' element={<Canvas />} />
           <Route path="detail/:iri_peristiwa" element={<Detail />} />

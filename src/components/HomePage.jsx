@@ -8,7 +8,7 @@ import { Card, Container } from "react-bootstrap";
 import L, { divIcon } from 'leaflet';
 import { MapContainer, GeoJSON, TileLayer, useMap } from 'react-leaflet';
 import { Link } from "react-router-dom";
-
+import domain from "../domain"
 const ChangeMapView = ({ bounds }) => {
     const map = useMap();
     useEffect(() => {
@@ -34,9 +34,9 @@ const HomePage = () => {
     useEffect(() => {
         const fetchTimeline = async () => {
             try {
-                const responseEvents = await axios.get('/api/timeline/homepage/event/');
-                const responseActors = await axios.get('/api/timeline/homepage/actor/');
-                const responsePlaces = await axios.get('/api/timeline/homepage/place/');
+                const responseEvents = await axios.get(domain+'/api/timeline/homepage/event/');
+                const responseActors = await axios.get(domain+'/api/timeline/homepage/actor/');
+                const responsePlaces = await axios.get(domain+'/api/timeline/homepage/place/');
 
                 if (responseEvents.data.length !== 0 || responseActors.data.length !== 0 || responsePlaces.data.length !== 0) {
                     setDataEvents(responseEvents.data)

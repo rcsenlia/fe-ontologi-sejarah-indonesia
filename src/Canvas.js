@@ -19,8 +19,8 @@ import { ButtonGroup, FormText, CloseButton,Alert,Stack,Offcanvas,Image,Spinner,
 import { scryRenderedComponentsWithType } from "react-dom/test-utils";
 import Select from "react-select";
 import { toast } from 'react-toastify';
-
-const baseURL = "/api/graph/"
+import domain from "./domain"
+const baseURL = domain+"/api/graph/"
 
 function Canvas() {
   
@@ -265,7 +265,7 @@ const handleFilter = () => {
 useEffect(() => {
   const fetchData = async () => {
       try {
-          const responseEvent = await axios.get('/api/map/all');
+          const responseEvent = await axios.get(domain+'/api/map/all');
           if (responseEvent.data.length !== 0 ) {
               setDatas(responseEvent.data)
           }

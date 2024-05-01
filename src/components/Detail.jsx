@@ -8,7 +8,7 @@ import SearchBar from "./SearchBar";
 import Select from "react-select";
 import axios from 'axios';
 import LandingPage from "./LandingPage";
-
+import domain from "../domain"
 const Detail = () => {
   const navigate = useNavigate();
   const { iri_peristiwa } = useParams();
@@ -68,7 +68,7 @@ const Detail = () => {
   };
 
   useEffect(() => {
-    let url = '/api/map/detail/' + iri_peristiwa;
+    let url = domain+'/api/map/detail/' + iri_peristiwa;
     // console.log(url)
     fetch(url, {
       method: "GET",
@@ -84,7 +84,7 @@ const Detail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseEvent = await axios.get('/api/map/all');
+        const responseEvent = await axios.get(domain+'/api/map/all');
         if (responseEvent.data.length !== 0) {
           setDatas(responseEvent.data)
         }
