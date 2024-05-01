@@ -1,6 +1,7 @@
 {
   "name": "visual2",
   "version": "0.1.0",
+  "homepage": "/app",
   "private": true,
   "dependencies": {
     "@knight-lab/timelinejs": "^3.9.3",
