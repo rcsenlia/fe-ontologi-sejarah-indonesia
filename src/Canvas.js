@@ -147,175 +147,176 @@ const [isEntered, setIsEntered] = useState(false);
 const navigate = useNavigate();
 
 const mapType = (tp) => {
-  if (tp.slice(-5) === 'Actor') {
-      return 'Actor'
-  }
-  else if (tp.slice(-5) === 'Event' ) {
-      return 'Event'
-  }
-  else if (tp.slice(-7) === 'Feature' ){
-      return 'Feature'
-  }
+    if (tp.slice(-5) === 'Actor') {
+        return 'Actor'
+    }
+    else if (tp.slice(-5) === 'Event' ) {
+        return 'Event'
+    }
+    else if (tp.slice(-7) === 'Feature' ){
+        return 'Feature'
+    }
 }
 
-
 const handleAddLabel = (listData) => {
-  for (const i in listData) {
-      if (listData[i].type.slice(-5) === 'Event') {
-          listData[i].label += ' (Peristiwa)'
-      }
-      else if (listData[i].type.slice(-5) === 'Actor') {
-          listData[i].label += ' (Tokoh)'
-      }
-      else if (listData[i].type.slice(-7) === 'Feature') {
-          listData[i].label += ' (Tempat)'
-      }
-  }
+    for (const i in listData) {
+        if (listData[i].type.slice(-5) === 'Event') {
+            listData[i].label += ' (Peristiwa)'
+        }
+        else if (listData[i].type.slice(-5) === 'Actor') {
+            listData[i].label += ' (Tokoh)'
+        }
+        else if (listData[i].type.slice(-7) === 'Feature') {
+            listData[i].label += ' (Tempat)'
+        }
+    }
 
-  return listData
+    return listData
 }
 
 const handleRemoveLabel = (data, role) => {
-  let suffix;
-  if (role === 'Event') {
-      suffix = ' (Peristiwa)'
-  }
-  else if (role === 'Actor') {
-      suffix = ' (Tokoh)'
-  }
-  else if (role === 'Feature') {
-      suffix = ' (Tempat)'
-  }
-  return data.replace(suffix, '');
+    let suffix;
+    if (role === 'Event') {
+        suffix = ' (Peristiwa)'
+    }
+    else if (role === 'Actor') {
+        suffix = ' (Tokoh)'
+    }
+    else if (role === 'Feature') {
+        suffix = ' (Tempat)'
+    }
+    return data.replace(suffix, '');
 }
 
 const getTypeBySuffix = (data) => {
-  const splittedData = data.split("(")
-  const suffix = splittedData[splittedData.length - 1]
-  if (suffix.includes('Peristiwa')) {
-      return 'Event'
-  }
-  else if (suffix.includes('Tokoh')) {
-      return 'Actor'
-  }
-  else if (suffix.includes('Tempat')) {
-      return 'Feature'
-  }
-  return 'a'
+    const splittedData = data.split("(")
+    const suffix = splittedData[splittedData.length - 1]
+    if (suffix.includes('Peristiwa')) {
+        return 'Event'
+    }
+    else if (suffix.includes('Tokoh')) {
+        return 'Actor'
+    }
+    else if (suffix.includes('Tempat')) {
+        return 'Feature'
+    }
+    return 'a'
 }
 
 const handleChange = (trigger) => {
-  setSearchTerm(trigger.target.value)
-  setSearchIRI("")
-  let suggestions = Object.values(datas)
-      .map(data => ({ value: data.iri, label: data.name, type: data.type }))
-      .filter(data => data.label.toLowerCase().includes(trigger.target.value.toLowerCase()))
-      .sort((a, b) => a.label > b.label ? 1 : -1)
+    setSearchTerm(trigger.target.value)
+    setSearchIRI("")
+    let suggestions = Object.values(datas)
+        .map(data => ({ value: data.iri, label: data.name, type: data.type }))
+        .filter(data => data.label.toLowerCase().includes(trigger.target.value.toLowerCase()))
+        .sort((a, b) => a.label > b.label ? 1 : -1)
 
-  if (suggestions.length > 4) {
-      suggestions = suggestions.slice(0, 4)
-      suggestions.push({ value: '', label: 'Search more...', type: 'a' })
-  }
+    if (suggestions.length > 4) {
+        suggestions = suggestions.slice(0, 4)
+        suggestions.push({ value: '', label: 'Search more...', type: 'a' })
+    }
 
-  suggestions = handleAddLabel(suggestions)
-  setSuggestions(suggestions);
+    suggestions = handleAddLabel(suggestions)
+    setSuggestions(suggestions);
 }
 
 const handleClick = (val) => {
-  if (val.label === 'Search more...') {
-      setIsClicked(false)
-      navigate('/app/search/' + searchTerm)
-  }
+    if (val.label === 'Search more...') {
+        setIsClicked(false)
+        navigate('/search/' + searchTerm)
+    }
 
-  setIsClicked(true)
-  setSearchTerm(val.label)
-  setRoleTerm(mapType(val.type))
+    setIsClicked(true)
+    setSearchTerm(val.label)
+    setRoleTerm(mapType(val.type))
 
-  // Handling click then automatically redirect to timeline
-  setAppliedSearch(val.label)
-  setAppliedRole(mapType(val.type))
+    // Handling click then automatically redirect to timeline
+    setAppliedSearch(val.label)
+    setAppliedRole(mapType(val.type))
 
-  setSearchIRI(val.value)
-  setSuggestions([])
+    setSearchIRI(val.value)
+    setSuggestions([])
 };
 
 const handleEnter = (val) => {
-  const keyEvents = val.nativeEvent
-  if (keyEvents.keyCode === 13) {
-      setIsEntered(true)
-  }
+    const keyEvents = val.nativeEvent
+    if (keyEvents.keyCode === 13) {
+        setIsEntered(true)
+    }
 }
 
 const handleFilter = () => {
-  if (!isClicked) {
-      navigate('/app/search/' + searchTerm)
-      setIsClicked(false)
-  }
-  if (searchTerm === '') {
-      toast.error(`Masukkan kata kunci pencarian terlebih dahulu`, {
-          autoClose: 2000
-      })
-  }
-  else {
-      setAppliedSearch(searchTerm);
-      setAppliedRole(roleTerm);
-  }
+    if (!isClicked && searchTerm !== '') {
+        navigate('/search/' + searchTerm)
+        setIsClicked(false)
+    }
+    if (searchTerm === '') {
+        toast.error(`Masukkan kata kunci pencarian terlebih dahulu`, {
+            autoClose: 2000
+        })
+    }
+    else {
+        setAppliedSearch(searchTerm);
+        setAppliedRole(roleTerm);
+    }
 };
 
 useEffect(() => {
-  const fetchData = async () => {
-      try {
-          const responseEvent = await axios.get(domain+'/api/map/all');
-          if (responseEvent.data.length !== 0 ) {
-              setDatas(responseEvent.data)
-          }
-      } catch (error) {
-          console.error('Error fetching data:', error);
-      }
-  };
+    const fetchData = async () => {
+        try {
+            const responseEvent = await axios.get(domain+'/api/map/all');
+            if (responseEvent.data.length !== 0 ) {
+                setDatas(responseEvent.data)
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
-  fetchData();
+    fetchData();
 }, []);
 
 useEffect(() => {
-  if (isEntered && suggestions.length === 0) {
-      if (searchIRI === '') {
-          navigate('/app/search/' + searchTerm);
-      }
-      else {
-          setRoleTerm(getTypeBySuffix(searchTerm));
-          setAppliedRole(getTypeBySuffix(searchTerm));
-          setAppliedSearch(searchTerm);
-      }
-      setIsEntered(false)
-  }
+    if (isEntered && suggestions.length === 0) {
+        if (searchIRI === '') {
+            navigate('/search/' + searchTerm);
+        }
+        else {
+            setRoleTerm(getTypeBySuffix(searchTerm));
+            setAppliedRole(getTypeBySuffix(searchTerm));
+            setAppliedSearch(searchTerm);
+        }
+        setIsEntered(false)
+    }
 }, [isEntered])
 
 useEffect(() => {
-  const finalSearch = handleRemoveLabel(appliedSearch, appliedRole)
+    const finalSearch = handleRemoveLabel(appliedSearch, appliedRole)
 
-  const filterData = (dt) => {
-      if (appliedSearch !== ''){
-          return dt.name.toLowerCase().includes(finalSearch.toLowerCase());
-      }
-  }
+    const filterData = (dt) => {
+        if (appliedSearch !== ''){
+            return dt.name.toLowerCase().includes(finalSearch.toLowerCase());
+        }
+    }
 
-  const filteredDatas = [];
-  for (const data of datas) {
-      if (filterData(data)) {
-          filteredDatas.push(data);
-          break;
-      }
-  }
-  if (filteredDatas.length !== 0  && appliedRole !== '') {
-      setSuggestions([])
-      setIsClicked(false)
-      navigate(`/app/timeline/${finalSearch}/${appliedRole}`)
-  }
-  else if (searchTerm !== '' && appliedRole === '') {
-      setIsClicked(false)
-      navigate('/app/search/' + finalSearch)
-  }
+    const filteredDatas = [];
+    for (const data of datas) {
+        if (filterData(data)) {
+            filteredDatas.push(data);
+            break;
+        }
+    }
+    if (filteredDatas.length !== 0  && appliedRole !== '') {
+        setSuggestions([])
+        setSearchTerm('')
+        setIsClicked(false)
+        navigate(`/timeline/${finalSearch}/${appliedRole}`)
+    }
+    else if (searchTerm !== '' && appliedRole === '') {
+        setIsClicked(false)
+        setSearchTerm('')
+        navigate('/search/' + finalSearch)
+    }
 }, [appliedSearch, appliedRole, datas])
 
 
@@ -372,13 +373,13 @@ useEffect(() => {
 
       <Row >
         <div>
-      <div className="mt-3 mb-3 p-4" style={{ maxWidth:'70vw', margin:'auto auto', padding:'12px', zIndex: 922999}}>
+        <div className="p-2" style={{ maxWidth:'70vw', margin:'auto auto', padding:'12px', zIndex: 922999}}>
                 <div className="flex my-3 gap-4">
                 {load==true?<></>:<Alert key='primary' variant='primary'>
           Loading data! <Spinner size={'sm'} animation="border" role="status">
         </Spinner>
         </Alert>}
-                    <div className='w-3/4 grow'>
+                    <div className='w-3/4 grow' style={{ flex: '1', paddingRight: '10px' }}>
                         <SearchBar
                             searchTerm={searchTerm}
                             setSearchTerm={setSearchTerm}
@@ -391,21 +392,19 @@ useEffect(() => {
                             handleEnter={handleEnter}
                             placeHolder={placeHolder}/>
                     </div>
-                    <div className='w-1/4 grow'>
-                        <div style={{ display: 'flex', justifyContent: 'left'}}>
-                            <button
-                                style={{ marginLeft: '10px', padding: '7px', background: '#1360E7', color: 'white', borderRadius: '5px', cursor: 'pointer' }}
-                                onClick={handleFilter}
-                            >
-                                Cari
-                            </button>
-                        </div>
+                    <div className='w-1/4 grow' style={{ flex: '0 0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <button
+                            className="timeline-button"
+                            style={{ padding: '7px', background: '#1360E7', color: 'white', borderRadius: '5px', cursor: 'pointer' }}
+                            onClick={handleFilter}
+                        >
+                            Cari
+                        </button>
                     </div>
                 </div>
             </div>
+</div>
 
-      
-            </div>
       </Row>
       <Row>
         <div style={{ position: "fixed", width: '100%', height: '100%' }}>
