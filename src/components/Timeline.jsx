@@ -29,7 +29,7 @@ const TimelineEvent = () => {
                 params['filter[search]'] = searchSent;
                 params['filter[role]'] = roleSent;
                 setShowTimeline(false)
-                const response = await axios.get('http://127.0.0.1:8000/timeline/', { params });
+                const response = await axios.get('/api/timeline/', { params });
 
                 if (response.data.length !== 0 ) {
                     const timeline = roleSent === 'Event' ? mapTimelineEvents(response.data) : mapTimeline(response.data);
@@ -61,14 +61,6 @@ const TimelineEvent = () => {
                     },
                     text: {
                         headline: `<a style="color: #282c34" href="/detail/${uriEncoded}">${name}</a>`,
-<<<<<<< HEAD
-                        text: `<div style="padding-bottom: 10px">
-                                <a href="${wikiurl}" style="background: #0b9955; color: #f0f0f0 ; ${wikiurl === '' ? 'display: none;' : ''}" class="btn mr-2" style="color: #f0f0f0" role="button">Laman Wikipedia</a>
-                                <a href="/detail/${uriEncoded}" style="background: #9810ad; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Detail</a>
-                                <a href="/canvas/${uriEncoded}" style="background: #1360E7; color: #f0f0f0" class="btn mr-2" style="color: #f0f0f0" role="button">Graph</a>
-                                <a href="/events/${uriEncoded}/${name}" style="background: #99630b; color: #f0f0f0" class="btn" style="color: #f0f0f0" role="button">Peristiwa yang Terlibat</a>
-                                </div>` + checkSummary
-=======
                         text: `<div style="padding-bottom: 10px" class="timeline-button-wrapper">
                                 <a href="${wikiurl}" class="btn m-1" style="background: #11ba1f; color: #fff; ${wikiurl === '' ? 'display: none;' : ''}" role="button">Laman Wikipedia</a>
                                 <a href="/detail/${uriEncoded}" class="btn m-1" style="background: #e3a209; color: #fff" role="button">Detail</a>
@@ -78,7 +70,6 @@ const TimelineEvent = () => {
                                 <div class="timeline-text"> 
                                 ${checkSummary} 
                                 </div>`
->>>>>>> 520bed802db4994bed570efd7b881aa6d4274496
                     },
                     media : {
                         url: url,

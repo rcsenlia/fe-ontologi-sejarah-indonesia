@@ -20,7 +20,7 @@ const ListEvents = () => {
             try {
                 const params = {};
                 params['filter[iri]'] = iriSent;
-                const response = await axios.get('http://127.0.0.1:8000/timeline/events/', { params });
+                const response = await axios.get('/api/timeline/events/', { params });
 
                 if (response.data.length !== 0 ) {
                     const timeline = mapTimelineEvents(response.data);

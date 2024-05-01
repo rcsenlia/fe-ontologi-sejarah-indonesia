@@ -68,7 +68,7 @@ const Detail = () => {
   };
 
   useEffect(() => {
-    let url = 'http://127.0.0.1:8000/map/detail/' + iri_peristiwa;
+    let url = '/api/map/detail/' + iri_peristiwa;
     // console.log(url)
     fetch(url, {
       method: "GET",
@@ -84,7 +84,7 @@ const Detail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseEvent = await axios.get('http://127.0.0.1:8000/map/all');
+        const responseEvent = await axios.get('/api/map/all');
         if (responseEvent.data.length !== 0) {
           setDatas(responseEvent.data)
         }
