@@ -3,7 +3,7 @@ import { Container, Card, Pagination } from "react-bootstrap";
 import 'leaflet/dist/leaflet.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useParams, Link } from 'react-router-dom';
-
+import domain from "../domain"
 const Search = () => {
   const { search } = useParams();
   const [page, setPage] = useState(0);
@@ -13,7 +13,7 @@ const Search = () => {
   const maxDataPerPage = 10;
 
   useEffect(() => {
-    let url = '/api/map/search/' + search + '/' + (page * maxDataPerPage);
+    let url = domain+'/api/map/search/' + search + '/' + (page * maxDataPerPage);
     fetch(url, {
       method: "GET",
       headers: { "Content-Type": "application/json" }
@@ -26,7 +26,7 @@ const Search = () => {
   }, [search, page]);
 
   useEffect(() => {
-    let url = '/api/map/search/' + search + '/total';
+    let url = domain+'/api/map/search/' + search + '/total';
     fetch(url, {
       method: "GET",
       headers: { "Content-Type": "application/json" }

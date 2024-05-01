@@ -7,7 +7,7 @@ import '../tl.css'
 import { useParams } from "react-router-dom";
 import LandingPage from "./LandingPage";
 import { Card } from "react-bootstrap";
-
+import domain from "../domain"
 const ListEvents = () => {
     const { iriSent, iriLabel } = useParams();
     const options = {
@@ -20,7 +20,7 @@ const ListEvents = () => {
             try {
                 const params = {};
                 params['filter[iri]'] = iriSent;
-                const response = await axios.get('/api/timeline/events/', { params });
+                const response = await axios.get(domain+'/api/timeline/events/', { params });
 
                 if (response.data.length !== 0 ) {
                     const timeline = mapTimelineEvents(response.data);

@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import './styles.css';
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
-
+import domain from "../domain"
 const Map = () => {
   const [datas, setDatas] = useState({});
   const [minYear, setMinYear] = useState(1600);
@@ -41,7 +41,7 @@ const Map = () => {
 
 
   useEffect(() => {
-    let url = '/api/map/';
+    let url = domain+'/api/map/';
     fetch(url, {
       method: "GET",
       headers: { "Content-Type": "application/json" }

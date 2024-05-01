@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import SearchBar from "./SearchBar";
 import '../tl.css'
 import { useNavigate } from "react-router-dom";
-
+import domain from "../domain"
 const LandingPage = () => {
     const [datas, setDatas] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
@@ -141,7 +141,7 @@ const LandingPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const responseEvent = await axios.get('/api/map/all');
+                const responseEvent = await axios.get(domain+'/api/map/all');
                 if (responseEvent.data.length !== 0 ) {
                     setDatas(responseEvent.data)
                 }

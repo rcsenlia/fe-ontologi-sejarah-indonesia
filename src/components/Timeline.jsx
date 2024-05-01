@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../tl.css'
 import { useParams } from "react-router-dom";
 import LandingPage from "./LandingPage";
-
+import domain from "../domain"
 const TimelineEvent = () => {
     const { searchSent, roleSent } = useParams();
     const [showTimeline, setShowTimeline] = useState(false);
@@ -29,7 +29,7 @@ const TimelineEvent = () => {
                 params['filter[search]'] = searchSent;
                 params['filter[role]'] = roleSent;
                 setShowTimeline(false)
-                const response = await axios.get('/api/timeline/', { params });
+                const response = await axios.get(domain+'/api/timeline/', { params });
 
                 if (response.data.length !== 0 ) {
                     const timeline = roleSent === 'Event' ? mapTimelineEvents(response.data) : mapTimeline(response.data);
