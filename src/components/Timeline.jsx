@@ -134,6 +134,9 @@ const TimelineEvent = () => {
                                 #tl-timeline .tl-menubar {
                                     display: none !important;
                                 }
+                                #tl-timeline .tl-headline-date {
+                                    display: none !important;
+                                }
                         `}
                     </style>
                 </div>
