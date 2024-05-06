@@ -13,7 +13,7 @@ const Layout = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto ">
-              <Nav.Link href="/app" className='text-white hover:bg-gray-700 rounded-lg'>Timeline</Nav.Link>
+              <Nav.Link href="/app/events" className='text-white hover:bg-gray-700 rounded-lg'>Timeline</Nav.Link>
               <Nav.Link href="/app/map/" className='text-white hover:bg-gray-700 rounded-lg'>Peta</Nav.Link>
             </Nav>
           </Navbar.Collapse>
