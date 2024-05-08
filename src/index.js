@@ -14,6 +14,9 @@ import { ToastContainer } from "react-toastify";
 import ListEvents from "./components/ListEvents";
 import HomePage from "./components/HomePage";
 import NavbarTimeline from "./components/NavbarTimeline";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+
 export default function App() {
   return (
     <BrowserRouter basename="/app">
@@ -36,6 +39,7 @@ export default function App() {
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+library.add(faBars);
 root.render(<App />);
 
 // If you want to start measuring performance in your app, pass a function
