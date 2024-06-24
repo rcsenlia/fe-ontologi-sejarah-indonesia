@@ -84,9 +84,9 @@ const LandingPage = () => {
         setSearchTerm(trigger.target.value)
         setSearchIRI("")
         let suggestions = Object.values(datas)
-            .map(data => ({ value: data.iri, label: data.name,alt:data.alt, type: data.type }))
-            .filter(data => data.alt.toLowerCase().includes(trigger.target.value.toLowerCase()))
-            .sort((a, b) => a.alt > b.alt ? 1 : -1)
+            .map(data => ({ value: data.iri, label: data.name, type: data.type }))
+            .filter(data => data.label.toLowerCase().includes(trigger.target.value.toLowerCase()))
+            .sort((a, b) => a.label > b.label ? 1 : -1)
 
         if (suggestions.length > 4) {
             suggestions = suggestions.slice(0, 4)
