@@ -341,7 +341,7 @@ useEffect(() => {
                 
                 <Row>
                 <ListGroup variant="flush" style={{ overflowY: "auto",height:"350px"}}>
-                  <ListGroup.Item style={{ fontSize:"25px"}}>Nama Property :</ListGroup.Item>
+                  <ListGroup.Item style={{ fontSize:"25px"}}>Daftar hubungan :</ListGroup.Item>
                     {Object.keys(dataNodes[node.id]['property'] ?? []).map((key)=><ListGroup.Item style={{ fontSize:"20px"}}  onClick={dataNodes[node.id]['property'][key]['status'] ? () => { add(node, key) } : () => { remove(node, key) }} action>{
                       dataNodes[node.id]['property'][key]['status'] ? `${key} (show)` : `${key} (hide)`
                     }</ListGroup.Item>)}
@@ -352,7 +352,7 @@ useEffect(() => {
                   <Row>
                     <ButtonGroup>
                   <Button variant="primary" href={`/app/detail/${node.id}`} active>detail</Button>
-                  <Button variant='danger' onClick={hapus} active>hapus</Button>
+                  <Button variant='danger' onClick={hapus} active>hapus node</Button>
                   </ButtonGroup>
               </Row>
               </>
