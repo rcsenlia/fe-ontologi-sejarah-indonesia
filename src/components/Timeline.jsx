@@ -10,6 +10,7 @@ import domain from "../domain"
 const TimelineEvent = () => {
     const { searchSent, roleSent } = useParams();
     const [showTimeline, setShowTimeline] = useState(false);
+    const [isAvailable, setIsAvailable] = useState(true);
 
     const options = {
         initial_zoom: 2,
@@ -36,8 +37,12 @@ const TimelineEvent = () => {
                     new Timeline('tl-timeline', timeline, options);
                     setShowTimeline(true);
                 }
+                else {
+                    setIsAvailable(false);
+                }
             } catch (error) {
                 console.error('Error fetching data:', error);
+                setIsAvailable(false);
             }
         };
 
@@ -123,8 +128,13 @@ const TimelineEvent = () => {
     return (
         <div>
             <LandingPage></LandingPage>
-            <div id="tl-timeline" className="tl-timeline" style={{ width: '100%', height: '85vh', maxHeight: '85%;'}} ></div>
-            {showTimeline  && roleSent !== 'Event' && (
+
+            {!isAvailable &&
+                <h1 style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold" }}> Data tidak tersedia </h1>}
+
+            {isAvailable && <div id="tl-timeline" className="tl-timeline" style={{ width: '100%', height: '85vh', maxHeight: '85%;'}} ></div>}
+
+            {isAvailable && showTimeline  && roleSent !== 'Event' && (
                 <div className="tl-timenav" style={{ display: "none !important" }}>
                     <style>
                         {`
