@@ -16,6 +16,7 @@ import HomePage from "./components/HomePage";
 import NavbarTimeline from "./components/NavbarTimeline";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
+import ListActors from "./components/ListActors";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="detail/:iri" element={<Detail />} />
           <Route path="map" element={<Map />} />
           <Route path="events" element={<NavbarTimeline />} />
+            <Route path="actors" element={<ListActors />} />
           <Route path="" element={<HomePage />} />
           <Route path='search/:search' element={<Search />} />
            <Route path="events/:iriSent/:iriLabel" element={<ListEvents />} />
