@@ -128,7 +128,7 @@ const HomePage = () => {
                     <div className='container mx-auto px-4'>
                         <Card className="mb-4">
                             <Card.Header>
-                                <Link to="/places" style={{ textDecoration: 'none', color: 'inherit' }}>Tempat</Link>
+                                <Link to="/features" style={{ textDecoration: 'none', color: 'inherit' }}>Tempat</Link>
                             </Card.Header>
                             <Card.Body>
                                 {dataPlaces.map((data, index) => {
@@ -214,7 +214,7 @@ const HomePage = () => {
                         <div className='container mx-auto px-4' style={{ height: '100%' }}>
                             <Card style={{ height: '100%', marginBottom: '16px' }}>
                                 <Card.Header>
-                                    <Link to="/places" style={{ textDecoration: 'none', color: 'inherit' }}>Tempat</Link>
+                                    <Link to="/features" style={{ textDecoration: 'none', color: 'inherit' }}>Tempat</Link>
                                 </Card.Header>
                                 <Card.Body style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
                                     {dataPlaces.map((data, index) => (
