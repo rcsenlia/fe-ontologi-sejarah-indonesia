@@ -17,6 +17,7 @@ const LandingPage = () => {
     const [roleTerm, setRoleTerm] = useState('');
 
     const [appliedSearch, setAppliedSearch] = useState('');
+    const [appliedIRISearch, setAppliedIRISearch] = useState('');
     const [appliedRole, setAppliedRole] = useState({});
     const [isClicked, setIsClicked] = useState(false);
     const [isEntered, setIsEntered] = useState(false);
@@ -109,6 +110,7 @@ const LandingPage = () => {
 
         // Handling click then automatically redirect to timeline
         setAppliedSearch(val.label)
+        setAppliedIRISearch(val.value)
         setAppliedRole(mapType(val.type))
 
         setSearchIRI(val.value)
@@ -162,6 +164,7 @@ const LandingPage = () => {
                 setRoleTerm(getTypeBySuffix(searchTerm));
                 setAppliedRole(getTypeBySuffix(searchTerm));
                 setAppliedSearch(searchTerm);
+                setAppliedIRISearch(searchIRI);
             }
             setIsEntered(false)
         }
@@ -187,7 +190,7 @@ const LandingPage = () => {
             setSuggestions([])
             setSearchTerm('')
             setIsClicked(false)
-            navigate(`/timeline/${finalSearch}/${appliedRole}`)
+            navigate(`/detail/${appliedIRISearch}`)
         }
         else if (searchTerm !== '' && appliedRole === '') {
             setIsClicked(false)
