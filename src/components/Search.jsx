@@ -112,7 +112,7 @@ const Search = () => {
         listData[i].typeLabel = 'Actor'
       }
       else if (listData[i].type.slice(-7) === 'Feature') {
-        listData[i].typeLabel = 'Place'
+        listData[i].typeLabel = 'Feature'
       }
     }
 
@@ -137,7 +137,7 @@ const Search = () => {
             return (
               <Card key={data + index} className='my-4 mx-20'>
                 <Card.Body>
-                  <Card.Title style={{ fontSize: "1.5rem", fontWeight: "bold" }}>{data.name}</Card.Title>
+                  <Card.Title style={{ fontSize: "1.5rem", fontWeight: "bold" }}>{data.name} ({data.typeLabel})</Card.Title>
                   <Card.Text>
                     {data.summary}
                   </Card.Text>

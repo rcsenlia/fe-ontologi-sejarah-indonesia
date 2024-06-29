@@ -6,10 +6,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../tl.css'
 import { useParams } from "react-router-dom";
 import LandingPage from "./LandingPage";
-import { Card } from "react-bootstrap";
 import domain from "../domain"
 const ListEvents = () => {
-    const { iriSent, iriLabel } = useParams();
+    const { iriSent, typeLabel } = useParams();
     const options = {
         initial_zoom: 2,
         scale_factor: 2
@@ -20,6 +19,7 @@ const ListEvents = () => {
             try {
                 const params = {};
                 params['filter[iri]'] = iriSent;
+                params['filter[type]'] = typeLabel;
                 const response = await axios.get(domain+'/api/timeline/events/', { params });
 
                 if (response.data.length !== 0 ) {
