@@ -4,10 +4,16 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f374897-5065-44a1-a876-8a8b834b658f" name="Changes" comment="fix A6 place">
+    <list default="true" id="5f374897-5065-44a1-a876-8a8b834b658f" name="Changes" comment="add LandingPage component on Graph">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/HomePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/HomePage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Canvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Canvas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/DetailCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ListActors.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ListActors.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ListEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ListEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ListFeatures.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ListFeatures.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/NavbarTimeline.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/NavbarTimeline.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Search.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Search.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Timeline.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Timeline.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +91,8 @@
     <MESSAGE value="fix search page events bug" />
     <MESSAGE value="change redirect from search bar to detail feature" />
     <MESSAGE value="fix A6 place" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix A6 place" />
+    <MESSAGE value="add LandingPage component on Graph" />
+    <option name="LAST_COMMIT_MESSAGE" value="add LandingPage component on Graph" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
