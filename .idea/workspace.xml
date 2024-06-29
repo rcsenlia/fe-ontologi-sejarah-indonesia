@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f374897-5065-44a1-a876-8a8b834b658f" name="Changes" comment="fix timeline navbar event">
+    <list default="true" id="5f374897-5065-44a1-a876-8a8b834b658f" name="Changes" comment="fix show events in actor">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ListEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ListEvents.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/domain.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -81,7 +80,8 @@
     <MESSAGE value="solving A8" />
     <MESSAGE value="fix timeline event" />
     <MESSAGE value="fix timeline navbar event" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix timeline navbar event" />
+    <MESSAGE value="fix show events in actor" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix show events in actor" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
