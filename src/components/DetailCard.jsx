@@ -21,54 +21,52 @@ const ChangeMapView = ({ bounds }) => {
 const DetailCard = (prop) => {
   const { iri, response } = prop;
 
-  console.log(response)
-
   let imageUrl;
+
   if (response.image) {
-    console.log(response)
     imageUrl = response.image.slice(0, 4) === 'http'
       ? response.image
       : `https://commons.wikimedia.org/wiki/Special:FilePath/${response.image}`;
-  }
+  };
+
 
   const activeThickDotDivIcon = divIcon({
     className: 'active-thick-dot-icon',
     iconSize: [20, 20]
   })
 
-  return <Card className="my-3" >
-    <Card.Header as="h5" className='p-4' style={{ textAlign: "center", fontSize: "1.5rem", fontWeight: "bold" }} >Detail {response?.detail.name[1]}</Card.Header>
-    <Card.Body className='detail-card-body flex flex-wrap sm:flex-nowrap sm:gap-4 sm:mp-4'>
+  return <Card.Body className='detail-card-body flex flex-wrap sm:flex-nowrap sm:gap-4 sm:mp-4'>
 
-      <div className='w-full sm:hidden py-4'>
-        {imageUrl != null &&
-          <img className='h-96 rounded mx-auto' src={imageUrl} alt={`Foto ${response?.detail.name}`} />
-        }
-        {response?.location != null &&
-          <MapContainer
-            style={{ height: "40vh" }}
-            minZoom={3}
-            className='rounded my-3'
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            <GeoJSON
-              data={response?.location}
-              pointToLayer={(feature, latlng) => {
-                return L.marker(latlng, {
-                  icon: activeThickDotDivIcon
-                })
-              }}
-            />
-            <ChangeMapView bounds={response?.bounds} />
-          </MapContainer>
-        }
-      </div>
+    <div className='w-full sm:hidden py-4'>
+      {imageUrl != null &&
+        <img className='h-96 rounded mx-auto' src={imageUrl} alt={`Foto ${response.detail.name}`} />
+      }
+      {response.location &&
+        <MapContainer
+          style={{ height: "40vh" }}
+          minZoom={3}
+          className='rounded my-3'
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+          <GeoJSON
+            data={response.location}
+            pointToLayer={(feature, latlng) => {
+              return L.marker(latlng, {
+                icon: activeThickDotDivIcon
+              })
+            }}
+          />
+          <ChangeMapView bounds={response.bounds} />
+        </MapContainer>
+      }
+    </div>
 
-      <div className='w-full sm:w-3/5 sm:grow'>
-        {Object.entries(response?.detail).map(([key, value]) => (
+    <div className='w-full sm:w-3/5 sm:grow'>
+      {response.detail &&
+        Object.entries(response.detail).map(([key, value]) => (
           <div key={key} className='mb-3'>
             {Array.isArray(value) && value.length === 2 && Array.isArray(value[1]) ? (
               value[1].length > 1 ? (
@@ -99,55 +97,56 @@ const DetailCard = (prop) => {
               )
             )}
           </div>
-        ))}
+        ))
+      }
 
-        {response?.wikiurl != null && <a href={response?.wikiurl} class="btn mt-2 ml-2" style={{ background: "#11ba1f", color: "#fff" }}>Laman Wikipedia</a>}
 
-        {response?.detail.dateStart != null &&
-          <Link to={`/events/${response?.detail.name[1]}/${response?.type}`} className='btn mt-2 ml-2' style={{ background: "#cc0a3b", color: "#fff" }}>
-            Lihat Canvas Graph
-          </Link>
-        }
+      {response.wikiurl != null && <a href={response.wikiurl} className="btn mt-2 ml-2" style={{ background: "#11ba1f", color: "#fff" }}>Laman Wikipedia</a>}
 
-        <Link to={`/canvas/${iri}`} className='btn mt-2 ml-2' style={{ background: "#1360E7", color: "#fff" }}>
+      {response.detail.dateStart != null &&
+        <Link to={`/events/${response.detail.name[1]}/${response.type}`} className='btn mt-2 ml-2' style={{ background: "#cc0a3b", color: "#fff" }}>
           Lihat Canvas Graph
         </Link>
+      }
+
+      <Link to={`/canvas/${iri}`} className='btn mt-2 ml-2' style={{ background: "#1360E7", color: "#fff" }}>
+        Lihat Canvas Graph
+      </Link>
 
 
-      </div>
-      <div className='hidden sm:w-2/5 sm:grow sm:block'>
-        {imageUrl != null &&
-          <img className='h-96 rounded mx-auto' src={imageUrl} alt={`Foto ${response?.detail.name}`} />
-        }
-        {response?.location != null &&
-          <MapContainer
-            style={{ height: "40vh" }}
-            minZoom={3}
-            className='rounded my-3'
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
+    </div>
+    <div className='hidden sm:w-2/5 sm:grow sm:block'>
+      {imageUrl != null &&
+        <img className='h-96 rounded mx-auto' src={imageUrl} alt={`Foto ${response.detail.name}`} />
+      }
+      {response.location != null &&
+        <MapContainer
+          style={{ height: "40vh" }}
+          minZoom={3}
+          className='rounded my-3'
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
 
-            <GeoJSON
-              data={response?.location}
-              pointToLayer={(feature, latlng) => {
-                return L.marker(latlng, {
-                  icon: activeThickDotDivIcon
-                })
-              }}
-            />
+          <GeoJSON
+            data={response.location}
+            pointToLayer={(feature, latlng) => {
+              return L.marker(latlng, {
+                icon: activeThickDotDivIcon
+              })
+            }}
+          />
 
-            <ChangeMapView bounds={response?.bounds} />
-          </MapContainer>
-        }
-      </div>
+          <ChangeMapView bounds={response.bounds} />
+        </MapContainer>
+      }
+    </div>
 
 
 
-    </Card.Body>
-  </Card>
+  </Card.Body>
 }
 
 export default DetailCard;
