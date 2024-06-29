@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f374897-5065-44a1-a876-8a8b834b658f" name="Changes" comment="add LandingPage component on Graph">
+    <list default="true" id="5f374897-5065-44a1-a876-8a8b834b658f" name="Changes" comment="add multiple type on search">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ListEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ListEvents.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Timeline.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Timeline.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Search.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Search.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +85,9 @@
     <MESSAGE value="change redirect from search bar to detail feature" />
     <MESSAGE value="fix A6 place" />
     <MESSAGE value="add LandingPage component on Graph" />
-    <option name="LAST_COMMIT_MESSAGE" value="add LandingPage component on Graph" />
+    <MESSAGE value="add label on listevents url" />
+    <MESSAGE value="add multiple type on search" />
+    <option name="LAST_COMMIT_MESSAGE" value="add multiple type on search" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
