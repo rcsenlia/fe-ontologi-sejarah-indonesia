@@ -21,6 +21,8 @@ const ChangeMapView = ({ bounds }) => {
 const DetailCard = (prop) => {
   const { iri, response } = prop;
 
+  console.log(response)
+
   let imageUrl;
   if (response.image) {
     console.log(response)
@@ -99,10 +101,18 @@ const DetailCard = (prop) => {
           </div>
         ))}
 
-        <Link to={`/canvas/${iri}`}
-          className='btn mt-2 ml-2' style={{ background: "#1360E7", color: "#fff" }}>
-          Lihat Canvas Graph {'>>>'}
+        {response?.wikiurl != null && <a href={response?.wikiurl} class="btn mt-2 ml-2" style={{ background: "#11ba1f", color: "#fff" }}>Laman Wikipedia</a>}
+
+        {response?.detail.dateStart != null &&
+          <Link to={`/events/${response?.detail.name[1]}/${response?.type}`} className='btn mt-2 ml-2' style={{ background: "#cc0a3b", color: "#fff" }}>
+            Lihat Canvas Graph
+          </Link>
+        }
+
+        <Link to={`/canvas/${iri}`} className='btn mt-2 ml-2' style={{ background: "#1360E7", color: "#fff" }}>
+          Lihat Canvas Graph
         </Link>
+
 
       </div>
       <div className='hidden sm:w-2/5 sm:grow sm:block'>

@@ -135,8 +135,7 @@ const Map = () => {
               setMaxYear(e.maxValue);
             }}
             barInnerColor='blue'
-            ruler={true}
-            label={true}
+            ruler={false}
           />
         </div>
       </div>
