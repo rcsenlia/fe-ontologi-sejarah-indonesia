@@ -12,9 +12,12 @@ import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import domain from "../domain"
 const Map = () => {
+  const smallestYear = 1025;
+  const biggestYear = 2024;
+
   const [datas, setDatas] = useState({});
-  const [minYear, setMinYear] = useState(1600);
-  const [maxYear, setMaxYear] = useState(2024);
+  const [minYear, setMinYear] = useState(smallestYear);
+  const [maxYear, setMaxYear] = useState(biggestYear);
   const [suggestions, setSuggestions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchIRI, setSearchIRI] = useState("");
@@ -28,15 +31,26 @@ const Map = () => {
 
   const handleChange = (trigger) => {
     setSearchTerm(trigger.target.value)
-    setSuggestions(Object.values(datas)
-      .flatMap((latitudeEvents) =>
-        Object.values(latitudeEvents)
-          .flatMap((events) =>
-            events
-              .filter((event) => event.name.toLowerCase().includes(trigger.target.value.toLowerCase()))
-              .map((event) => ({ value: event.iri, label: event.name }))
-          )
-      ).sort((a, b) => a.label > b.label ? 1 : -1))
+
+    let suggestions = Object.values(datas)
+    .flatMap((latitudeEvents) =>
+      Object.values(latitudeEvents)
+        .flatMap((events) =>
+          events
+            .filter((event) => event.name.toLowerCase().includes(trigger.target.value.toLowerCase()))
+            .map((event) => ({ value: event.iri, label: event.name }))
+        )
+    ).sort((a, b) => a.label > b.label ? 1 : -1);
+
+    // https://stackoverflow.com/questions/2218999/how-to-remove-all-duplicates-from-an-array-of-objects
+    suggestions = suggestions.filter((value, index, self) => 
+      index === self.findIndex((event) => (
+        event.iri === value.iri && event.label === value.label
+      ))
+    );
+
+    setSuggestions(suggestions);
+    
   }
 
 
@@ -63,8 +77,7 @@ const Map = () => {
       result[latitude] = Object.entries(latitudeEvents).reduce((eachResult, [longitude, events]) => {
         const filteredEvents = events.filter((event) => {
           const isYearInRange =
-            (event.yearStart >= minYear && event.yearStart <= maxYear) ||
-            (event.yearEnd >= minYear && event.yearEnd <= maxYear);
+            (event.yearStart >= minYear && event.yearStart <= maxYear);
 
           const doesNameContainSearch = !searchTerm || event.name.toLowerCase().includes(searchTerm.toLowerCase());
 
@@ -112,8 +125,8 @@ const Map = () => {
         </div>
         <div className='w-1/2 grow'>
           <MultiRangeSlider
-            min={1600}
-            max={2024}
+            min={smallestYear}
+            max={biggestYear}
             step={1}
             minValue={minYear}
             maxValue={maxYear}
@@ -146,7 +159,8 @@ const Map = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         {Object.entries(filteredData).map(([latitude, latitudeEvents]) => (
-          Object.entries(latitudeEvents).map(([longitude, events]) => (
+          Object.entries(latitudeEvents).map(([longitude, events]) => {
+            return (
             <Marker
               key={`${latitude}+${longitude}`}
               position={[latitude, longitude]}
@@ -172,7 +186,7 @@ const Map = () => {
                 </div>
               </Popup>
             </Marker>
-          ))
+          )} )
         ))}
 
 
