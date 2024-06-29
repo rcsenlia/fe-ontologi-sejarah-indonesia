@@ -52,7 +52,7 @@ const TimelineEvent = () => {
 
     const mapTimeline = (rawData) => {
         return {
-            events: rawData.map(({name, summary, wikiurl, dummyDate, thing, image}) => {
+            events: rawData.map(({name, summary, wikiurl, dummyDate, thing, image, typeLabel}) => {
                 // handles if the image are retrieved from wikipedia or outside wikipedia
                 const url = image.slice(0,4) === 'http' ? image : `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`;
                 const uriEncoded = thing.replace('/', '%2F')
@@ -70,7 +70,7 @@ const TimelineEvent = () => {
                                 <a href="${wikiurl}" class="btn m-1" style="background: #7D8ABC; color: #fff; ${wikiurl === '' ? 'display: none;' : ''}" role="button">Laman Wikipedia</a>
                                 <a href="/app/detail/${uriEncoded}" class="btn m-1" style="background: #e3a209; color: #fff" role="button">Detail</a>
                                 <a href="/app/canvas/${uriEncoded}" class="btn m-1" style="background: #1360E7; color: #fff" role="button">Canvas Graph</a>
-                                <a href="/app/events/${uriEncoded}/${name}" class="btn m-1" style="background: #d1a592; color: #fff" role="button">Peristiwa Terlibat</a>
+                                <a href="/app/events/${uriEncoded}/${typeLabel}" class="btn m-1" style="background: #d1a592; color: #fff" role="button">Peristiwa Terlibat</a>
                                 </div> 
                                 <div class="timeline-text"> 
                                 ${checkSummary} 

@@ -33,7 +33,7 @@ export default function App() {
             <Route path="features" element={<ListFeatures />} />
           <Route path="" element={<HomePage />} />
           <Route path='search/:search' element={<Search />} />
-           <Route path="events/:iriSent/:iriLabel" element={<ListEvents />} />
+           <Route path="events/:iriSent/:typeLabel" element={<ListEvents />} />
           <Route path="timeline/:searchSent/:roleSent" element={<TimelineEvent />} />
         </Route>
       </Routes>
