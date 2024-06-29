@@ -104,8 +104,8 @@ const DetailCard = (prop) => {
       {response.wikiurl != null && <a href={response.wikiurl} className="btn mt-2 ml-2" style={{ background: "#11ba1f", color: "#fff" }}>Laman Wikipedia</a>}
 
       {response.detail.dateStart != null &&
-        <Link to={`/events/${response.detail.name[1]}/${response.type}`} className='btn mt-2 ml-2' style={{ background: "#cc0a3b", color: "#fff" }}>
-          Lihat Canvas Graph
+        <Link to={`/timeline/${response.detail.name[1]}/${response.type}`} className='btn mt-2 ml-2' style={{ background: "#11ba1f", color: "#fff" }}>
+          Lihat Timeline
         </Link>
       }
 

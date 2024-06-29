@@ -141,12 +141,14 @@ const Search = () => {
                   <Card.Text>
                     {data.summary}
                   </Card.Text>
-                  <Link to={`/timeline/${data.name}/${data.typeLabel}`}
-                        className='btn mt-2' style={{background: "#11ba1f", color: "#fff"}}>
-                    Lihat Timeline {'>>>'}
-                  </Link>
+                  {(data.typeLabel !== 'Event' || (data.typeLabel === 'Event' && data.firstDateYear !== '')) && (
+                      <Link to={`/timeline/${data.name}/${data.typeLabel}`}
+                            className='btn mt-2' style={{background: "#11ba1f", color: "#fff"}}>
+                        Lihat Timeline {'>>>'}
+                      </Link>
+                  )}
                   <Link to={`/detail/${data.iri}`}
-                        className='btn mt-2 ml-2' style={{background: "#f0bd05", color: "#fff"}}>
+                        className='btn mt-2 ml-2' style={{background: "#e3a209", color: "#fff"}}>
                     Lihat Detail {'>>>'}
                   </Link>
                   <Link to={`/canvas/${data.iri}`}

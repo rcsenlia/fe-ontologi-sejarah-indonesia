@@ -36,27 +36,22 @@ const ListEvents = () => {
 
     const mapTimelineEvents = (rawData) => {
         return {
-            events: rawData.map(({name, summary, wikiurl, firstDate, secondDate, event, image}) => {
+            events: rawData.map(({name, summary, wikiurl, firstDateDay, firstDateMonth, firstDateYear, secondDateDay, secondDateMonth, secondDateYear, thing, image}) => {
                 const url = image.slice(0,4) === 'http' ? image : `https://commons.wikimedia.org/wiki/Special:FilePath/${image}`;
-                const uriEncoded = event.replace('/', '%2F');
-                const checkSummary = summary.length === 0 ? 'Tidak terdapat ringkasan' : summary;
+                const uriEncoded = thing.replace('/', '%2F')
+                const checkSummary = summary.length === 0 ? 'Tidak terdapat ringkasan' : summary
                 const thumbnail = image === 'No image available.svg' ? 'kosong' : url
 
-                return {
+                const baseEvent = {
                     start_date: {
-                        year: firstDate.split("-")[0],
-                        month: firstDate.split("-")[1],
-                        day: firstDate.split("-")[2],
-                    },
-                    end_date: {
-                        year: secondDate.split("-")[0],
-                        month: secondDate.split("-")[1],
-                        day: secondDate.split("-")[2],
+                        year: firstDateYear,
+                        month: firstDateMonth,
+                        day: firstDateDay,
                     },
                     text: {
                         headline: `<a style="color: #282c34" href="/app/detail/${uriEncoded}">${name}</a>`,
                         text: `<div style="padding-bottom: 10px" class="timeline-button-wrapper">
-                                <a href="${wikiurl}" class="btn m-1" style="background: #11ba1f; color: #fff; ${wikiurl === '' ? 'display: none;' : ''}" role="button">Laman Wikipedia</a>
+                                <a href="${wikiurl}" class="btn m-1" style="background: #7D8ABC; color: #fff; ${wikiurl === '' ? 'display: none;' : ''}" role="button">Laman Wikipedia</a>
                                 <a href="/app/detail/${uriEncoded}" class="btn m-1" style="background: #e3a209; color: #fff" role="button">Detail</a>
                                 <a href="/app/canvas/${uriEncoded}" class="btn m-1" style="background: #1360E7; color: #fff" role="button">Canvas Graph</a>
                                 </div> 
@@ -70,6 +65,16 @@ const ListEvents = () => {
                         thumbnail: thumbnail
                     },
                 };
+
+                if (secondDateYear) {
+                    baseEvent.end_date = {
+                        year: secondDateYear,
+                        month: secondDateMonth,
+                        day: secondDateDay,
+                    };
+                }
+
+                return baseEvent;
             })
         };
     }
