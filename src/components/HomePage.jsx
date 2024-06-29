@@ -73,9 +73,11 @@ const HomePage = () => {
                 <Container fluid>
                     <div className='container mx-auto px-4'>
                         <Card className="mb-4">
-                            <Card.Header>
-                                <Link to="/events" style={{ textDecoration: 'none', color: 'inherit' }}>Peristiwa Sejarah</Link>
-                            </Card.Header>
+                            <Link to="/events" style={{ textDecoration: 'none', color: 'white', fontSize: '1em', fontWeight: 'bold' }}>
+                                <Card.Header style={{backgroundColor: '#3178f5'}}>
+                                    Peristiwa Sejarah
+                                </Card.Header>
+                            </Link>
                             <Card.Body>
                                 {dataEvents.map((data, index) => {
                                     return (
@@ -100,9 +102,11 @@ const HomePage = () => {
                 <Container fluid>
                     <div className='container mx-auto px-4'>
                         <Card className="mb-4">
-                            <Card.Header>
-                                <Link to="/actors" style={{ textDecoration: 'none', color: 'inherit' }}>Tokoh Sejarah</Link>
-                            </Card.Header>
+                            <Link to="/actors" style={{ textDecoration: 'none', color: 'white', fontSize: '1em', fontWeight: 'bold' }}>
+                                <Card.Header style={{backgroundColor: '#3178f5'}}>
+                                    Tokoh Sejarah
+                                </Card.Header>
+                            </Link>
                             <Card.Body>
                                 {dataActors.map((data, index) => {
                                     return (
@@ -127,9 +131,11 @@ const HomePage = () => {
                 <Container fluid>
                     <div className='container mx-auto px-4'>
                         <Card className="mb-4">
-                            <Card.Header>
-                                <Link to="/places" style={{ textDecoration: 'none', color: 'inherit' }}>Tempat</Link>
-                            </Card.Header>
+                            <Link to="/features" style={{ textDecoration: 'none', color: 'white', fontSize: '1em', fontWeight: 'bold' }}>
+                                <Card.Header style={{backgroundColor: '#3178f5'}}>
+                                    Tempat
+                                </Card.Header>
+                            </Link>
                             <Card.Body>
                                 {dataPlaces.map((data, index) => {
                                     return (
@@ -161,9 +167,11 @@ const HomePage = () => {
                     <Container fluid>
                         <div className='container mx-auto px-4' style={{ height: '100%' }}>
                             <Card style={{ height: '100%', marginBottom: '1px' }}>
-                                <Card.Header>
-                                    <Link to="/events" style={{ textDecoration: 'none', color: 'inherit' }}>Peristiwa Sejarah</Link>
-                                </Card.Header>
+                                <Link to="/events" style={{ textDecoration: 'none', color: 'white', fontSize: '1em', fontWeight: 'bold' }}>
+                                    <Card.Header style={{backgroundColor: '#3178f5'}}>
+                                        Peristiwa Sejarah
+                                    </Card.Header>
+                                </Link>
                                 <Card.Body style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
                                     {dataEvents.map((data, index) => (
                                         <div key={data + index} className='my-4 mx-25' style={{ flex: 1 }}>
@@ -187,9 +195,11 @@ const HomePage = () => {
                     <Container fluid>
                         <div className='container mx-auto px-4' style={{ height: '100%' }}>
                             <Card style={{ height: '100%', marginBottom: '16px' }}>
-                                <Card.Header>
-                                    <Link to="/actors" style={{ textDecoration: 'none', color: 'inherit' }}>Tokoh Sejarah</Link>
-                                </Card.Header>
+                                <Link to="/actors" style={{ textDecoration: 'none', color: 'white', fontSize: '1em', fontWeight: 'bold' }}>
+                                    <Card.Header style={{backgroundColor: '#3178f5'}}>
+                                        Tokoh Sejarah
+                                    </Card.Header>
+                                </Link>
                                 <Card.Body style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
                                     {dataActors.map((data, index) => (
                                         <div key={data + index} className='my-4 mx-25' style={{ flex: 1 }}>
@@ -213,9 +223,11 @@ const HomePage = () => {
                     <Container fluid>
                         <div className='container mx-auto px-4' style={{ height: '100%' }}>
                             <Card style={{ height: '100%', marginBottom: '16px' }}>
-                                <Card.Header>
-                                    <Link to="/places" style={{ textDecoration: 'none', color: 'inherit' }}>Tempat</Link>
-                                </Card.Header>
+                                <Link to="/features" style={{ textDecoration: 'none', color: 'white', fontSize: '1em', fontWeight: 'bold' }}>
+                                    <Card.Header style={{backgroundColor: '#3178f5'}}>
+                                        Tempat
+                                    </Card.Header>
+                                </Link>
                                 <Card.Body style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
                                     {dataPlaces.map((data, index) => (
                                         <div key={data + index} className='my-4 mx-25' style={{ flex: 1 }}>
