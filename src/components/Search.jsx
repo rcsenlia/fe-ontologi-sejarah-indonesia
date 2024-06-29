@@ -148,7 +148,7 @@ const Search = () => {
                       </Link>
                   )}
                   <Link to={`/detail/${data.iri}`}
-                        className='btn mt-2 ml-2' style={{background: "#f0bd05", color: "#fff"}}>
+                        className='btn mt-2 ml-2' style={{background: "#e3a209", color: "#fff"}}>
                     Lihat Detail {'>>>'}
                   </Link>
                   <Link to={`/canvas/${data.iri}`}

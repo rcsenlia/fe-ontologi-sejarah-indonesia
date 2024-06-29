@@ -164,9 +164,9 @@ function Canvas() {
                 </Row>
                   <Row>
                     <ButtonGroup>
-                  {dataNodes[node.id]['year'] == "" ? <></>:<Button variant="primary" href={`/app/timeline/${dataNodes[node.id]['label']}/${dataNodes[node.id]['type']}`} active>timeline</Button>}
-                  {dataNodes[node.id]['wikiurl'] == "" ? <></>:<Button variant="primary" href={dataNodes['wikiurl']}active>wikipedia</Button>}
-                  <Button variant="primary" href={`/app/detail/${node.id}`} active>detail</Button>
+                  {dataNodes[node.id]['year'] == "" ? <></>:<Button style={{background: "#11ba1f", color: "#fff"}} href={`/app/timeline/${dataNodes[node.id]['label']}/${dataNodes[node.id]['type']}`} active>timeline</Button>}
+                  {dataNodes[node.id]['wikiurl'] == "" ? <></>:<Button style={{background: "#7D8ABC", color: "#fff"}} href={dataNodes['wikiurl']}active>wikipedia</Button>}
+                  <Button style={{background: "#e3a209", color: "#fff"}} href={`/app/detail/${node.id}`} active>detail</Button>
                   <Button variant='danger' onClick={hapus} active>hapus node</Button>
                   </ButtonGroup>
               </Row>

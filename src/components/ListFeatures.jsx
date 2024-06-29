@@ -51,7 +51,7 @@ const ListFeatures = () => {
                     text: {
                         headline: `<a style="color: #282c34" href="/app/detail/${uriEncoded}">${name}</a>`,
                         text: `<div style="padding-bottom: 10px" class="timeline-button-wrapper">
-                                <a href="${wikiurl}" class="btn m-1" style="background: #11ba1f; color: #fff; ${wikiurl === '' ? 'display: none;' : ''}" role="button">Laman Wikipedia</a>
+                                <a href="${wikiurl}" class="btn m-1" style="background: #7D8ABC; color: #fff; ${wikiurl === '' ? 'display: none;' : ''}" role="button">Laman Wikipedia</a>
                                 <a href="/app/detail/${uriEncoded}" class="btn m-1" style="background: #e3a209; color: #fff" role="button">Detail</a>
                                 <a href="/app/canvas/${uriEncoded}" class="btn m-1" style="background: #1360E7; color: #fff" role="button">Canvas Graph</a>
                                 <a href="/app/events/${uriEncoded}/${name}" class="btn m-1" style="background: #cc0a3b; color: #fff" role="button">Peristiwa Terlibat</a>
