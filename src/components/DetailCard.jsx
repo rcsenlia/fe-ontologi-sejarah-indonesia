@@ -100,7 +100,7 @@ const DetailCard = (prop) => {
         ))
       }
 
-      {response.wikiurl && <a href={response.wikiurl} className="btn mt-2 ml-2" style={{ background: "#11ba1f", color: "#fff" }}>Laman Wikipedia</a>}
+      {response.wikiurl && <a href={response.wikiurl} className="btn mt-2 ml-2" style={{ background: "#7D8ABC", color: "#fff" }}>Laman Wikipedia</a>}
 
       {/* https://stackoverflow.com/questions/6116474/how-to-find-if-an-array-contains-a-specific-string-in-javascript-jquery */}
       {response.type.indexOf("Actor") > -1 &&
