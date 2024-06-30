@@ -1,2 +1,2 @@
-const domain = "http://localhost:8000" //silahkan sesuaikan domain backend (biasanya http://localhost:8000)
+const domain = "" //silahkan sesuaikan domain backend (biasanya http://localhost:8000)
 export default domain
