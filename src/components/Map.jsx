@@ -175,10 +175,11 @@ const Map = () => {
                 <div className='max-h-60 overflow-y-auto'>
                   {events.map((event, index) => (<div key={`${latitude}+${longitude}+${index}`}>
                     <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{event.name}</h3>
-                    <Link to={`/detail/${event.iri}`}
-                      className='btn btn-info btn-lg mt-2'
-                      style={{ display: 'block' }}>
-                      Lihat detail
+                    <Link
+                        to={`/detail/${event.iri}`}
+                        className='btn btn-info btn-lg mt-2'
+                        style={{ display: 'block', backgroundColor: '#e3a209', color: '#fff' }}>
+                      Lihat Detail
                     </Link>
                     {index !== events.length - 1 && <><br /><hr /><br /></>}
                   </div>))
