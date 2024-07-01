@@ -84,22 +84,35 @@ const LandingPage = () => {
     const handleChange = (trigger) => {
         setSearchTerm(trigger.target.value)
         setSearchIRI("")
+        let suggestionsTop = Object.values(datas)
+            .map(data => ({ value: data.iri, label: data.name, type: data.type }))
+            .filter(data => data.label.toLowerCase().startsWith(trigger.target.value.toLowerCase()))
+            .sort((a, b) => a.label > b.label ? 1 : -1)
+
         let suggestions = Object.values(datas)
             .map(data => ({ value: data.iri, label: data.name, type: data.type }))
             .filter(data => data.label.toLowerCase().includes(trigger.target.value.toLowerCase()))
             .sort((a, b) => a.label > b.label ? 1 : -1)
 
-        if (suggestions.length > 4) {
-            suggestions = suggestions.slice(0, 4)
-            suggestions.push({ value: '', label: 'Search more...', type: 'a' })
-        }
+        let finalSuggestions = suggestionsTop.concat(suggestions)
 
-        suggestions = handleAddLabel(suggestions)
-        setSuggestions(suggestions);
+        finalSuggestions = finalSuggestions.filter((value, index, self) =>
+                index === self.findIndex((event) => (
+                    event.value === value.value && event.label === value.label
+                ))
+        );
+
+        if (finalSuggestions.length > 4) {
+            finalSuggestions = finalSuggestions.slice(0, 4)
+        }
+        finalSuggestions.push({ value: '', label: `Cari halaman yang mengandung "${trigger.target.value}"`, type: 'a' })
+
+        finalSuggestions = handleAddLabel(finalSuggestions)
+        setSuggestions(finalSuggestions);
     }
 
     const handleClick = (val) => {
-        if (val.label === 'Search more...') {
+        if (val.label.startsWith('Cari halaman yang mengandung')) {
             setIsClicked(false)
             navigate('/search/' + searchTerm + '/1')
         }

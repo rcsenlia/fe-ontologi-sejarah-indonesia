@@ -1,99 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="ALL" />
+    <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f374897-5065-44a1-a876-8a8b834b658f" name="Changes" comment="change button color on map">
+    <list default="true" id="3e746db4-2c95-466c-b712-8d1226e0f5f8" name="Changes" comment="add 'back' implementation on search">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/LandingPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LandingPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Search.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Search.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/domain.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="GOROOT" url="file://C:/Program Files/Go" />
-  <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="master" />
-      </map>
-    </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="RESET_MODE" value="SOFT" />
-  </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProjectId" id="2fmxcKhz3O4rleeMbs7asS3MOQX" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/timeline&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Mike&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\GoLand 2023.1.2\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "git-widget-placeholder": "feature/timeline"
   }
-}</component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="handle click automatic redirect" />
-    <MESSAGE value="Merge branch 'master' into feature/timeline" />
-    <MESSAGE value="Change responsiveness on title, button, and text" />
-    <MESSAGE value="change 'z-index' on search title" />
-    <MESSAGE value="solve bugs on landingpage searchbar" />
-    <MESSAGE value="add simple homepage" />
-    <MESSAGE value="add button to detail and canvas on search page" />
-    <MESSAGE value="change color scheme" />
-    <MESSAGE value="add prefix 'app' for timeline and homepage" />
-    <MESSAGE value="solving A8" />
-    <MESSAGE value="fix timeline event" />
-    <MESSAGE value="fix timeline navbar event" />
-    <MESSAGE value="fix show events in actor" />
-    <MESSAGE value="fix search page events bug" />
-    <MESSAGE value="change redirect from search bar to detail feature" />
-    <MESSAGE value="fix A6 place" />
-    <MESSAGE value="add LandingPage component on Graph" />
-    <MESSAGE value="add label on listevents url" />
-    <MESSAGE value="add multiple type on search" />
-    <MESSAGE value="change button color on map" />
-    <option name="LAST_COMMIT_MESSAGE" value="change button color on map" />
-  </component>
-  <component name="VgoProject">
-    <settings-migrated>true</settings-migrated>
-  </component>
+}]]></component>
 </project>
