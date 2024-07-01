@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Container, Card, Pagination } from "react-bootstrap";
 import 'leaflet/dist/leaflet.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import { useParams, Link } from 'react-router-dom';
+import {useParams, Link, useNavigate} from 'react-router-dom';
 import domain from "../domain"
 const Search = () => {
-  const { search } = useParams();
-  const [page, setPage] = useState(0);
+  const { search, pageNumber } = useParams();
+  const page = pageNumber-1
   const [totalData, setTotalData] = useState(0);
   const [datas, setDatas] = useState([]);
   const [paginations, setPaginations] = useState([]);
   const maxDataPerPage = 10;
+  const navigate = useNavigate();
 
   useEffect(() => {
     let url = domain+'/api/map/search/' + search + '/' + (page * maxDataPerPage);
@@ -44,7 +45,8 @@ const Search = () => {
     let maxPage = Math.ceil(totalData / maxDataPerPage);
 
     const changePage = (number) => {
-      setPage(number - 1);
+      navigate('/search/'+ search + '/' + number);
+      console.log(number)
     }
 
     if (maxPage <= 7) {
@@ -107,12 +109,15 @@ const Search = () => {
     for (const i in listData) {
       if (listData[i].type.slice(-5) === 'Event') {
         listData[i].typeLabel = 'Event'
+        listData[i].typeLabelName = 'Event'
       }
       else if (listData[i].type.slice(-5) === 'Actor') {
         listData[i].typeLabel = 'Actor'
+        listData[i].typeLabelName = 'Actor'
       }
       else if (listData[i].type.slice(-7) === 'Feature') {
         listData[i].typeLabel = 'Feature'
+        listData[i].typeLabelName = 'Place'
       }
     }
 
@@ -137,7 +142,7 @@ const Search = () => {
             return (
               <Card key={data + index} className='my-4 mx-20'>
                 <Card.Body>
-                  <Card.Title style={{ fontSize: "1.5rem", fontWeight: "bold" }}>{data.name} ({data.typeLabel})</Card.Title>
+                  <Card.Title style={{ fontSize: "1.5rem", fontWeight: "bold" }}>{data.name} ({data.typeLabelName})</Card.Title>
                   <Card.Text>
                     {data.summary}
                   </Card.Text>
