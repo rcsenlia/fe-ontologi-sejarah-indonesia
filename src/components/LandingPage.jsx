@@ -101,7 +101,7 @@ const LandingPage = () => {
     const handleClick = (val) => {
         if (val.label === 'Search more...') {
             setIsClicked(false)
-            navigate('/search/' + searchTerm)
+            navigate('/search/' + searchTerm + '/1')
         }
 
         setIsClicked(true)
@@ -126,7 +126,7 @@ const LandingPage = () => {
 
     const handleFilter = () => {
         if (!isClicked && searchTerm !== '') {
-            navigate('/search/' + searchTerm)
+            navigate('/search/' + searchTerm + '/1')
             setIsClicked(false)
         }
         if (searchTerm === '') {
@@ -158,7 +158,7 @@ const LandingPage = () => {
     useEffect(() => {
         if (isEntered && suggestions.length === 0) {
             if (searchIRI === '') {
-                navigate('/search/' + searchTerm);
+                navigate('/search/' + searchTerm + '/1');
             }
             else {
                 setRoleTerm(getTypeBySuffix(searchTerm));
@@ -195,7 +195,7 @@ const LandingPage = () => {
         else if (searchTerm !== '' && appliedRole === '') {
             setIsClicked(false)
             setSearchTerm('')
-            navigate('/search/' + finalSearch)
+            navigate('/search/' + searchTerm + '/1');
         }
     }, [appliedSearch, appliedRole, datas])
 
