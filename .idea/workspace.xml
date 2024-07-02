@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3e746db4-2c95-466c-b712-8d1226e0f5f8" name="Changes" comment="add 'back' implementation on search">
+    <list default="true" id="3e746db4-2c95-466c-b712-8d1226e0f5f8" name="Changes" comment="change query for 'search'">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/LandingPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/LandingPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/domain.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/domain.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,9 +15,9 @@
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "git-widget-placeholder": "feature/timeline"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;git-widget-placeholder&quot;: &quot;feature/timeline&quot;
   }
-}]]></component>
+}</component>
 </project>

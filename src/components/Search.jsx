@@ -109,15 +109,15 @@ const Search = () => {
     for (const i in listData) {
       if (listData[i].type.slice(-5) === 'Event') {
         listData[i].typeLabel = 'Event'
-        listData[i].typeLabelName = 'Event'
+        listData[i].typeLabelName = 'Peristiwa'
       }
       else if (listData[i].type.slice(-5) === 'Actor') {
         listData[i].typeLabel = 'Actor'
-        listData[i].typeLabelName = 'Actor'
+        listData[i].typeLabelName = 'Tokoh'
       }
       else if (listData[i].type.slice(-7) === 'Feature') {
         listData[i].typeLabel = 'Feature'
-        listData[i].typeLabelName = 'Place'
+        listData[i].typeLabelName = 'Tempat'
       }
     }
 
