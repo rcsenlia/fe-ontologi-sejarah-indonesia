@@ -57,7 +57,7 @@ function Canvas() {
       }))]));
     setEdges(prevedges=>([...prevedges, ...dataNodes[start]['property'][property]['value'].map((val) => ({
         id: `${start}|?${val.iri}|?${key}`,
-        label: property,
+        label: dataNodes[start]['property'][property]['teks'],
         target: val.iri,
         source: start,
         detail:val.detail
@@ -156,7 +156,7 @@ function Canvas() {
                 <ListGroup variant="flush" style={{ overflowY: "auto",height:"350px"}}>
                   <ListGroup.Item style={{ fontSize:"25px"}}>Daftar hubungan :</ListGroup.Item>
                     {Object.keys(dataNodes[node.id]['property'] ?? []).map((key)=><ListGroup.Item style={{ fontSize:"20px"}}  onClick={dataNodes[node.id]['property'][key]['status'] ? () => { add(node, key) } : () => { remove(node, key) }} action>{
-                      dataNodes[node.id]['property'][key]['status'] ? `${key} (show)` : `${key} (hide)`
+                      dataNodes[node.id]['property'][key]['status'] ? `${dataNodes[node.id]['property'][key]['teks']} (show)` : `${dataNodes[node.id]['property'][key]['teks']} (hide)`
                     }</ListGroup.Item>)}
                   
                  
@@ -166,7 +166,7 @@ function Canvas() {
                     <ButtonGroup>
                   {(dataNodes[node.id]['type']==="Event" && dataNodes[node.id]['start-year'] === "") ? <></>:<Button style={{background: "#11ba1f", color: "#fff"}} href={`/app/timeline/${dataNodes[node.id]['label']}/${dataNodes[node.id]['type']}`} active>timeline</Button>}
                   {dataNodes[node.id]['wikiurl'] == "" ? <></>:<Button style={{background: "#7D8ABC", color: "#fff"}} href={dataNodes[node.id]['wikiurl']}active>wikipedia</Button>}
-                  <Button style={{background: "#e3a209", color: "#fff"}} href={`/app/detail/${node.id}`} active>detail</Button>
+                  <Button style={{background: "#e3a209", color: "#fff"}} href={dataNodes[node.id]['label'].split(" ")[0]==='wikipedia'?`/app/detail/${node.id.slice(9,node.id.length)}`:`/app/detail/${node.id}`} active>detail</Button>
                   <Button variant='danger' onClick={hapus} active>hapus node</Button>
                   </ButtonGroup>
               </Row>
