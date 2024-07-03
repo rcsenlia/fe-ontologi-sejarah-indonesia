@@ -164,7 +164,7 @@ function Canvas() {
                 </Row>
                   <Row>
                     <ButtonGroup>
-                  {(dataNodes[node.id]['type']==="Event" && dataNodes[node.id]['start-year'] === "") ? <></>:<Button style={{background: "#11ba1f", color: "#fff"}} href={`/app/timeline/${dataNodes[node.id]['label']}/${dataNodes[node.id]['type']}`} active>timeline</Button>}
+                  {(dataNodes[node.id]['type']==="Event" && dataNodes[node.id]['start-year'] === "") ? <></>:<Button style={{background: "#11ba1f", color: "#fff"}} href={dataNodes[node.id]['label'].split(" ")[0]==='wikipedia'?`/app/timeline/${dataNodes[node.id]['label'].slice(10,dataNodes[node.id]['label'].length)}/Event`:`/app/timeline/${dataNodes[node.id]['label']}/${dataNodes[node.id]['type']}`} active>timeline</Button>}
                   {dataNodes[node.id]['wikiurl'] == "" ? <></>:<Button style={{background: "#7D8ABC", color: "#fff"}} href={dataNodes[node.id]['wikiurl']}active>wikipedia</Button>}
                   <Button style={{background: "#e3a209", color: "#fff"}} href={dataNodes[node.id]['label'].split(" ")[0]==='wikipedia'?`/app/detail/${node.id.slice(9,node.id.length)}#Wikipedia`:`/app/detail/${node.id}`} active>detail</Button>
                   <Button variant='danger' onClick={hapus} active>hapus node</Button>
