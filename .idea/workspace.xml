@@ -4,13 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3e746db4-2c95-466c-b712-8d1226e0f5f8" name="Changes" comment="change query for 'search'">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="3e746db4-2c95-466c-b712-8d1226e0f5f8" name="Changes" comment="rename App to 'Historiografi Indonesia'">
+      <change beforePath="$PROJECT_DIR$/src/Layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Layout.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -20,4 +27,8 @@
     &quot;git-widget-placeholder&quot;: &quot;feature/timeline&quot;
   }
 }</component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="rename App to 'Historiografi Indonesia'" />
+    <option name="LAST_COMMIT_MESSAGE" value="rename App to 'Historiografi Indonesia'" />
+  </component>
 </project>
