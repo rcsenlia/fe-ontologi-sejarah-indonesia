@@ -11,7 +11,7 @@ const Layout = () => {
     <>
       <Navbar expand="lg" className="text-xl bg-gray-600">
         <Container fluid>
-          <Navbar.Brand href="/app" className='text-3xl font-bold text-white'>Sejarah Indonesia</Navbar.Brand>
+          <Navbar.Brand href="/app" className='text-2xl font-bold text-white'>Historiografi Indonesia</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav">
             <FontAwesomeIcon icon={faBars} style={{ color: '#FFF' }} />
           </Navbar.Toggle>
